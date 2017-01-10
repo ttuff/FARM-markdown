@@ -1,0 +1,276 @@
+---
+title: "Tree and space analysis function"
+author: "Ty Tuff and Bruno Vilela"
+date: '`r strftime(Sys.time(), format = "%d %B %Y")`'
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+```{r}
+load('~/Downloads/FULL_TREE_Society_data_with_binary_conversions.Rdata')
+
+load('~/Downloads/Tree_FULL_trimmed.Rdata')
+
+this_tree <- full_tree 
+
+
+load('~/Downloads/download.Rdata')
+objects()
+str(myOut)
+
+this_tree <- myOut$mytree
+this_world <- myOut$myWorld
+
+
+  #str(all_trees)
+  #str(this_tree)
+
+```
+
+Branch Lengths
+
+```{r}
+ 
+      ## 0a) Branch lengths
+      Branch_Lengths <- this_tree$edge.length
+      number_of_branches <- length(Branch_Lengths)
+
+      # Anchor test = PD (Faith's phylogenetic diversity)
+      Pylo_diversity_is_sum_of_BL <- sum(Branch_Lengths)
+
+      # avPD -- Average phylogenetic diversity
+      average_phylogenetic_diversity_is_mean_of_BL <- mean(Branch_Lengths)
+
+      variance_Pylo_diversity_is_variance_of_BL <- var(Branch_Lengths)
+      
+```
+
+
+
+```{r}
+
+library(phytools)
+ ## 0b) Pairwise distance between tips
+      Pairwise_dist <- cophenetic(this_tree)
+   
+      # 2b) Pairwise distance -- Sum of pairwise distances
+
+      # F -- Extensive quadratic entropy
+      F_quadratic_entropy_is_sum_of_PD <- sum(Pairwise_dist)
+
+      #Mean inter-species distances
+
+      # Anchor test = MPD (mean pairwise distance)
+
+      Mean_pairwise_distance <- mean(Pairwise_dist)
+
+      #Pairwise distance/all distances -- Variance of pairwise distances
+
+      # Anchor test = VPD (variation of pairwise distance)
+
+      variance_pairwise_distance <- var(as.vector(Pairwise_dist))
+
+
+
+```
+
+
+```{r}
+ library(FARM)
+ls("package:FARM")
+
+```
+
+
+```{r}
+## 0c) Phylogenetic isolation
+ library(FARM)
+
+      # Using equal.splits method, faster computation
+      Evolutionary_distinctiveness <- evol.distinct2(this_tree, type = "equal.splits")
+      
+      # ED - Summed evolutionary distinctiveness
+
+      Evolutionary_distinctiveness_sum <- sum(Evolutionary_distinctiveness)
+
+      ## 3d) Phylogenetic isolation -- Mean of species evolutionary distinctiveness
+
+      # mean(ED)
+
+      mean_Phylogenetic_isolation <- mean(Evolutionary_distinctiveness)
+
+      ## 4d) Phylogenetic isolation -- Variance of species isolation metrics
+
+      #var(ED)
+
+      variance_Phylogenetic_isolation <- var(Evolutionary_distinctiveness)
+     
+
+```
+
+
+```{r}
+ ## Tree topology
+
+      #Gamma index
+
+      ltts <- ltt(this_tree, gamma = TRUE, plot = FALSE)
+      lineages_through_time <- as.numeric(ltts[[1]])
+      time_steps <- as.numeric(ltts[[2]])
+      gamma <- ltts[[3]]
+      gamma_p_value <- ltts[[4]]
+      
+```
+
+
+
+```{r}
+
+library(spdep)
+library(Rcpp)
+library(msm)
+
+
+##### (5) Tree metric -- Macroevolutionary - Rate and rate changes ###############
+      ##################################################
+
+      ## Speciation vs extinction rates and Net diversification
+      bds <- bd(this_tree)
+      speciation_rate <- bds[1]
+      extinction_rate <- bds[2]
+      extinction_per_speciation <- bds[3]
+      speciation_minus_extinction <- bds[4]
+  
+
+
+      ## Speciation vs extinction rates and Net diversification dependent on trait
+      N.for.dom <- table(this_world[, 6])
+      if(length(N.for.dom) == 2) {
+        par.div.dep <- DivDep( mytree = this_tree, myWorld = this_world)
+        trait_1_speciation <- par.div.dep[1]
+        trait_2_speciation <- par.div.dep[2]
+        trait_1_extinction <- par.div.dep[3]
+        trait_2_extinction <- par.div.dep[4]
+        transition_from_trait_1_to_2 <- par.div.dep[5]
+        transition_from_trait_2_to_1 <- par.div.dep[6]
+        transition_rate_ratio_1to2_over_2to1 <- transition_from_trait_1_to_2/transition_from_trait_2_to_1
+       
+
+
+        ## Crown age per trait AUC and effect size
+        tip.length <- this_tree$edge.length[this_tree$edge[, 2] %in% 1:Ntip(this_tree)]
+        tip.length <- (tip.length - min(tip.length)) / (max(tip.length) - min(tip.length))
+        this_trait <- this_world[match(this_tree$tip.label, this_world[, 8]), 6]
+        tip.length.2 <- tip.length[this_trait == 2]
+        tip.length.1 <- tip.length[this_trait == 1]
+        model <- glm(as.factor(this_trait) ~ log(tip.length + 1),
+                     family = "binomial")
+        effect.size <- model$coefficients[2]
+        plot(y = this_trait - 1, x= log(tip.length))
+        p <- predict(model, as.factor(this_trait), type = "resp")
+        points(y = p, x = log(tip.length), col = "red")
+       # pr <- prediction(p, as.factor(this_trait))
+       # auc.model <- performance(pr, measure = "auc")@y.values[[1]]
+
+        ## Phylogenetic signal (D)
+        Phylogenetic_signal <- Dsig(mytree = this_tree, myWorld = this_world)
+         ## Spatial Analysis
+        nbs0 <- knearneigh(as.matrix(this_world[, 2:3]), k = 7, longlat = TRUE)
+        nbs <- knn2nb(nbs0, sym = TRUE) # 7 symmetric neighbors
+        nbs.listw <- nb2listw(nbs)
+        factors.nbs <- as.factor(ifelse(is.na(this_world[, 6]), 3, this_world[, 6]))
+        spatial.tests <- joincount.test(fx = factors.nbs, listw = nbs.listw)
+        spatial.tests.fora <- spatial.tests[[1]]$statistic
+        spatial.tests.dom <- spatial.tests[[2]]$statistic
+        prevalence <- (N.for.dom[1] - N.for.dom[2]) / sum(N.for.dom)
+        cat("-")
+      } else {
+        trait_1_speciation <- NA
+        trait_2_speciation <- NA
+        trait_1_extinction <- NA
+        trait_2_extinction <- NA
+        transition_from_trait_1_to_2 <- NA
+        transition_from_trait_2_to_1 <- NA
+        transition_rate_ratio_1to2_over_2to1 <- NA
+        Phylogenetic_signal <- NA
+        spatial.tests.fora <- NA
+        spatial.tests.dom <- NA
+        auc.model <- NA
+        effect.size <- NA
+        prevalence <- ifelse(names(table(this_world[, 6])[1]) == "1", 1,
+                             -1)
+        
+
+      }
+     
+```
+
+
+```{r}
+results_summary_matrix_1 <- cbind(
+
+        number_of_branches,
+        Pylo_diversity_is_sum_of_BL,
+        average_phylogenetic_diversity_is_mean_of_BL,
+        variance_Pylo_diversity_is_variance_of_BL,
+
+        F_quadratic_entropy_is_sum_of_PD,
+        Mean_pairwise_distance,
+        variance_pairwise_distance,
+
+        Evolutionary_distinctiveness_sum,
+        mean_Phylogenetic_isolation,
+        variance_Phylogenetic_isolation,
+
+        gamma,
+        gamma_p_value,
+        speciation_rate,
+        extinction_rate,
+        extinction_per_speciation,
+        speciation_minus_extinction,
+        trait_1_speciation,
+        trait_2_speciation ,
+        trait_1_extinction ,
+        trait_2_extinction ,
+        transition_from_trait_1_to_2 ,
+        transition_from_trait_2_to_1 ,
+        transition_rate_ratio_1to2_over_2to1 ,
+        Phylogenetic_signal,
+        spatial.tests.fora,
+        spatial.tests.dom,
+        prevalence,
+        auc.model,
+        effect.size
+      )
+      rownames(results_summary_matrix_1) <- 1
+
+      results_summary_matrix_2 <- cbind(
+        c(Evolutionary_distinctiveness,NA),
+        lineages_through_time,
+        time_steps
+      )
+      colnames(results_summary_matrix_2) <- c("Evolutionary_distinctiveness", "lineages_through_time", "time_steps")
+      head(results_summary_matrix_2)
+
+      ### Returns from function in list form
+      returns <- list(
+        #Branch_Lengths,
+        #Pairwise_dist,
+        results_summary_matrix_1,
+        results_summary_matrix_2
+
+      )
+
+      names(returns) <- c(
+        #"Branch_Lengths",
+        #"Pairwise_distance",
+        "results_summary_of_single_value_outputs",
+        "results_summary_matrix_of_multi_value_outputs"
+      )
+```
+
