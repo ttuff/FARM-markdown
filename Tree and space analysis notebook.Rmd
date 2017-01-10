@@ -3,36 +3,62 @@ title: "Tree and space analysis function"
 author: "Ty Tuff and Bruno Vilela"
 date: '`r strftime(Sys.time(), format = "%d %B %Y")`'
 output: html_notebook
+  
+
 ---
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+We have four types of data available for asking research questions: [phylogenies](#phylogenies), [spatial locations](#spatial-locations), trait identities, and environmental reconstructions. Any one of these four data types alone are relatively information poor, so we are searching for ways to model connections between these data types to draw stronger conclusions. 
 
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+# Phylogenies  
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+## Analysis categories
+1. [Branch Length](#branch-lengths)
+2. [Pairwise distance between tips](#pairwise-distance-between-tips)
+3. [Phylogenetic isolation](#phylogenetic-isolation)
+4. [Tree topology](#tree-topology)
+5. [Macroevolutionary rates](#macroevolutionary-rates)
+
+
+
+
+  The choice of phylogenetic analyses and organizational scheme is based on the suggestions of [Tucker et al. 2016](). Here are a few images from that paper for an overview:  
+
+
+![From Tucker et al. 2016. Biological Reviews](Images/Tucker_2016/tree_concept.jpg)
+
+
+![From Tucker et al. 2016. Biological Reviews](Images/Tucker_2016/Three_type_summary.jpg)
+
+
+![From Tucker et al. 2016. Biological Reviews](Images/Tucker_2016/tutorial.jpg)
 
 ```{r}
-load('~/Downloads/FULL_TREE_Society_data_with_binary_conversions.Rdata')
+#load('~/Downloads/FULL_TREE_Society_data_with_binary_conversions.Rdata')
 
-load('~/Downloads/Tree_FULL_trimmed.Rdata')
+#load('~/Downloads/Tree_FULL_trimmed.Rdata')
 
-this_tree <- full_tree 
+#this_tree <- full_tree 
 
 
 load('~/Downloads/download.Rdata')
-objects()
-str(myOut)
+
+#str(myOut)
 
 this_tree <- myOut$mytree
 this_world <- myOut$myWorld
 
-
+#str(this_world)
   #str(all_trees)
   #str(this_tree)
 
+
+library(knitr)
+#kable(this_world, caption= "This is our world")
 ```
 
-Branch Lengths
+
+
+## Branch Lengths
 
 ```{r}
  
@@ -51,6 +77,7 @@ Branch Lengths
 ```
 
 
+## Pairwise distance between tips
 
 ```{r}
 
@@ -80,12 +107,7 @@ library(phytools)
 ```
 
 
-```{r}
- library(FARM)
-ls("package:FARM")
-
-```
-
+## Phylogenetic isolation
 
 ```{r}
 ## 0c) Phylogenetic isolation
@@ -113,6 +135,7 @@ ls("package:FARM")
 
 ```
 
+## Tree topology
 
 ```{r}
  ## Tree topology
@@ -127,13 +150,11 @@ ls("package:FARM")
       
 ```
 
-
+## Macroevolutionary rates
 
 ```{r}
 
-library(spdep)
-library(Rcpp)
-library(msm)
+
 
 
 ##### (5) Tree metric -- Macroevolutionary - Rate and rate changes ###############
@@ -147,10 +168,16 @@ library(msm)
       speciation_minus_extinction <- bds[4]
   
 
+```
+
+
+
+```{r}
+
 
       ## Speciation vs extinction rates and Net diversification dependent on trait
-      N.for.dom <- table(this_world[, 6])
-      if(length(N.for.dom) == 2) {
+     # N.for.dom <- table(this_world[, 6])
+  #    if(length(N.for.dom) == 2) {
         par.div.dep <- DivDep( mytree = this_tree, myWorld = this_world)
         trait_1_speciation <- par.div.dep[1]
         trait_2_speciation <- par.div.dep[2]
@@ -159,9 +186,14 @@ library(msm)
         transition_from_trait_1_to_2 <- par.div.dep[5]
         transition_from_trait_2_to_1 <- par.div.dep[6]
         transition_rate_ratio_1to2_over_2to1 <- transition_from_trait_1_to_2/transition_from_trait_2_to_1
-       
+      
+```
 
 
+
+
+```{r}
+library(ROCR)
         ## Crown age per trait AUC and effect size
         tip.length <- this_tree$edge.length[this_tree$edge[, 2] %in% 1:Ntip(this_tree)]
         tip.length <- (tip.length - min(tip.length)) / (max(tip.length) - min(tip.length))
@@ -171,15 +203,30 @@ library(msm)
         model <- glm(as.factor(this_trait) ~ log(tip.length + 1),
                      family = "binomial")
         effect.size <- model$coefficients[2]
-        plot(y = this_trait - 1, x= log(tip.length))
+       # plot(y = this_trait - 1, x= log(tip.length))
         p <- predict(model, as.factor(this_trait), type = "resp")
-        points(y = p, x = log(tip.length), col = "red")
-       # pr <- prediction(p, as.factor(this_trait))
-       # auc.model <- performance(pr, measure = "auc")@y.values[[1]]
+       # points(y = p, x = log(tip.length), col = "red")
+        pr <- prediction(p, as.factor(this_trait))
+        auc.model <- performance(pr, measure = "auc")@y.values[[1]]
 
-        ## Phylogenetic signal (D)
+      
+```
+
+
+
+```{r}
+  ## Phylogenetic signal (D)
         Phylogenetic_signal <- Dsig(mytree = this_tree, myWorld = this_world)
-         ## Spatial Analysis
+        
+```
+
+
+# Spatial Locations
+
+```{r}
+
+library(spdep)
+ ## Spatial Analysis
         nbs0 <- knearneigh(as.matrix(this_world[, 2:3]), k = 7, longlat = TRUE)
         nbs <- knn2nb(nbs0, sym = TRUE) # 7 symmetric neighbors
         nbs.listw <- nb2listw(nbs)
@@ -188,26 +235,6 @@ library(msm)
         spatial.tests.fora <- spatial.tests[[1]]$statistic
         spatial.tests.dom <- spatial.tests[[2]]$statistic
         prevalence <- (N.for.dom[1] - N.for.dom[2]) / sum(N.for.dom)
-        cat("-")
-      } else {
-        trait_1_speciation <- NA
-        trait_2_speciation <- NA
-        trait_1_extinction <- NA
-        trait_2_extinction <- NA
-        transition_from_trait_1_to_2 <- NA
-        transition_from_trait_2_to_1 <- NA
-        transition_rate_ratio_1to2_over_2to1 <- NA
-        Phylogenetic_signal <- NA
-        spatial.tests.fora <- NA
-        spatial.tests.dom <- NA
-        auc.model <- NA
-        effect.size <- NA
-        prevalence <- ifelse(names(table(this_world[, 6])[1]) == "1", 1,
-                             -1)
-        
-
-      }
-     
 ```
 
 
@@ -243,8 +270,8 @@ results_summary_matrix_1 <- cbind(
         Phylogenetic_signal,
         spatial.tests.fora,
         spatial.tests.dom,
-        prevalence,
-        auc.model,
+       # prevalence,
+       # auc.model,
         effect.size
       )
       rownames(results_summary_matrix_1) <- 1
@@ -272,5 +299,8 @@ results_summary_matrix_1 <- cbind(
         "results_summary_of_single_value_outputs",
         "results_summary_matrix_of_multi_value_outputs"
       )
+      
+      kable(returns$results_summary_of_single_value_outputs, caption= "This is our world")
+      kable(returns$results_summary_matrix_of_multi_value_outputs, caption= "This is our world")
 ```
 
