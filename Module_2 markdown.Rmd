@@ -3,13 +3,17 @@ title: "D-place FARM documentation"
 author: "Ty Tuff, Bruno Vilela, and Carlos Botero"
 date: 'project began: 15 May 2016, document updated: `r strftime(Sys.time(), format
   = "%d %B %Y")`'
+bibliography: FARM package.bib  
 output:
-  word_document: default
   html_notebook: default
-  pdf_document: default
   html_document: default
-bibliography: library.bib
+  pdf_document: default
+  word_document: default
+
 ---
+
+@Nielsen
+
 # Module 2: Space and phylogeny summary statistics 
   This is the master document for Module 2, a foundational function in our FARM package that analyzes results from Module 1, the other foundational function. Module 1 simulates a spatial pattern and a phylogenetic tree given a set of environmental and inheritance rules and then Module 2 summarizes those simulated results using a large set of targeted summary statistics. Here we describe our choice of summary statistics, justify those choices as part of a larger theoretical context, and provide our reproducable code for executing the anaylses yourself. These two parts are seperated into modules so that they can act independently. An combination of spatial pattern and associated phylogeny many be used as long as they are formatted correctly.         
 
@@ -423,6 +427,7 @@ Evolutionary distinctiveness is our basic measure of phylogenetic isolation. #Th
 ```
 
 
+
 We can run some standard summary statistics (mean and variance) on this ED measure. var(Ed) shows up close to VPD on the PCAs in the intro. Tucker(2016)
 ```{r}
       # mean(ED)
@@ -566,6 +571,7 @@ $$
 print(bd) 
 
 ```
+
 
 
 ```{r}
