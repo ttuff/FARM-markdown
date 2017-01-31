@@ -4,8 +4,8 @@ author: "Ty Tuff, Bruno Vilela, and Carlos Botero"
 date: 'project began: 15 May 2016, document updated: `r strftime(Sys.time(), format
   = "%d %B %Y")`'
 output:
-  html_document: default
   html_notebook: default
+  html_document: default
   pdf_document: default
   word_document: default
 bibliography: FARM package.bib
@@ -52,36 +52,34 @@ All trees are ultrametric.
   The choice of phylogenetic analyses and organizational scheme is based on the suggestions of @Tucker2016. Here are a few images from that paper for an overview:  
 
 
-![From @Tucker2016 Biological Reviews](Images/Tucker_2016/tree_concept.jpg)
-![From @Tucker2016 Biological Reviews](Images/Tucker_2016/alpha_PCA.jpg)
+![From @Tucker2016](Images/Tucker_2016/tree_concept.jpg)
+![From @Tucker2016](Images/Tucker_2016/alpha_PCA.jpg)
 
-![From @Tucker2016 Biological Reviews](Images/Tucker_2016/Three_type_summary.jpg)
+![From @Tucker2016](Images/Tucker_2016/Three_type_summary.jpg)
 
 
-![From @Tucker2016 Biological Reviews](Images/Tucker_2016/tutorial.jpg)
+![From @Tucker2016](Images/Tucker_2016/tutorial.jpg)
 
 ```{r}
-#load('~/Downloads/FULL_TREE_Society_data_with_binary_conversions.Rdata')
+library(knitr)
+library(phytools)
+library(FARM)
+library(ROCR)
+library(spdep)
+```
 
-load('~/Downloads/Tree_FULL_trimmed.Rdata')
-
-this_tree <- full_tree 
 
 
+```{r}
 load('~/Downloads/download.Rdata')
-
-#str(myOut)
 
 this_tree <- myOut$mytree
 this_world <- myOut$myWorld
+```
 
-#str(this_world)
-  #str(all_trees)
-  #str(this_tree)
-
-
-#library(knitr)
-#kable(this_world, caption= "This is our world")
+```{r}
+str(this_world)
+str(this_tree)
 ```
 
 
@@ -167,12 +165,8 @@ This is the patristic distance, the sum of the branch lengths following the shor
 Calculate the patristic distance between two taxa using the R package 'phytools', this function takes a 'phylo' tree object and returns a distance matrix between tips. Need original citation.
 
 ```{r}
-library(phytools)
-
-ls("package:phytools")
 ## Pairwise distance between tips - From library(ape) in library(phytools)
 Pairwise_dist <- cophenetic(this_tree)
-
 ```
 yields a distance matrix (list of 2D matrices) of all distances between taxa.
 
@@ -188,6 +182,7 @@ $$F = \sum_{i} \sum_{j} d_{ij}$$
 ```{r}
 # F -- Extensive quadratic entropy
 F_quadratic_entropy_is_sum_of_PD <- sum(Pairwise_dist)
+F_quadratic_entropy_is_sum_of_PD
 ```
 
 #### Mean pairwise distance (MPD)
@@ -263,9 +258,11 @@ $$VPD = \dfrac{1}{S(S-1)} (\sum_{i} \sum_{j \ne i} {(d_{ij} - MPD)^2})$$
 
 
 ```{r}
+#need to adjust to equation above!
+
 #Pairwise distance/all distances -- Variance of pairwise distances
 
-# Anchor test = VPD (variation of pairwise distance) #need to adjust to equation above. 
+# Anchor test = VPD (variation of pairwise distance)  
 
 variance_pairwise_distance <- var(as.vector(Pairwise_dist))
 ```
@@ -324,7 +321,7 @@ VNTD_{Ab} = \dfrac
 $$
 
 #### Phylogenetic version of the funtional $FE_{ve}$ index
-$PE_ve$, phylogenetic evenness is a phylogenetic version of the funtional $FE_{ve}$ index. First a minimu spannin tree (MST) is computed using the cophenetic distance obtained from the phylogenetic tree. The MST contains S-1 Branches connection the S species. We denote l a branch on the MST, dist(i,j) is the lengththe branch l that connects species i and j. $n_{i}$ is, as defined above, the abundce of species i in the asseblage [@Villeger2008; @Dehling2014]. 
+$PE_{ve}$, phylogenetic evenness is a phylogenetic version of the funtional $FE_{ve}$ index. First a minimum spanning tree ($MST$) is computed using the cophenetic distance obtained from the phylogenetic tree. The $MST$ contains $S-1$ Branches connection the $S$ species. We denote $l$ a branch on the $MST$, $dist(i,j)$ is the length the branch $l$ that connects species $i$ and $j$. $n_{i}$ is, as defined above, the abundance of species $i$ in the asseblage [@Villeger2008; @Dehling2014]. 
 
 $$
 Weighted \ evenness: \\
@@ -415,8 +412,7 @@ Evolutionary distinctiveness is our basic measure of phylogenetic isolation. #Th
 
 
 ```{r}
-library(phytools)
-library(FARM)
+
 # Calculate ED
 # Using equal.splits method, faster computation
 # Evolutionary_distinctiveness_i <- evol.distinct2(this_tree, type = "equal.splits")  
@@ -492,20 +488,8 @@ $$
 
 
 ## Beta diversity
-Beta-diversity indices
-I. Richness indices (presence–absence data)
-II. Divergence indices (using pairwise distances among species)
-1. Presence/absence data
-A.	Decomposition into , ,  diversities
-B.	Direct dissimilarities
-1.	Using all distances
-2.	Using nearest distances
-2. Abundance data
-A.	Decomposition into , ,  diversities
-B.	Direct dissimilarities
-III. Parametric indices
-1. Equivalent numbers
-2. Entropy
+We currently are not using any beta diversity metrics but there are many to choose from if we decide to add them later. 
+
 
 
 ## Tree topology
@@ -519,16 +503,123 @@ $$
   {(\sum_{j=2}^{S} jt_{j}) * \sqrt{\dfrac{1}{12*(S-2)}}}
 $$
 
+
 ```{r}
-library(phytools)
-ltts <- ltt(this_tree, gamma = TRUE, plot = FALSE)
+# ltt function from library(phytools)
+ltt <- function (tree, plot = TRUE, drop.extinct = FALSE, log.lineages = TRUE, 
+    gamma = TRUE, ...) 
+{
+    tol <- 1e-06
+    if (!inherits(tree, "phylo") && !inherits(tree, "multiPhylo")) 
+        stop("tree must be object of class \"phylo\" or \"multiPhylo\".")
+    if (inherits(tree, "multiPhylo")) {
+        obj <- lapply(tree, ltt, plot = FALSE, drop.extinct = drop.extinct, 
+            log.lineages = log.lineages, gamma = gamma)
+        class(obj) <- "multiLtt"
+    }
+    else {
+        tree <- reorder.phylo(tree, order = "cladewise")
+        if (!is.null(tree$node.label)) {
+            node.names <- setNames(tree$node.label, 1:tree$Nnode + 
+                Ntip(tree))
+            tree$node.label <- NULL
+        }
+        else node.names <- NULL
+        if (is.ultrametric(tree)) {
+            h <- max(nodeHeights(tree))
+            time <- c(0, h - sort(branching.times(tree), decreasing = TRUE), 
+                h)
+            nodes <- as.numeric(names(time)[2:(length(time) - 
+                1)])
+            ltt <- c(cumsum(c(1, sapply(nodes, function(x, y) sum(y == 
+                x) - 1, y = tree$edge[, 1]))), length(tree$tip.label))
+            names(ltt) <- names(time)
+        }
+        else {
+            drop.extinct.tips <- function(phy) {
+                temp <- diag(vcv(phy))
+                if (length(temp[temp < (max(temp) - tol)]) > 
+                  0) 
+                  pruned.phy <- drop.tip(phy, names(temp[temp < 
+                    (max(temp) - tol)]))
+                else pruned.phy <- phy
+                return(pruned.phy)
+            }
+            if (drop.extinct == TRUE) 
+                tree <- drop.extinct.tips(tree)
+            root <- length(tree$tip) + 1
+            node.height <- matrix(NA, nrow(tree$edge), 2)
+            for (i in 1:nrow(tree$edge)) {
+                if (tree$edge[i, 1] == root) {
+                  node.height[i, 1] <- 0
+                  node.height[i, 2] <- tree$edge.length[i]
+                }
+                else {
+                  node.height[i, 1] <- node.height[match(tree$edge[i, 
+                    1], tree$edge[, 2]), 2]
+                  node.height[i, 2] <- node.height[i, 1] + tree$edge.length[i]
+                }
+            }
+            ltt <- vector()
+            tree.length <- max(node.height)
+            n.extinct <- sum(node.height[tree$edge[, 2] <= length(tree$tip), 
+                2] < (tree.length - tol))
+            node.height[tree$edge[, 2] <= length(tree$tip), 2] <- node.height[tree$edge[, 
+                2] <= length(tree$tip), 2] + 1.1 * tol
+            time <- c(0, node.height[, 2])
+            names(time) <- as.character(c(root, tree$edge[, 2]))
+            temp <- vector()
+            time <- time[order(time)]
+            time <- time[1:(tree$Nnode + n.extinct + 1)]
+            for (i in 1:(length(time) - 1)) {
+                ltt[i] <- 0
+                for (j in 1:nrow(node.height)) ltt[i] <- ltt[i] + 
+                  (time[i] >= (node.height[j, 1] - tol) && time[i] <= 
+                    (node.height[j, 2] - tol))
+            }
+            ltt[i + 1] <- 0
+            for (j in 1:nrow(node.height)) ltt[i + 1] <- ltt[i + 
+                1] + (time[i + 1] <= (node.height[j, 2] + tol))
+            names(ltt) <- names(time)
+            ltt <- c(1, ltt)
+            time <- c(0, time)
+            time[length(time)] <- time[length(time)] - 1.1 * 
+                tol
+        }
+        if (!is.null(node.names)) {
+            nn <- sapply(names(time), function(x, y) if (any(names(y) == 
+                x)) 
+                y[which(names(y) == x)]
+            else "", y = node.names)
+            names(ltt) <- names(time) <- nn
+        }
+        if (gamma == FALSE) {
+            obj <- list(ltt = ltt, times = time, tree = tree)
+            class(obj) <- "ltt"
+        }
+        else {
+            gam <- gammatest(list(ltt = ltt, times = time))
+            obj <- list(ltt = ltt, times = time, gamma = gam$gamma, 
+                p = gam$p, tree = tree)
+            class(obj) <- "ltt"
+        }
+    }
+    if (plot) 
+        plot(obj, log.lineages = log.lineages, ...)
+    obj
+}
+<environment: namespace:phytools>
 ```
 
 
+
 ```{r}
+ltts <- ltt(this_tree, gamma = TRUE, plot = FALSE)
 ltts
 str(ltts)
 ```
+
+
 
 
 ```{r}
@@ -575,7 +666,15 @@ $$
 ```{r}
 
 #function name = bd, function input = tree of type 'phylo'
-print(bd) 
+bd <- function (tree) 
+{
+    tree$edge.length <- tree$edge.length/max(tree$edge.length)
+    x <- birthdeath(tree)
+    b <- x$para[2]/(1 - x$para[1])
+    d <- b - x$para[2]
+    c(setNames(c(b, d), c("b", "d")), x$para)
+}
+<environment: namespace:FARM>
 
 ```
 
@@ -611,7 +710,7 @@ transition_rate_ratio_1to2_over_2to1 <- transition_from_trait_1_to_2/transition_
 
 
 ```{r}
-library(ROCR)
+
 ## Crown age per trait AUC and effect size
 tip.length <- this_tree$edge.length[this_tree$edge[, 2] %in% 1:Ntip(this_tree)]
 tip.length <- (tip.length - min(tip.length)) / (max(tip.length) - min(tip.length))
@@ -641,7 +740,7 @@ Phylogenetic_signal <- Dsig(mytree = this_tree, myWorld = this_world)
 # Spatial Locations
 
 ```{r}
-library(spdep)
+
 ## Spatial Analysis
 nbs0 <- knearneigh(as.matrix(this_world[, 2:3]), k = 7, longlat = TRUE)
 nbs <- knn2nb(nbs0, sym = TRUE) # 7 symmetric neighbors
@@ -735,5 +834,6 @@ results_summary_matrix_1 <- cbind(
  #kable(returns$results_summary_matrix_of_multi_value_outputs, caption= "This is our world")
 ```
 
+## References
 
 
