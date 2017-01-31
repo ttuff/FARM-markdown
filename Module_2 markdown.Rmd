@@ -12,7 +12,6 @@ output:
 
 ---
 
-@Nielsen
 
 # Module 2: Space and phylogeny summary statistics 
   This is the master document for Module 2, a foundational function in our FARM package that analyzes results from Module 1, the other foundational function. Module 1 simulates a spatial pattern and a phylogenetic tree given a set of environmental and inheritance rules and then Module 2 summarizes those simulated results using a large set of targeted summary statistics. Here we describe our choice of summary statistics, justify those choices as part of a larger theoretical context, and provide our reproducable code for executing the anaylses yourself. These two parts are seperated into modules so that they can act independently. An combination of spatial pattern and associated phylogeny many be used as long as they are formatted correctly.         
@@ -51,16 +50,16 @@ All trees are ultrametric.
 ## Introduction and framework
 
 
-  The choice of phylogenetic analyses and organizational scheme is based on the suggestions of Tucker et al. 2016. Here are a few images from that paper for an overview:  
+  The choice of phylogenetic analyses and organizational scheme is based on the suggestions of @Tucker2016. Here are a few images from that paper for an overview:  
 
 
-![From Tucker et al. 2016. Biological Reviews](Images/Tucker_2016/tree_concept.jpg)
+![From @Tucker2016 Biological Reviews](Images/Tucker_2016/tree_concept.jpg)
 ![From Tucker et al. 2016. Biological Reviews](Images/Tucker_2016/alpha_PCA.jpg)
 
-![From Tucker et al. 2016. Biological Reviews](Images/Tucker_2016/Three_type_summary.jpg)
+![From @Tucker2016 Biological Reviews](Images/Tucker_2016/Three_type_summary.jpg)
 
 
-![From Tucker et al. 2016. Biological Reviews](Images/Tucker_2016/tutorial.jpg)
+![From @Tucker2016 Biological Reviews](Images/Tucker_2016/tutorial.jpg)
 
 ```{r}
 #load('~/Downloads/FULL_TREE_Society_data_with_binary_conversions.Rdata')
@@ -121,7 +120,7 @@ boxplot(Branch_Lengths, col=adjustcolor("cornflowerblue", alpha=0.5), border=adj
 ```
 
 #### Phylogenetic diversity ($PD$)
-Phylogenetic diversity ($PD$) is the summation ($\sum$) of all branch lengths connecting species together, where $B_{t}$ is the set of included tips and $L_{b}$ is Branch lengths. (Faith 1992) This is an anchor test, which means it is regularly used, well understood, and we should use it to anchor our work to past work. PD is a richness measure, it tells us how much evolutionary history is associated with a set of tips.  
+Phylogenetic diversity ($PD$) is the summation ($\sum$) of all branch lengths connecting species together, where $B_{t}$ is the set of included tips and $L_{b}$ is Branch lengths [@Faith1992]. This is an anchor test, which means it is regularly used, well understood, and we should use it to anchor our work to past work. PD is a richness measure, it tells us how much evolutionary history is associated with a set of tips.  
 
 $$PD = \sum_{b \in B_{t}}^{}L_{b}$$
  
@@ -133,11 +132,11 @@ $$PD = \sum_{b \in B_{t}}^{}L_{b}$$
 ```
 
 
- There are variations on this measure that we have NOT implemented here. It is popular to scale this measure according to some ecological driver. Barker (2002) scales branch lengths ($L_{b}$) by multiplying them against the abundance of individuals at at tip ($A_{b}$). Others (Rosauer et al. 2009), scale them by their range size instead ($R_{b}$). 
+ There are variations on this measure that we have NOT implemented here. It is popular to scale this measure according to some ecological driver. @Barker2002 scales branch lengths ($L_{b}$) by multiplying them against the abundance of individuals at at tip ($A_{b}$). Others [@Rosauer2009], scale them by their range size instead ($R_{b}$). 
  
  $$\Delta n PD = \sum_{b \in B_{t}}^{}A_{b}L_{b}$$
 $$PE = \sum_{b \in B_{t}}^{}\dfrac{L_{b}}{R_{b}}$$
-Argueing that proportional abundance phylogenetic diversity ($PD_{Ab}$) is more effective than the standard PD calculated from raw abundance, Vellend et al. penned a new version of PD where $B$ is the total number of branch lengths ($L_{b}$). Note: We don't have abundance data right now for the human project so this metric is not currently very helpful.   
+Argueing that proportional abundance phylogenetic diversity ($PD_{Ab}$) is more effective than the standard PD calculated from raw abundance, @Vellend2011 penned a new version of PD where $B$ is the total number of branch lengths ($L_{b}$). Note: We don't have abundance data right now for the human project so this metric is not currently very helpful.   
 $$PD_{Ab} = B * \dfrac{\sum_{b \in B_{t}}^{}A_{b}L_{b}}{\sum_{b \in B_{t}}^{}A_{b}}$$
 
 ```{r}
@@ -147,7 +146,7 @@ $$PD_{Ab} = B * \dfrac{\sum_{b \in B_{t}}^{}A_{b}L_{b}}{\sum_{b \in B_{t}}^{}A_{
 ```
 
 #### Average phylogenetic diversity ($avPD$)
-Average phylogenetic diversity ($avPD$) (introduced by Clarke and Warwick 2001) is a branch length-based divergence indices where PD is divided by the total number of tips ($S$) in the tree. 
+Average phylogenetic diversity ($avPD$) [@Clarke2001] is a branch length-based divergence indices where PD is divided by the total number of tips ($S$) in the tree. 
 $$avPD = \dfrac{PD}{S}$$
 ```{r}
       Number_of_tips <- length(this_tree$tip.label)
@@ -156,7 +155,7 @@ $$avPD = \dfrac{PD}{S}$$
 ```
 
 
-There is also a proportional abundance version of average phylogenetic diversity ($avPD_{Ab}$) (Tucker et al. 2016). Again, we don't have abundance values yet for D-place. 
+There is also a proportional abundance version of average phylogenetic diversity ($avPD_{Ab}$) [@Tucker2016]. Again, we don't have abundance values yet for D-place. 
 $$avPD_{Ab} = \dfrac{B * \dfrac{\sum_{b \in B_{t}}^{}A_{b}L_{b}}{\sum_{b \in B_{t}}^{}A_{b}}}{S}$$
 
 
@@ -183,7 +182,7 @@ str(Pairwise_dist)
 ```
 
 #### Sum of all pairwise distances ($F$)
-Now we can use a set of summary statistics to describe those pairwise distances. The sum of all pairwise distances, $F$, is formally called 'Extensive quadratic entropy'. (Izsak and Papp (2000) and Szeidl (2002)). Just as it was with branch lengths, this is a richness measure and, accordingly, should be used to answer richness questions. 
+Now we can use a set of summary statistics to describe those pairwise distances. The sum of all pairwise distances, $F$, is formally called 'Extensive quadratic entropy'. [@Izsak2000]. Just as it was with branch lengths, this is a richness measure and, accordingly, should be used to answer richness questions. 
 
 $$F = \sum_{i} \sum_{j} d_{ij}$$
 ```{r}
@@ -192,7 +191,7 @@ $$F = \sum_{i} \sum_{j} d_{ij}$$
 ```
 
 #### Mean pairwise distance (MPD)
-Mean inter-species distances. The mean of all pairwise distances, $MPD$ (a.k.a. $AvTD$, and $\Delta^{+}$), is the mean distance between species. (Clarke and Warwick (1998), Webb et al. (2002, 2008), Kembel et al. (2010))
+Mean inter-species distances. The mean of all pairwise distances, $MPD$ (a.k.a. $AvTD$, and $\Delta^{+}$), is the mean distance between species. [@Clarke1998; @Webb2002; @Webb2008; @Kembel2010].
 $$MPD = \dfrac{\sum_{ij} d_{ij}}{S(S-1)}$$
 
 ```{r}
