@@ -1,5 +1,5 @@
 ---
-title: "D-place FARM documentation: Master script"
+title: 'D-place FARM documentation: Master script'
 author: "Ty Tuff, Bruno Vilela, and Carlos Botero"
 date: 'project began: 15 May 2016, document updated: `r strftime(Sys.time(), format
   = "%d %B %Y")`'
@@ -33,6 +33,15 @@ parameters.table
 
 
 
+```{r}
+#####################################################################
+## need to document which functions we use from each of these libraries. 
+library(ape)
+library(spdep)
+library(Rcpp)
+library(msm)
+library(FARM)
+```
 
 
 
@@ -48,13 +57,7 @@ parameters.table
 # install.packages("~/Desktop/FARM_1.0.tar.gz", repos=NULL, type="source")
 
 
-#####################################################################
-## need to document which functions we use from each of these libraries. 
-library(ape)
-library(spdep)
-library(Rcpp)
-library(msm)
-library(FARM)
+
 
 
 sim_run_cluster <- function(replicate_cycle, myWorld, number_of_time_steps, nbs,
@@ -188,15 +191,46 @@ sim_run_cluster <- function(replicate_cycle, myWorld, number_of_time_steps, nbs,
 }
 
 
+```
 
+
+```{r}
+# This is a large data table including all extant languages (~7000 from Glottolog) matched with D-place data. If D-place provided centroid values, we used those. If D-place didn't include centroid values or the location wasn't included in the larger dataset, then the centroid values from Glottolog were used instead. 
+language_centroids
+```
+
+```{r}
+# These are environmental suitability values for each location. Suitability defines how good the area is for farming. This is the number of potential domesticated/domesticatable species. 
+head(suitability2)
+conds <- suitability2
+conds <- ifelse(conds <= 21, 1, 2) # here we reformat the count of potential domesticatable species into a binary category of suitable for farming vs. not suitable for farming (designated as 1 and 2 respectively. )
+conds[is.na(conds)] <- sample(c(1, 2), sum(is.na(conds)), replace = TRUE) 
+head(conds)
+```
+
+
+
+```{r}
+# There is an object 'coords' in FARM that we are replacing here with a different set of coords. The one included in FARM has ~1200 coords and the new one has ~7000 coords
+#V1 = longitude, V2=latitude in the FARM included coords
 
 #####################################################################
 coords <- as.matrix(apply(language_centroids[, 3:4], 2, as.numeric)) #coords
-conds <- suitability2
-conds <- ifelse(conds <= 21, 1, 2)
-conds[is.na(conds)] <- sample(c(1, 2), sum(is.na(conds)), replace = TRUE) 
+head(coords) 
+
+```
 
 
+```{r}
+#plot those points in coords object
+library(maps)
+map()
+points(coords, pch=19, col=adjustcolor("cornflowerblue", alpha=0.8), cex=.5)
+```
+
+
+
+```{r}
 ##### Specify simulation parameters #################################
 
 number_of_tips <- length(coords[,1])
@@ -204,30 +238,89 @@ number_of_time_steps_a <- 30000
 #replicate_cycle <- c(1)  #number of replicates
 #####################################################################
 data("parameters.table")
+```
 
 
+```{r}
+BuildWorld <- function (coords, conditions) 
+{
+    n <- nrow(coords)
+    myWorld <- matrix(ncol = 8, nrow = n)
+    myWorld[, 2] <- coords[, 1]
+    myWorld[, 3] <- coords[, 2]
+    myWorld[, 8] <- 1:n
+    myWorld[, 1] <- 1:n
+    myWorld[, 7] <- conditions
+    colnames(myWorld) <- c("cellID", "Longitude", "Latitude", 
+        "Parent", "BirthT", "Trait", "Environment", "TipLabel")
+    return(myWorld)
+}
+```
+
+
+```{r}
 sub <- sample(1:nrow(coords), nrow(coords)) # subsample (remove when running for all)
 system.time(
   myWorld <- BuildWorld(coords[sub, ], conds[sub, ])
 )
+
+head(myWorld)
+```
+
+
+```{r}
+?knearneigh
+```
+
+
+
+```{r}
 nbs <- knn2nb(knearneigh(coords[sub, ], k = 7, longlat = TRUE),
               sym = TRUE) # 7 symmetric neighbors
 n.obs <- sapply(nbs, length)
 seq.max <- seq_len(max(n.obs))
 nbs <- t(sapply(nbs, "[", i = seq.max))
+nbs
+```
 
-dim(myWorld)
 
-
+```{r}
 #NAI <- 1000
 args <- commandArgs(trailingOnly = FALSE)
 NAI <- as.numeric(args[7])
 # setwd("~/Box Sync/colliding ranges/Simulations_humans/big world cluster outputs")
 
+```
+
+
+
+```{r}
+
+
 sim_run_cluster(replicate_cycle = NAI,
                 myWorld, number_of_time_steps = number_of_time_steps_a, 
                 nbs, number_of_tips = nrow(myWorld))
 
-
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
