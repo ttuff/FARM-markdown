@@ -33,6 +33,8 @@ ls("package:FARM")
 ## Module 1 functions
 #### The first set of RunSim functions are the default pipeline where only one output is saved at the end of the simulation. 
 
+
+This first function controls error messages coming from the primary function below. 
 ```{r}
 RunSimUltimate <- function (myWorld, P.extinction, P.speciation, P.diffusion, P.Arisal, 
     P.TakeOver, nbs, independent, N.steps, multiplier, silent = TRUE) 
@@ -48,7 +50,7 @@ RunSimUltimate <- function (myWorld, P.extinction, P.speciation, P.diffusion, P.
 #<environment: namespace:FARM>
 ```
 
-
+This is the primary function running the simulation.
 ```{r}
 RunSim <- function (myWorld, P.extinction, P.speciation, P.diffusion, P.Arisal, 
     P.TakeOver, nbs, independent, N.steps, multiplier, start = NULL) 
@@ -86,6 +88,53 @@ RunSim <- function (myWorld, P.extinction, P.speciation, P.diffusion, P.Arisal,
     return(list(mytree = mytree, myWorld = myWorld))
 }
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

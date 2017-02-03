@@ -270,22 +270,78 @@ head(myWorld)
 
 ```{r}
 ?knearneigh
+?knn2nb
 ```
 
 
 
 ```{r}
+
 nbs <- knn2nb(knearneigh(coords[sub, ], k = 7, longlat = TRUE),
               sym = TRUE) # 7 symmetric neighbors
 n.obs <- sapply(nbs, length)
 seq.max <- seq_len(max(n.obs))
 nbs <- t(sapply(nbs, "[", i = seq.max))
-nbs
+head(nbs)
 ```
 
 
 ```{r}
+# function from library(spdep)
+plot.nb <- function (x, coords, col = "black", points = TRUE, add = FALSE, 
+    arrows = FALSE, length = 0.1, xlim = NULL, ylim = NULL, ...) 
+{
+    nb <- x
+    stopifnot(length(nb) == nrow(coords))
+    sym <- is.symmetric.nb(nb, verbose = FALSE, force = FALSE)
+    x <- coords[, 1]
+    y <- coords[, 2]
+    n <- length(nb)
+    if (n < 1) 
+        stop("non-positive number of entities")
+    if (!add) {
+        plot.new()
+        if (is.null(xlim)) 
+            xlim <- range(x)
+        if (is.null(ylim)) 
+            ylim <- range(y)
+        plot.window(xlim = xlim, ylim = ylim, log = "", asp = 1)
+    }
+    cardnb <- card(nb)
+    if (length(col) < n) 
+        col <- rep(col[1], n)
+    i <- rep(1:n, cardnb)
+    j <- unlist(nb)
+    if (arrows) 
+        arrows(x[i], y[i], x[j], y[j], col = col[i], length = length, 
+            ...)
+    else segments(x[i], y[i], x[j], y[j], col = col[i], ...)
+    if (points) 
+        points(x, y, ...)
+}
+```
+
+
+```{r, cache=TRUE}
+
+
+
+nbs_plot <- knn2nb(knearneigh(coords[sub, ], k = 7, longlat = TRUE),
+              sym = TRUE)
+
+map()
+plot.nb(nbs_plot, coords[sub, ], col=adjustcolor("cornflowerblue", alpha = 0.2), pch=19, cex=0.1, points=FALSE, add=TRUE)
+#need to delete lines crossing the whole screen.
+
+
+```
+
+
+
+
+```{r}
 #NAI <- 1000
+## This is where the replicate number is passed from the linux batch script.
 args <- commandArgs(trailingOnly = FALSE)
 NAI <- as.numeric(args[7])
 # setwd("~/Box Sync/colliding ranges/Simulations_humans/big world cluster outputs")
