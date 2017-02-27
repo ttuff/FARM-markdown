@@ -146,7 +146,12 @@ four <- four[1:crop,]
 
 Concatenated_data <- rbind(one, two, three, four)
 dim(Concatenated_data)
-save(Concatenated_data, file="~/Desktop/Four_model_compare_results.Rdata")
+
+
+
+
+
+save(Concatenated_data, file=paste0("~/Box Sync/colliding ranges/Simulations_humans/Results/available daily summaries/Four_model_compare_results", format(Sys.time(), format="%d_%b_%Y"),"_crop_to_", crop,".Rdata"))
 crop
 
 ```
@@ -267,20 +272,34 @@ Concatenated_data <- as.data.frame(files)
 head(Concatenated_data)
 dim(Concatenated_data)
 
-save(Concatenated_data, file="~/Desktop/Four_model_compare_results_extinct.Rdata")
-
+save(Concatenated_data, file=paste0("~/Box Sync/colliding ranges/Simulations_humans/Results/available daily summaries/Four_model_compare_results_extinct_", format(Sys.time(), format="%d_%b_%Y"),"_crop_to_", crop,".Rdata"))
 
 ```
 
 
 ```{r}
-load('~/Box Sync/colliding ranges/Simulations_humans/Results/Four_model_compare_results_extinct.Rdata')
+setwd("~/Box Sync/colliding ranges/Simulations_humans/Results/available daily summaries")
+details <- file.info(list.files())
+
+trimmed_details <- details[which(list.files() == list.files(pattern = "Four_model_compare_results_extinct*")),]
+ord <- order(trimmed_details$mtime, decreasing = TRUE)
+rownames(trimmed_details[ord,])[1]
+load(rownames(trimmed_details[ord,])[1])
 extinct <- Concatenated_data
-load('~/Box Sync/colliding ranges/Simulations_humans/Results/Four_model_compare_results.Rdata')
+
+trimmed_details <- details[which(list.files() != list.files(pattern = "Four_model_compare_results_extinct*")),]
+ord <- order(trimmed_details$mtime, decreasing = TRUE)
+rownames(trimmed_details[ord,])[1]
+load(rownames(trimmed_details[ord,])[1])
 extant <- Concatenated_data
-names(extinct)
-names(extant)
+
+
+
+
+
 ```
+
+
 
 
 
@@ -478,7 +497,7 @@ test2 <- data.analysis.comp3[sub.test, 2:ncol(data.analysis.comp3)]
 test1 <- data.analysis.comp3[sub.test, 1]
 train <- data.analysis.comp3[-sub.test, ]
 (fit <- randomForest(Model ~ ., data=train, xtest = test2, ytest = test1, 
-                    importance=TRUE, ntree=2400, keep.forest = TRUE))
+                    importance=TRUE, ntree=2400, keep.forest = TRUE, replace=TRUE, norm.votes=FALSE))
 
 predictions <- predict(fit, 
                        a,
@@ -637,6 +656,54 @@ abline(h = a$Phylogenetic_signal, col = "red", lty = 2)
 
 
 ```
+
+
+
+```{r}
+#build a data tracking table to track parameter changes through time
+
+str(fit)
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
