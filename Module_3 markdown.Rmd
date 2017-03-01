@@ -278,6 +278,15 @@ save(Concatenated_data, file=paste0("~/Box Sync/colliding ranges/Simulations_hum
 
 
 ```{r}
+load('~/Box Sync/colliding ranges/Simulations_humans/Results/available daily summaries/Four_model_compare_results_27_Feb_2017_crop_to_2861.Rdata')
+extant <- Concatenated_data
+extant
+```
+
+
+
+
+```{r}
 setwd("~/Box Sync/colliding ranges/Simulations_humans/Results/available daily summaries")
 details <- file.info(list.files())
 
@@ -299,6 +308,10 @@ extant <- Concatenated_data
 
 ```
 
+```{r}
+dim(extinct)
+dim(extant)
+```
 
 
 
@@ -449,10 +462,31 @@ dev.off()
 
 ```{r}
 
+params <- extant[,-1:-35]
+names(params)
+break_number <- 10
+xmin <-
+xmax <- 
+
+x1 <- as.numeric(params[,1])
+h1 <- hist(x1,  plot=FALSE, breaks= break_number)
+xfit1 <- seq(xmin, xmax, length= 100)
+yfit1 <- dnorm(xfit1, mean=mean(x1), sd=sd(x1))
+yfit1 <- yfit1*diff(h1$mids[1:2])*length(x1)+101.5
+polygon(xfit1, yfit1, col=adjustcolor("limegreen", alpha=0.5), lwd=2, border=adjustcolor("limegreen", alpha=0.6))
+
+```
+
+
+
+
+
+```{r}
+
 
 load('~/Box Sync/colliding ranges/Simulations_humans/Available trees/real.analysis.RData')
 
-
+Concatenated_data <- extant
 
 #Concatenated_data <- Concatenated_data[Concatenated_data[, 2] == "stats.no.bTO", ]
 #Concatenated_data <- Concatenated_data[Concatenated_data[, 6] != "05", ]
@@ -496,16 +530,25 @@ sub.test <- unlist(lapply(as.list(paste0(0, c(1:4))), fun,
 test2 <- data.analysis.comp3[sub.test, 2:ncol(data.analysis.comp3)]
 test1 <- data.analysis.comp3[sub.test, 1]
 train <- data.analysis.comp3[-sub.test, ]
+
+for(i in 1:100){
 (fit <- randomForest(Model ~ ., data=train, xtest = test2, ytest = test1, 
-                    importance=TRUE, ntree=2400, keep.forest = TRUE, replace=TRUE, norm.votes=FALSE))
+                    importance=TRUE, ntree=500, keep.forest = TRUE, replace=FALSE))
 
 predictions <- predict(fit, 
                        a,
                        type="prob")
+predictions
 
-
+save(fit, file=paste0("~/Box Sync/colliding ranges/Simulations_humans/Results/RF_daily_output/RF_daily_output_NO_REPLACEMENT_", format(Sys.time(), format="%d_%b_%Y"), "_",i, "_.Rdata"))
+}
 ```
 
+```{r}
+
+
+save(fit, file=paste0("~/Box Sync/colliding ranges/Simulations_humans/Results/RF_daily_output/RF_daily_output_", format(Sys.time(), format="%d_%b_%Y"),".Rdata"))
+```
 
 
 
@@ -664,7 +707,7 @@ abline(h = a$Phylogenetic_signal, col = "red", lty = 2)
 
 str(fit)
 
-
+y
 
 ```
 

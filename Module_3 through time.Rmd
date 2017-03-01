@@ -1,0 +1,64 @@
+---
+title: "D-place FARM documentation: Module 3 through time"
+author: "Ty Tuff, Bruno Vilela, and Carlos Botero"
+date: 'project began: 15 May 2016, document updated: `r strftime(Sys.time(), format
+  = "%d %B %Y")`'
+output:
+  html_notebook: default
+  html_document: default
+  pdf_document: default
+  word_document: default
+bibliography: FARM package.bib
+---
+
+
+```{r}
+setwd("~/Box Sync/colliding ranges/Simulations_humans/Results/RF_daily_output")
+
+details <- file.info(list.files())
+
+trimmed_details <- details[which(list.files() == list.files(pattern = "Four_model_compare_results_extinct*")),]
+ord <- order(trimmed_details$mtime, decreasing = TRUE)
+rownames(trimmed_details[ord,])[1]
+load(rownames(trimmed_details[ord,])[1])
+extinct <- Concatenated_data
+
+
+
+
+```
+
+
+```{r}
+str(fit)
+```
+
+
+```{r}
+fit$confusion
+as.vector(fit$confusion)
+as.vector(fit$test$confusion)
+
+```
+
+
+```{r}
+fit$importance[,5]
+fit$importanceSD[,5]
+```
+
+
+
+```{r}
+
+
+str(fit)
+fit$confusion
+plot(fit$err.rate[,1])
+lines(fit$err.rate[,2])
+lines(fit$err.rate[,3])
+lines(fit$err.rate[,4])
+lines(fit$err.rate[,5])
+
+
+```
