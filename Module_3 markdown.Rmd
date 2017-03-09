@@ -278,7 +278,7 @@ save(Concatenated_data, file=paste0("~/Box Sync/colliding ranges/Simulations_hum
 
 
 ```{r}
-load('~/Box Sync/colliding ranges/Simulations_humans/Results/available daily summaries/Four_model_compare_results_27_Feb_2017_crop_to_2861.Rdata')
+load('~/Box Sync/colliding ranges/Simulations_humans/Results/available daily summaries/Four_model_compare_results_02_Mar_2017_crop_to_3481.Rdata')
 extant <- Concatenated_data
 extant
 ```
@@ -533,14 +533,14 @@ train <- data.analysis.comp3[-sub.test, ]
 
 for(i in 1:100){
 (fit <- randomForest(Model ~ ., data=train, xtest = test2, ytest = test1, 
-                    importance=TRUE, ntree=500, keep.forest = TRUE, replace=FALSE))
+                    importance=TRUE, ntree=1000, keep.forest = TRUE, replace=FALSE))
 
 predictions <- predict(fit, 
                        a,
                        type="prob")
 predictions
 
-save(fit, file=paste0("~/Box Sync/colliding ranges/Simulations_humans/Results/RF_daily_output/RF_daily_output_NO_REPLACEMENT_", format(Sys.time(), format="%d_%b_%Y"), "_",i, "_.Rdata"))
+save(fit, file=paste0("~/Box Sync/colliding ranges/Simulations_humans/Results/RF_daily_output/RF_daily_output_", format(Sys.time(), format="%d_%b_%Y"), "_",i, "_NoREPLACEMENT_.Rdata"))
 }
 ```
 
