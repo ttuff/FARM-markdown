@@ -483,11 +483,27 @@ polygon(xfit1, yfit1, col=adjustcolor("limegreen", alpha=0.5), lwd=2, border=adj
 
 ```{r}
 
+setwd("~/Box Sync/colliding ranges/Simulations_humans/Results/available daily summaries")
+details <- file.info(list.files())
+
+trimmed_details <- details[which(list.files() == list.files(pattern = "Four_model_compare_results_extinct*")),]
+ord <- order(trimmed_details$mtime, decreasing = TRUE)
+rownames(trimmed_details[ord,])[1]
+load(rownames(trimmed_details[ord,])[1])
+extinct <- Concatenated_data
+
+trimmed_details <- details[which(list.files() != list.files(pattern = "Four_model_compare_results_extinct*")),]
+ord <- order(trimmed_details$mtime, decreasing = TRUE)
+rownames(trimmed_details[ord,])[1]
+load(rownames(trimmed_details[ord,])[1])
+extant <- Concatenated_data
+
+
 
 load('~/Box Sync/colliding ranges/Simulations_humans/Available trees/real.analysis.RData')
 
 Concatenated_data <- extant
-
+head(Concatenated_data)
 #Concatenated_data <- Concatenated_data[Concatenated_data[, 2] == "stats.no.bTO", ]
 #Concatenated_data <- Concatenated_data[Concatenated_data[, 6] != "05", ]
 # Concatenated_data[, 6] <- as.numeric(Concatenated_data[, 6])
@@ -531,7 +547,20 @@ test2 <- data.analysis.comp3[sub.test, 2:ncol(data.analysis.comp3)]
 test1 <- data.analysis.comp3[sub.test, 1]
 train <- data.analysis.comp3[-sub.test, ]
 
-for(i in 1:100){
+train[, -1] <- apply(train[, -1], 2, as.numeric)
+test2 <- as.data.frame(apply(test2, 2, as.numeric))
+infinites <- which(apply(train[, -1], 2, is.infinite), arr.ind=T)
+if (nrow(infinites) > 0) {
+train <- train[-infinites[, 1], ]
+}
+infinites2 <- which(apply(test2, 2, is.infinite), arr.ind=T)
+if (nrow(infinites2) > 0) {
+test2 <- test2[-infinites2[, 1], ]
+test1 <- test1[-infinites2[, 1]]
+}
+
+
+for(i in 87:100){
 (fit <- randomForest(Model ~ ., data=train, xtest = test2, ytest = test1, 
                     importance=TRUE, ntree=1000, keep.forest = TRUE, replace=FALSE))
 
