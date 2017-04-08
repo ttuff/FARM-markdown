@@ -560,7 +560,7 @@ test1 <- test1[-infinites2[, 1]]
 }
 
 
-for(i in 87:100){
+for(i in 1:100){
 (fit <- randomForest(Model ~ ., data=train, xtest = test2, ytest = test1, 
                     importance=TRUE, ntree=1000, keep.forest = TRUE, replace=FALSE))
 
