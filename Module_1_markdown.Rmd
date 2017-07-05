@@ -1,19 +1,19 @@
 ---
-title: "D-place FARM documentation: Module 1"
+title: 'D-place FARM documentation: Module 1'
 author: "Ty Tuff, Bruno Vilela, and Carlos Botero"
 date: 'project began: 15 May 2016, document updated: `r strftime(Sys.time(), format
   = "%d %B %Y")`'
 output:
+  pdf_document: default
   html_notebook: default
   html_document: default
-  pdf_document: default
   word_document: default
 bibliography: FARM package.bib
 ---
 
 # Module 1: Simulation to produce a world and a tree 
 
-```{r}
+```{r eval=FALSE}
 # Install the most recent version of FARM from a .zip file
 install.packages(file.choose(), repos=NULL) 
 ```
@@ -35,7 +35,7 @@ ls("package:FARM")
 
 
 This first function controls error messages coming from the primary function below. 
-```{r}
+```{r eval=FALSE}
 # Run the simulation function skiping the erros and atributing NA if it occurs
 RunSimUltimate <- function(myWorld, P.extinction, P.speciation,
                            P.diffusion, P.Arisal, P.TakeOver, nbs, independent,
@@ -55,7 +55,7 @@ RunSimUltimate <- function(myWorld, P.extinction, P.speciation,
 ```
 
 This is the primary function running the simulation.
-```{r}
+```{r eval=FALSE}
 #==================================================================
 # SimulationFunctions.R
 #
@@ -142,7 +142,7 @@ RunSim <- function(myWorld, P.extinction, P.speciation,
 
 #Push versions 
 
-```{r}
+```{r eval=FALSE}
 # Run the simulation function skiping the erros and atributing NA if it occurs
 RunSimUltimate.push <- function(myWorld, P.extinction, P.speciation,
                                 P.diffusion, P.Arisal, P.TakeOver, nbs, independent,
@@ -166,7 +166,7 @@ RunSimUltimate.push <- function(myWorld, P.extinction, P.speciation,
 
 
 
-```{r}
+```{r eval=FALSE}
 #==================================================================
 # SimulationFunctions.R
 #

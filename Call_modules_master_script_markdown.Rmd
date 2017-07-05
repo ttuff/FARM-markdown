@@ -4,20 +4,22 @@ author: "Ty Tuff, Bruno Vilela, and Carlos Botero"
 date: 'project began: 15 May 2016, document updated: `r strftime(Sys.time(), format
   = "%d %B %Y")`'
 output:
+  pdf_document: default
   html_notebook: default
   html_document: default
-  pdf_document: default
   word_document: default
 bibliography: FARM package.bib
 ---
 
+# Script for calling Module 1 and Module 2
 There are two versions of this script, the first is for running each simulation to the 
 end and then saving the final step as the output of the model and the second 
 is to save outputs along the way so we can evaluate how different models change through time. 
 
+## Run the simulation to a specified timestep and then save one output
 Here is the first, and primary, version:
 
-```{r}
+```{r eval=FALSE}
 
 
 #####################################################################
@@ -234,18 +236,18 @@ NAI <- as.numeric(args[7])
 # Starting point
 start <- sample((1:nrow(language_centroids))[as.logical(language_centroids[, 6])], 1)
 
-sim_run_cluster(replicate_cycle = NAI,
-                myWorld, number_of_time_steps = number_of_time_steps_a, 
-                nbs, number_of_tips = nrow(myWorld), number_of_neighbors= number_of_neighbors, origins=origins,start = start)
+#sim_run_cluster(replicate_cycle = NAI,
+#                myWorld, number_of_time_steps = number_of_time_steps_a, 
+#                nbs, number_of_tips = nrow(myWorld), number_of_neighbors= number_of_neighbors, #origins=origins,start = start)
 
 
 
 ```
 
-
+## Run simulations for a specified time but run stats and save timesteps along the way
 Here is the second version
 
-```{r}
+```{r eval=FALSE}
 
 
 #####################################################################
