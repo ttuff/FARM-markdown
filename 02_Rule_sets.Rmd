@@ -1,0 +1,86 @@
+---
+title: 'D-place FARM documentation: Flow chart of expansion rules'
+author: "Ty Tuff, Bruno Vilela, and Carlos Botero"
+date: 'project began: 15 May 2016, document updated: `r strftime(Sys.time(), format
+  = "%d %B %Y")`'
+output:
+  pdf_document: default
+  html_notebook: default
+  html_document: default
+  word_document: default
+bibliography: FARM package.bib
+---
+
+# Rule sets
+
+```{r}
+install.packages("DiagrammeR", repos = c(CRAN = "https://cran.revolutionanalytics.com"))
+library(DiagrammeR)
+```
+
+
+
+
+```{r  eval=FALSE}
+
+grViz("
+  digraph {
+    
+    node [shape = box
+          fontname = Helvetica
+          penwidth = 2.0]
+    'Input the data hub'; 
+    'Is there more than one societ in the world?'; 
+    'Pick the only available society';
+    'Randomly choos a spreader society';
+    'Are there any empty neighboring locations?';
+    'Attempt to Takover';
+    'Is the spreader a Forager of Domesticator?';
+    'is there neighbors with suitable enivonrment for domestication?';
+    'Randomly choose a target neighbor';
+    'Randomly choose a taret neighbor among the ones with suitable condition for domestication';
+    'Randomly choos a number between 0-1. Is this number smaller than the probability of takeover for the confict category**?';
+    'Spreader removers target from the space and phylogeny';
+    'Nothing happens';
+    'Speader occupies the target cell and bifurcate in the phylogeny';
+    'Are there any more societies remaining (excluding new societies generated during this loop) that did not go through the expansion process?';
+    'Attempt to dispersal';
+    'Randomly choos an empty target location';
+    'Randomly choos a number between 0-1. Is this number smaller than the probabilityy of speciation for the spreader societ trait in the pre=expanding location environment?';
+    'output to data hub';
+
+    edge []
+    'Input the data hub' -> 'Is there more than one societ in the world?';
+    'Is there more than one societ in the world?' -> 'Pick the only available society' [label = 'NO'];
+    'Is there more than one societ in the world?' -> 'Randomly choos a spreader society' [label = 'YES'];
+    'Pick the only available society' -> 'Are there any empty neighboring locations?';
+    'Randomly choos a spreader society' -> 'Are there any empty neighboring locations?';
+    'Are there any empty neighboring locations?' -> 'Attempt to dispersal' [label = 'YES'];
+    'Are there any empty neighboring locations?' -> 'Attempt to Takover' [label = 'NO'];
+    'Attempt to Takover' -> 'Is the spreader a Forager of Domesticator?';
+    'Is the spreader a Forager of Domesticator?' -> 'is there neighbors with suitable enivonrment for domestication?' [label = 'Domesticator'];
+    'Is the spreader a Forager of Domesticator?' -> 'Randomly choose a target neighbor' [label = 'Forager'];
+    'is there neighbors with suitable enivonrment for domestication?' -> 'Randomly choose a target neighbor' [label = 'NO'];
+    'is there neighbors with suitable enivonrment for domestication?' -> 'Randomly choose a taret neighbor among the ones with suitable condition for domestication' [label = 'YES'];
+    'Randomly choose a taret neighbor among the ones with suitable condition for domestication' -> 'Randomly choos a number between 0-1. Is this number smaller than the probability of takeover for the confict category**?';
+    'Randomly choose a target neighbor'  -> 'Randomly choos a number between 0-1. Is this number smaller than the probability of takeover for the confict category**?' ;
+    'Randomly choos a number between 0-1. Is this number smaller than the probability of takeover for the confict category**?' -> 'Spreader removers target from the space and phylogeny' [label = 'YES'];
+    'Randomly choos a number between 0-1. Is this number smaller than the probability of takeover for the confict category**?' -> 'Nothing happens' [label = 'NO'];
+    'Nothing happens' -> 'Are there any more societies remaining (excluding new societies generated during this loop) that did not go through the expansion process?';
+    'Are there any more societies remaining (excluding new societies generated during this loop) that did not go through the expansion process?' ->  'output to data hub' [label = 'NO'];
+    'Attempt to dispersal' -> 'Randomly choos an empty target location';
+    'Randomly choos an empty target location' -> 'Randomly choos a number between 0-1. Is this number smaller than the probabilityy of speciation for the spreader societ trait in the pre=expanding location environment?';
+    'Randomly choos a number between 0-1. Is this number smaller than the probabilityy of speciation for the spreader societ trait in the pre=expanding location environment?' -> 'Speader occupies the target cell and bifurcate in the phylogeny' [label = 'YES'];
+    'Randomly choos a number between 0-1. Is this number smaller than the probabilityy of speciation for the spreader societ trait in the pre=expanding location environment?' -> 'Nothing happens' [label = 'NO'];
+  'Are there any more societies remaining (excluding new societies generated during this loop) that did not go through the expansion process?' ->  'Is there more than one societ in the world?' [label = 'YES'];
+  'Speader occupies the target cell and bifurcate in the phylogeny' -> 'Are there any more societies remaining (excluding new societies generated during this loop) that did not go through the expansion process?';
+  'Spreader removers target from the space and phylogeny' -> 'Speader occupies the target cell and bifurcate in the phylogeny';
+  }")
+
+
+
+
+
+
+```
+

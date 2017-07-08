@@ -1,0 +1,20 @@
+
+--- 
+title: 'FARM: simulating the spread of agriculture through cultural phylogenies'
+subtitle: "Users manual for running simulations in R and on Linux clusters"
+author: "Ty Tuff, Bruno Vilela, and Carlos Botero"
+date: 'project began: 15 May 2016, document updated: `r strftime(Sys.time(), format
+  = "%d %B %Y")`'
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+documentclass: book
+bibliography: FARM package.bib
+biblio-style: apalike
+link-citations: yes
+cover-image: "Conffusion_matrix_all.png"
+description: "This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook."
+---
+
+# Introduction
+
+
