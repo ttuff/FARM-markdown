@@ -48,6 +48,43 @@
 
 
 
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -95,6 +132,60 @@
             <section class="normal" id="section-">
 <div id="spatial-network" class="section level1">
 <h1><span class="header-section-number">Chapter 2</span> Spatial network</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(FARM)</code></pre></div>
+<pre><code>## Warning: replacing previous import &#39;apTreeshape::is.binary.phylo&#39; by
+## &#39;ape::is.binary.phylo&#39; when loading &#39;FARM&#39;</code></pre>
+<pre><code>## Warning: replacing previous import &#39;ape::plot.mst&#39; by &#39;spdep::plot.mst&#39;
+## when loading &#39;FARM&#39;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(spdep)</code></pre></div>
+<pre><code>## Loading required package: sp</code></pre>
+<pre><code>## Warning: package &#39;sp&#39; was built under R version 3.4.1</code></pre>
+<pre><code>## Loading required package: Matrix</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(geosphere)
+<span class="kw">library</span>(maps)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">coords &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">apply</span>(language_centroids[, <span class="dv">3</span><span class="op">:</span><span class="dv">4</span>], <span class="dv">2</span>, as.numeric)) <span class="co">#coords</span>
+conds &lt;-<span class="st"> </span><span class="kw">ifelse</span>(suitability2 <span class="op">==</span><span class="st"> </span><span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>)
+conds[<span class="kw">is.na</span>(conds)] &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="kw">sum</span>(<span class="kw">is.na</span>(conds)), <span class="dt">replace =</span> <span class="ot">TRUE</span>) 
+origins &lt;-<span class="st"> </span>language_centroids[, <span class="dv">5</span>]
+
+
+
+nbs_number &lt;-<span class="st"> </span><span class="dv">2</span>
+this_row &lt;-<span class="st"> </span><span class="dv">1</span>
+
+<span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">5</span><span class="op">:</span><span class="dv">9</span>){
+
+number_of_neighbors &lt;-<span class="st"> </span>i
+nbs &lt;-<span class="st"> </span><span class="kw">knearneigh</span>(coords, <span class="dt">k =</span> number_of_neighbors, <span class="dt">longlat =</span> <span class="ot">TRUE</span>) 
+
+nbs_list &lt;-<span class="st"> </span><span class="kw">knn2nb</span>(nbs, <span class="dt">sym =</span> <span class="ot">TRUE</span>)
+
+
+<span class="kw">png</span>(<span class="kw">paste</span>(<span class="st">&quot;network_scratch_&quot;</span>, number_of_neighbors, <span class="st">&quot;.png&quot;</span>), <span class="dt">width=</span><span class="dv">11</span>, <span class="dt">height=</span><span class="fl">5.5</span>, <span class="dt">res=</span><span class="dv">1000</span>, <span class="dt">units =</span> <span class="st">&quot;in&quot;</span>)
+
+
+<span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>))
+
+<span class="kw">plot</span>(<span class="dv">0</span>,<span class="dv">0</span>, <span class="dt">xlim=</span><span class="kw">c</span>(<span class="op">-</span><span class="dv">180</span>,<span class="dv">180</span>), <span class="dt">ylim=</span><span class="kw">c</span>(<span class="op">-</span><span class="dv">90</span>,<span class="dv">90</span>), <span class="dt">type=</span><span class="st">&quot;n&quot;</span>)
+<span class="kw">map</span>(<span class="st">&quot;world&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;lightgrey&quot;</span>, <span class="dt">alpha=</span><span class="fl">0.4</span>), <span class="dt">interior =</span> <span class="ot">FALSE</span>, <span class="dt">fill=</span><span class="ot">TRUE</span>, <span class="dt">border=</span><span class="ot">NA</span>)
+<span class="co">#map(&quot;state&quot;, col=&quot;lightgrey&quot;)</span>
+<span class="cf">for</span>(this_row <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(nbs_list)){
+<span class="cf">for</span>(nbs_number <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(nbs_list[[this_row]])){
+<span class="co">#pointser &lt;- NULL</span>
+pointser &lt;-<span class="st"> </span><span class="kw">gcIntermediate</span>(<span class="kw">c</span>(coords[nbs_list[[this_row]][nbs_number],<span class="dv">1</span>], coords[nbs_list[[this_row]][nbs_number],<span class="dv">2</span>]), <span class="kw">c</span>(coords[this_row,<span class="dv">1</span>], coords[this_row,<span class="dv">2</span>]), <span class="dt">n=</span><span class="dv">100</span>, <span class="dt">breakAtDateLine =</span> T)
+    <span class="kw">length</span>(pointser)
+    <span class="co">#lines(pointser, col=&quot;red&quot;, lwd=.5)</span>
+<span class="cf">if</span>(<span class="kw">length</span>(pointser) <span class="op">==</span><span class="st"> </span><span class="dv">200</span>){<span class="kw">lines</span>(pointser, <span class="dt">col=</span><span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">lwd=</span>.<span class="dv">2</span>)}
+<span class="cf">if</span>(<span class="kw">length</span>(pointser) <span class="op">==</span><span class="st"> </span><span class="dv">2</span>){<span class="kw">lines</span>(pointser[[<span class="dv">1</span>]], <span class="dt">col=</span><span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">lwd=</span>.<span class="dv">2</span>)
+    <span class="kw">lines</span>(pointser[[<span class="dv">2</span>]], <span class="dt">col=</span><span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">lwd=</span>.<span class="dv">2</span>)}
+    <span class="kw">mtext</span>(<span class="kw">paste0</span>(<span class="st">&quot;Network with at least &quot;</span>, number_of_neighbors, <span class="st">&quot; connections between each culture&quot;</span>), <span class="dv">3</span>, <span class="dt">line=</span><span class="dv">0</span>)
+}}
+
+<span class="kw">dev.off</span>()
+
+
+}</code></pre></div>
+<p><img src="network_scratch_%205%20.png" alt="5 neighbor network" /> <img src="network_scratch_%206%20.png" alt="6 neighbor network" /> <img src="network_scratch_%207%20.png" alt="7 neighbor network" /></p>
 
 </div>
             </section>

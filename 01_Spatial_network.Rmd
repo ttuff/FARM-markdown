@@ -4,9 +4,127 @@ author: "Ty Tuff, Bruno Vilela, and Carlos Botero"
 date: 'project began: 15 May 2016, document updated: `r strftime(Sys.time(), format
   = "%d %B %Y")`'
 output:
-  md_document: 
-    variant: markdown_github
+  html_notebook: default
+  html_document: default
+  pdf_document: default
+  word_document: default
 bibliography: FARM package.bib
 ---
 
-# Spatial network
+# Spatial scaffolding for the simulations
+  Using the ~8000 currently extant cultures cataloged in the glottolog repository
+(http://glottolog.org), we calculated a symetrical spatial proximity network 
+connecting them. This network provides the scaffolding for the simulation to 
+grow on. 
+
+```{r}
+library(FARM)
+library(spdep)
+library(geosphere)
+library(maps)
+```
+
+  We constructed this network using the functions knearneigh() and knn2nb() in 
+the package spdep. The user identifies the number of neighbors and the 
+algorythm identifies that many nearest neighbors calculated based on proximity.
+Using those neighbor identifiers, we then calculated the great circle distance
+between each point using the gcIntermediate() function from the geosphere 
+package and ploted those lines over a map. 
+
+  Through a seperate analysis based on ecological niche models of agricultue, 
+we determined that networks with 7 neighbors produced spatial distributions with 
+the lowest level of autocorrelation. Accordingly, we ran the simulation on 
+networks with 5-9 connections between neighbors to represent some variation in 
+this parameter but centered these estimates around 7. At the begining of each 
+simualation, one network was chosen from the 5 possible arrangements and used
+as simulation scaffolding. The number of neighbors assigned to a particular 
+simulation replicate is recorded in the metadata so it can be extracted and used 
+as a covariate in later models. 
+
+  Here is the code for producing and plotting these networks. The object 
+language_centroids is in the FARM package, so make sure that package is loaded
+so R can find the required data. Below the code are plots of the 5 possible 
+graph arrangements used in the FARM simulations. 
+
+```{r eval=FALSE}
+
+
+coords <- as.matrix(apply(language_centroids[, 3:4], 2, as.numeric)) #coords
+conds <- ifelse(suitability2 == 0, 1, 2)
+conds[is.na(conds)] <- sample(c(1, 2), sum(is.na(conds)), replace = TRUE) 
+origins <- language_centroids[, 5]
+
+
+
+nbs_number <- 2
+this_row <- 1
+number_of_neighbors <- 7
+for(i in 5:9){
+
+number_of_neighbors <- i
+nbs <- knearneigh(coords, k = number_of_neighbors, longlat = TRUE) 
+
+nbs_list <- knn2nb(nbs, sym = TRUE)
+
+
+png(paste("network_scratch_", number_of_neighbors, ".png"), width=11, height=5.5, res=1000, units = "in")
+
+
+par(mar=c(0,0,0,0))
+
+plot(0,0, xlim=c(-180,180), ylim=c(-90,90), type="n")
+map("world", col=adjustcolor("lightgrey", alpha=0.2), interior = FALSE, fill=TRUE, border=NA)
+#map("state", col="lightgrey")
+for(this_row in 1:length(nbs_list)){
+for(nbs_number in 1:length(nbs_list[[this_row]])){
+#pointser <- NULL
+pointser <-	gcIntermediate(c(coords[nbs_list[[this_row]][nbs_number],1], coords[nbs_list[[this_row]][nbs_number],2]), c(coords[this_row,1], coords[this_row,2]), n=100, breakAtDateLine = T)
+	length(pointser)
+		if(length(pointser) == 200){lines(pointser, col=adjustcolor("black", alpha=1), lwd=.3)}
+if(length(pointser) == 2){lines(pointser[[1]], col=adjustcolor("black", alpha=1), lwd=.3)
+	lines(pointser[[2]], col=adjustcolor("black", alpha=1), lwd=.3)}
+	
+	#lines(pointser, col="red", lwd=.5)
+if(length(pointser) == 200){lines(pointser, col="cornflowerblue", lwd=.25)}
+if(length(pointser) == 2){lines(pointser[[1]], col="cornflowerblue", lwd=.25)
+	lines(pointser[[2]], col="cornflowerblue", lwd=.25)}
+	
+
+	mtext(paste0("Network with at least ", number_of_neighbors, " connections between each culture"), 3, line=0)
+}}
+
+dev.off()
+
+
+}
+
+
+```
+![5 neighbor network](network_scratch_ 5 .png)
+![6 neighbor network](network_scratch_ 6 .png)
+![7 neighbor network](network_scratch_ 7 .png)
+
+![8 neighbor network](network_scratch_ 8 .png)
+![9 neighbor network](network_scratch_ 9 .png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
