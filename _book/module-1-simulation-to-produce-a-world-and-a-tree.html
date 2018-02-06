@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>FARM: simulating the spread of agriculture through cultural phylogenies</title>
+  <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook.">
+  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+
+  <meta property="og:title" content="FARM: simulating the spread of agriculture through cultural phylogenies" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:image" content="Conffusion_matrix_all.png" />
+  <meta property="og:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="FARM: simulating the spread of agriculture through cultural phylogenies" />
+  
+  <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <meta name="twitter:image" content="Conffusion_matrix_all.png" />
+
+<meta name="author" content="Ty Tuff, Bruno Vilela, and Carlos Botero">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="rule-sets.html">
+<link rel="next" href="module-2-space-and-phylogeny-summary-statistics.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="spatial-scaffolding-for-the-simulations.html"><a href="spatial-scaffolding-for-the-simulations.html"><i class="fa fa-check"></i><b>2</b> Spatial scaffolding for the simulations</a></li>
+<li class="chapter" data-level="3" data-path="rule-sets.html"><a href="rule-sets.html"><i class="fa fa-check"></i><b>3</b> Rule sets</a><ul>
+<li class="chapter" data-level="3.1" data-path="rule-sets.html"><a href="rule-sets.html#simulation"><i class="fa fa-check"></i><b>3.1</b> Simulation:</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="module-1-simulation-to-produce-a-world-and-a-tree.html"><a href="module-1-simulation-to-produce-a-world-and-a-tree.html"><i class="fa fa-check"></i><b>4</b> Module 1: Simulation to produce a world and a tree</a><ul>
+<li class="chapter" data-level="4.1" data-path="module-1-simulation-to-produce-a-world-and-a-tree.html"><a href="module-1-simulation-to-produce-a-world-and-a-tree.html#inputs"><i class="fa fa-check"></i><b>4.1</b> Inputs</a></li>
+<li class="chapter" data-level="4.2" data-path="module-1-simulation-to-produce-a-world-and-a-tree.html"><a href="module-1-simulation-to-produce-a-world-and-a-tree.html#module-1-functions"><i class="fa fa-check"></i><b>4.2</b> Module 1 functions</a></li>
+<li class="chapter" data-level="4.3" data-path="module-1-simulation-to-produce-a-world-and-a-tree.html"><a href="module-1-simulation-to-produce-a-world-and-a-tree.html#push-versions"><i class="fa fa-check"></i><b>4.3</b> Push versions</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html"><i class="fa fa-check"></i><b>5</b> Module 2: Space and phylogeny summary statistics</a><ul>
+<li class="chapter" data-level="5.1" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#phylogenetic-summary-statistics"><i class="fa fa-check"></i><b>5.1</b> Phylogenetic summary statistics</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#introduction-and-framework"><i class="fa fa-check"></i><b>5.1.1</b> Introduction and framework</a></li>
+<li class="chapter" data-level="5.1.2" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#alpha-diversity-metrics"><i class="fa fa-check"></i><b>5.1.2</b> Alpha diversity metrics</a></li>
+<li class="chapter" data-level="5.1.3" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#pairwise-distance-between-tips"><i class="fa fa-check"></i><b>5.1.3</b> Pairwise distance between tips</a></li>
+<li class="chapter" data-level="5.1.4" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#nearest-phylogenetic-neighbor"><i class="fa fa-check"></i><b>5.1.4</b> Nearest phylogenetic neighbor</a></li>
+<li class="chapter" data-level="5.1.5" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#phylogenetic-isolation"><i class="fa fa-check"></i><b>5.1.5</b> Phylogenetic isolation</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#beta-diversity"><i class="fa fa-check"></i><b>5.2</b> Beta diversity</a></li>
+<li class="chapter" data-level="5.3" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#tree-topology"><i class="fa fa-check"></i><b>5.3</b> Tree topology</a></li>
+<li class="chapter" data-level="5.4" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#macroevolutionary-rates"><i class="fa fa-check"></i><b>5.4</b> Macroevolutionary rates</a></li>
+<li class="chapter" data-level="5.5" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#spatial-locations"><i class="fa fa-check"></i><b>5.5</b> Spatial Locations</a></li>
+<li class="chapter" data-level="5.6" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#module2-returns-these-two-matrices-as-a-list"><i class="fa fa-check"></i><b>5.6</b> Module2() returns these two matrices as a list</a><ul>
+<li class="chapter" data-level="5.6.1" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#here-is-the-exact-version-in-r"><i class="fa fa-check"></i><b>5.6.1</b> Here is the exact version in R</a></li>
+</ul></li>
+<li class="chapter" data-level="5.7" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#references"><i class="fa fa-check"></i><b>5.7</b> References</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="calling-module-1-and-module-2.html"><a href="calling-module-1-and-module-2.html"><i class="fa fa-check"></i><b>6</b> Calling Module 1 and Module 2</a><ul>
+<li class="chapter" data-level="6.1" data-path="calling-module-1-and-module-2.html"><a href="calling-module-1-and-module-2.html#run-the-simulation-to-a-specified-timestep-and-then-save-one-output"><i class="fa fa-check"></i><b>6.1</b> Run the simulation to a specified timestep and then save one output</a></li>
+<li class="chapter" data-level="6.2" data-path="calling-module-1-and-module-2.html"><a href="calling-module-1-and-module-2.html#run-simulations-for-a-specified-time-but-run-stats-and-save-timesteps-along-the-way"><i class="fa fa-check"></i><b>6.2</b> Run simulations for a specified time but run stats and save timesteps along the way</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="running-module-1-and-module-2-on-the-cluster.html"><a href="running-module-1-and-module-2-on-the-cluster.html"><i class="fa fa-check"></i><b>7</b> Running Module 1 and Module 2 on the cluster</a><ul>
+<li class="chapter" data-level="7.1" data-path="running-module-1-and-module-2-on-the-cluster.html"><a href="running-module-1-and-module-2-on-the-cluster.html#not-for-the-faint-of-hart"><i class="fa fa-check"></i><b>7.1</b> Not for the faint of hart</a></li>
+<li class="chapter" data-level="7.2" data-path="running-module-1-and-module-2-on-the-cluster.html"><a href="running-module-1-and-module-2-on-the-cluster.html#bash-scripts"><i class="fa fa-check"></i><b>7.2</b> Bash scripts</a></li>
+<li class="chapter" data-level="7.3" data-path="running-module-1-and-module-2-on-the-cluster.html"><a href="running-module-1-and-module-2-on-the-cluster.html#passing-arguements-to-r-script"><i class="fa fa-check"></i><b>7.3</b> Passing arguements to R-script</a></li>
+<li class="chapter" data-level="7.4" data-path="running-module-1-and-module-2-on-the-cluster.html"><a href="running-module-1-and-module-2-on-the-cluster.html#accessing-and-working-with-the-cluster"><i class="fa fa-check"></i><b>7.4</b> Accessing and working with the cluster</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html"><i class="fa fa-check"></i><b>8</b> Module 3: Analysing results produce from Modules 1 and 2</a><ul>
+<li class="chapter" data-level="8.1" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#organize-data"><i class="fa fa-check"></i><b>8.1</b> Organize data</a></li>
+<li class="chapter" data-level="8.2" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#diagnostics"><i class="fa fa-check"></i><b>8.2</b> Diagnostics</a></li>
+<li class="chapter" data-level="8.3" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#random-forest-analysis"><i class="fa fa-check"></i><b>8.3</b> Random Forest Analysis</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#trainingbuilding"><i class="fa fa-check"></i><b>8.3.1</b> Training/Building</a></li>
+<li class="chapter" data-level="8.3.2" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#testing"><i class="fa fa-check"></i><b>8.3.2</b> Testing</a></li>
+<li class="chapter" data-level="8.3.3" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#matching"><i class="fa fa-check"></i><b>8.3.3</b> Matching</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#run-a-single-random-forest-on-available-outputs"><i class="fa fa-check"></i><b>8.4</b> Run a single random forest on available outputs</a></li>
+<li class="chapter" data-level="8.5" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#visualize-outputs-from-random-forest-analysis"><i class="fa fa-check"></i><b>8.5</b> Visualize outputs from Random Forest analysis</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">FARM: simulating the spread of agriculture through cultural phylogenies</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="module-1-simulation-to-produce-a-world-and-a-tree" class="section level1">
+<h1><span class="header-section-number">Chapter 4</span> Module 1: Simulation to produce a world and a tree</h1>
+<p>After the spatial network was built to host the simulations, the machinery for tracking simulation progress was in place, and the input parameters were assigned, then each simulation could launch according to a set of initial launch rules and then play out according to a separate set of continuing behavioral rules. The initial launch rules begin by stipulating that the first human culture will originate within modern-day Ethiopia and radiate outward from that point. All of these original cultures use foraging as their only mode of subsistence until at least 80% of the available nodes are occupied by a culture and then agriculture can start to arise by foragers switching to agriculturalists. The ability to switch from forager to agriculturalist without any outside influence is restricted to within known origins of agriculture as defined by Larson et al. (2014). Switching from forager to agriculturalist can only occur on nodes within those known origins, but agriculturalists can switch to foragers with equal probability on any node. Nodes can only interact via edges so, edges define neighboring nodes. These initial launch rules are the same for all simulations, regardless of the hypothesized mechanism they are simulating.</p>
+<p>When simulations were terminated at 30,000 time steps, they will have produced a spatial pattern of subsistence modes distributed across the geographic network and a phylogeny describing the relatedness of those societies through time. These two objects contain a great deal of information about the trajectory of particular replicates but that complexity makes it difficult to compare replicates directly. No test currently exists to compare a combination of spatial and phylogenetic patterns between replicated simulations. To simplify these outputs and allow them to be compared directly to each other, we calculated a suite of 12 summary statistics to describe different features of both the spatial distribution and the phylogeny. During preliminary tests of the simulations, we used 19 summary statistics but later eliminated 7 of those original statistics because they didn’t stabilize over time to where they could be described by a linear model. The 12 remaining statistics stabilized by either increasing regularly through time or came to an asymptote as the simulation reached equilibrium (SI figure…). After all of the simulations were complete, these summary statistics were concatenated into a single dataset, labelled with the rule set (mechanism) used to create each one, and then passed on to the random forest algorithm for analysis.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Install the most recent version of FARM from a .zip file</span>
+<span class="kw">install.packages</span>(<span class="kw">file.choose</span>(), <span class="dt">repos=</span><span class="ot">NULL</span>) </code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(FARM)
+<span class="kw">ls</span>(<span class="st">&quot;package:FARM&quot;</span>)</code></pre></div>
+<pre><code>##  [1] &quot;Arisal&quot;                  &quot;bd&quot;                     
+##  [3] &quot;BuildWorld&quot;              &quot;combo_of_choice&quot;        
+##  [5] &quot;coords&quot;                  &quot;coords.austronisian&quot;    
+##  [7] &quot;coords.bantu&quot;            &quot;coords.uto&quot;             
+##  [9] &quot;Diffusion&quot;               &quot;DivDep&quot;                 
+## [11] &quot;DropTip&quot;                 &quot;Dsig&quot;                   
+## [13] &quot;evol.distinct2&quot;          &quot;extinct&quot;                
+## [15] &quot;Extinction&quot;              &quot;getTargets&quot;             
+## [17] &quot;language_centroids&quot;      &quot;makePhy&quot;                
+## [19] &quot;Module_2&quot;                &quot;NewTip&quot;                 
+## [21] &quot;parameters&quot;              &quot;parameters.table&quot;       
+## [23] &quot;plot.myworld&quot;            &quot;RunSim&quot;                 
+## [25] &quot;RunSim.push&quot;             &quot;RunSim2&quot;                
+## [27] &quot;RunSim2.push&quot;            &quot;RunSimUltimate&quot;         
+## [29] &quot;RunSimUltimate.push&quot;     &quot;RunSimUltimate2&quot;        
+## [31] &quot;RunSimUltimate2.push&quot;    &quot;speciate&quot;               
+## [33] &quot;Speciation&quot;              &quot;SpeciationTakeOver&quot;     
+## [35] &quot;SpeciationTakeOver.push&quot; &quot;sub.TakeOver&quot;           
+## [37] &quot;sub.TakeOver.push&quot;       &quot;suitability&quot;            
+## [39] &quot;suitability2&quot;            &quot;TakeOver&quot;               
+## [41] &quot;TakeOver.push&quot;           &quot;TheOriginOfSpecies&quot;</code></pre>
+<div id="inputs" class="section level2">
+<h2><span class="header-section-number">4.1</span> Inputs</h2>
+<p>The specific behavior of any particular replicate simulation is controlled by 17 input parameters. All of these values are unique to each replicate simulation, but don’t change from the beginning to the end of a simulation. These parameters are all constrained between 0 and 1 and fall within five general categories: speciation, extinction, cultural diffusion, diffusion by takeover, and arisal. The first two categories, speciation and extinction, each require four parameters to describe the different ways that farmers and foragers can interact with environments that are suitable or unsuitable for agriculture. Diffusion by takeover also requires four parameters to describe the four ways that farmers or foragers can displace their neighbors to expand their subsistence mode. Cultural diffusion is simpler than diffusion by takeover and only requires two input parameters: diffusion from farmers to foragers and diffusion from foragers to farmers. Arisal follows the same convention as the cultural diffusion inputs but the probability of switching from foragers to farmers is constraining to within the known origins of agriculture (see Figure 2).</p>
+<p>Most of the input parameters are drawn randomly from a uniform distribution constrained between 0 and 1, but some of these uniform random draws are constrained more narrowly. Parameter values in the speciation or extinction categories are ordered so that farmers in environments suitable for farming will have the highest speciation rate and lowest extinction rate, farmers in environments unsuitable for agriculture will have the lowest speciation rate and highest extinction rate, and all foragers will have an intermediate probability between them. The first value selected during a random draw is assigned to the high probability input, the second is constrained to be smaller than the first draw and assigned to the low probability input, the third is constrained between the first two values. Arisal is constrained so that the probability of switching from forager to farmer is always higher than switching from farmer to forager.</p>
+<p>The input parameters are also where the model type is assigned to each simulation. The hypothesized mechanism prescribed to each simulation are relayed to the algorithm by setting specific sets of parameters to 0 so certain events have no chance of happening. The full ensemble model (+culture +takeover) assigns a value to all 17 parameters, the cultural diffusion only model (+culture) sets all takeover values to 0, the diffusion by takeover model (+takeover) sets all cultural diffusion values to 0, and the basic model sets all culture and takeover values to 0.</p>
+</div>
+<div id="module-1-functions" class="section level2">
+<h2><span class="header-section-number">4.2</span> Module 1 functions</h2>
+<div id="the-first-set-of-runsim-functions-are-the-default-pipeline-where-only-one-output-is-saved-at-the-end-of-the-simulation." class="section level4">
+<h4><span class="header-section-number">4.2.0.1</span> The first set of RunSim functions are the default pipeline where only one output is saved at the end of the simulation.</h4>
+<p>This first function controls error messages coming from the primary function below.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Run the simulation function skiping the erros and atributing NA if it occurs</span>
+RunSimUltimate &lt;-<span class="st"> </span><span class="cf">function</span>(myWorld, P.extinction, P.speciation,
+                           P.diffusion, P.Arisal, P.TakeOver, nbs, independent,
+                           N.steps, multiplier,
+                           <span class="dt">silent =</span> <span class="ot">TRUE</span>, <span class="dt">start =</span> <span class="ot">NULL</span>) {
+
+  result &lt;-<span class="st"> </span><span class="kw">try</span>(<span class="kw">RunSim</span>(myWorld, P.extinction, P.speciation,
+                       P.diffusion, P.Arisal, P.TakeOver, nbs,
+                       independent, N.steps,
+                       multiplier, <span class="dt">start =</span> start), <span class="dt">silent =</span> silent)
+  <span class="cf">if</span> (<span class="kw">class</span>(result) <span class="op">==</span><span class="st"> &quot;try-error&quot;</span>) {
+    result &lt;-<span class="st"> </span><span class="ot">NA</span>
+  }
+  <span class="kw">return</span>(result)
+}</code></pre></div>
+<p>This is the primary function running the simulation.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#==================================================================</span>
+<span class="co"># SimulationFunctions.R</span>
+<span class="co">#</span>
+<span class="co"># Contains a function for simulation of cultural evolution in space and time</span>
+<span class="co"># Allows for (1) Vertical Transmission (phylogenetic inheritance); (2) Horizontal</span>
+<span class="co"># Transmission (cultural diffusion); (3) Ecological selection (Both speciation and</span>
+<span class="co"># extinction are determined by the match between the state of a binary trait and the</span>
+<span class="co"># environment a societuy occupies).</span>
+<span class="co">#</span>
+<span class="co"># 7 Jun 2016</span>
+<span class="co"># Carlos A. Botero, Bruno Vilela &amp; Ty Tuff</span>
+<span class="co"># Washington University in Saint Louis</span>
+<span class="co">#==================================================================</span>
+RunSim &lt;-<span class="st"> </span><span class="cf">function</span>(myWorld, P.extinction, P.speciation,
+                   P.diffusion, P.Arisal, P.TakeOver, nbs, independent,
+                   N.steps, multiplier, start) {
+  <span class="co"># myWorld = The hexagonal world created with the function BuildWorld</span>
+  <span class="co"># P.extinction = Probability matrix of extinction</span>
+  <span class="co"># P.speciation = Probability matrix of speciation</span>
+  <span class="co"># P.diffusion = Probability matrix of diffusion</span>
+  <span class="co"># P.Arisal = Probability matrix of arisal</span>
+  <span class="co"># P.TakeOver = Probability matrix of takeover</span>
+  <span class="co"># N.steps = Number of steps in the model</span>
+  <span class="co"># multiplier = The number that will multiply the probabilities according</span>
+  <span class="co"># to environmetal fitness.</span>
+  <span class="co"># start = the point ID in &#39;myWorld&#39; that will give risen to humans.</span>
+  <span class="co"># (humans origin will be in one of the existing positions)</span>
+
+  world.size &lt;-<span class="st"> </span><span class="kw">nrow</span>(myWorld)
+  <span class="co"># Initialize parameters we will use later to build the phylogeny</span>
+  rootnode &lt;-<span class="st">  </span>world.size <span class="op">+</span><span class="st"> </span><span class="dv">1</span> <span class="co"># standard convention for root node number</span>
+
+  <span class="co"># set the seed for simulation</span>
+  <span class="cf">if</span> (<span class="kw">is.null</span>(start)) {
+  start &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span>world.size, <span class="dv">1</span>)
+  }
+
+  myWorld[start, <span class="dv">4</span><span class="op">:</span><span class="dv">6</span>] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>) <span class="co"># Setting root(0), time(0), ancestral(1, forager)</span>
+
+  mytree &lt;-<span class="st"> </span><span class="kw">TheOriginOfSpecies</span>(world.size, start) <span class="co"># Empty tree</span>
+  myT &lt;-<span class="st"> </span><span class="dv">0</span> <span class="co"># Time starts at zero</span>
+
+  <span class="co"># Common input and output for all the internal modules</span>
+  input &lt;-<span class="st"> </span><span class="kw">list</span>(P.speciation, P.Arisal, P.diffusion, P.extinction, P.TakeOver,
+                myWorld, mytree, myT, multiplier, nbs, independent)
+
+  <span class="co"># Functions order to be randomized</span>
+  rand_order_func_run &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;Extinction&quot;</span>, <span class="st">&quot;Diffusion&quot;</span>, <span class="st">&quot;SpeciationTakeOver&quot;</span>, <span class="st">&quot;Arisal&quot;</span>)
+
+  <span class="kw">cat</span>(<span class="st">&quot;0% [&quot;</span>) <span class="co"># Time count</span>
+
+  <span class="cf">for</span> (steps <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>N.steps) { <span class="co"># Starts the loop with &#39;n&#39; steps</span>
+
+    <span class="cf">if</span> (steps <span class="op">%%</span><span class="st"> </span><span class="kw">round</span>((N.steps <span class="op">/</span><span class="st"> </span><span class="dv">10</span>)) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) { <span class="co"># Time count</span>
+      <span class="kw">cat</span>(<span class="st">&#39;-&#39;</span>) <span class="co"># Time count</span>
+    }<span class="co"># Time count</span>
+    <span class="cf">if</span> (steps <span class="op">==</span><span class="st"> </span>N.steps) { <span class="co"># Time count</span>
+      <span class="kw">cat</span>(<span class="st">&quot;] 100 %</span><span class="ch">\n</span><span class="st">&quot;</span>)<span class="co"># Time count</span>
+    }<span class="co"># Time count</span>
+
+    <span class="co"># Randomize functions order</span>
+    rand_order &lt;-<span class="st"> </span><span class="kw">sample</span>(rand_order_func_run)
+    <span class="co"># Run the functions</span>
+    input &lt;-<span class="st"> </span><span class="kw">do.call</span>(rand_order[[<span class="dv">1</span>]], <span class="kw">list</span>(<span class="dt">input =</span> input))
+    input &lt;-<span class="st"> </span><span class="kw">do.call</span>(rand_order[[<span class="dv">2</span>]], <span class="kw">list</span>(<span class="dt">input =</span> input))
+    input &lt;-<span class="st"> </span><span class="kw">do.call</span>(rand_order[[<span class="dv">3</span>]], <span class="kw">list</span>(<span class="dt">input =</span> input))
+    input &lt;-<span class="st"> </span><span class="kw">do.call</span>(rand_order[[<span class="dv">4</span>]], <span class="kw">list</span>(<span class="dt">input =</span> input))
+
+  }
+  <span class="co"># Trunsform the input/output into the final result and return it</span>
+  myWorld &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(input[[<span class="dv">6</span>]])
+  myWorld[, <span class="dv">8</span>] &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;t&quot;</span>, myWorld[, <span class="dv">8</span>])
+  mytree &lt;-<span class="st"> </span><span class="kw">makePhy</span>(input[[<span class="dv">7</span>]])
+  mytree<span class="op">$</span>edge.length &lt;-<span class="st"> </span>mytree<span class="op">$</span>edge.length <span class="op">/</span><span class="st"> </span>N.steps
+  <span class="kw">return</span>(<span class="kw">list</span>(<span class="st">&#39;mytree&#39;</span> =<span class="st"> </span>mytree, <span class="st">&#39;myWorld&#39;</span> =<span class="st"> </span>myWorld))
+}</code></pre></div>
+<p>We track each simulation from start to finish using two data storage objects, a spatial object storing the current subsistence mode of each node and a phylogenetic object tracking the relationship between all nodes through time. For each action taken during the simulation, the algorithm first checks the current state of these two objects, then prescribes a change to a single node within the network according to a set of rules, and then modifies that node in both storage objects before moving on to the next node. This process is repeated for each node within each time step and randomized across time steps to create an entire simulation. The phylogenetic object is built under standard evolutionary assumptions necessary for many of the summary statistics used later, so the tree is always bifurcating, non-reticulated, and ultrametric.</p>
+</div>
+</div>
+<div id="push-versions" class="section level2">
+<h2><span class="header-section-number">4.3</span> Push versions</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Run the simulation function skiping the erros and atributing NA if it occurs</span>
+RunSimUltimate.push &lt;-<span class="st"> </span><span class="cf">function</span>(myWorld, P.extinction, P.speciation,
+                                P.diffusion, P.Arisal, P.TakeOver, nbs, independent,
+                                N.steps, multiplier,
+                                <span class="dt">silent =</span> <span class="ot">TRUE</span>, <span class="dt">start =</span> <span class="ot">NULL</span>) {
+
+  result &lt;-<span class="st"> </span><span class="kw">try</span>(<span class="kw">RunSim.push</span>(myWorld, P.extinction, P.speciation,
+                            P.diffusion, P.Arisal, P.TakeOver, nbs,
+                            independent, N.steps,
+                            multiplier, <span class="dt">start =</span> start), <span class="dt">silent =</span> silent)
+  <span class="cf">if</span> (<span class="kw">class</span>(result) <span class="op">==</span><span class="st"> &quot;try-error&quot;</span>) {
+    result &lt;-<span class="st"> </span><span class="ot">NA</span>
+  }
+  <span class="kw">return</span>(result)
+}</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#==================================================================</span>
+<span class="co"># SimulationFunctions.R</span>
+<span class="co">#</span>
+<span class="co"># Contains a function for simulation of cultural evolution in space and time</span>
+<span class="co"># Allows for (1) Vertical Transmission (phylogenetic inheritance); (2) Horizontal</span>
+<span class="co"># Transmission (cultural diffusion); (3) Ecological selection (Both speciation and</span>
+<span class="co"># extinction are determined by the match between the state of a binary trait and the</span>
+<span class="co"># environment a societuy occupies).</span>
+<span class="co">#</span>
+<span class="co"># 7 Jun 2016</span>
+<span class="co"># Carlos A. Botero, Bruno Vilela &amp; Ty Tuff</span>
+<span class="co"># Washington University in Saint Louis</span>
+<span class="co">#==================================================================</span>
+RunSim.push &lt;-<span class="st"> </span><span class="cf">function</span>(myWorld, P.extinction, P.speciation,
+                   P.diffusion, P.Arisal, P.TakeOver, nbs, independent,
+                   N.steps, multiplier, start) {
+  <span class="co"># myWorld = The hexagonal world created with the function BuildWorld</span>
+  <span class="co"># P.extinction = Probability matrix of extinction</span>
+  <span class="co"># P.speciation = Probability matrix of speciation</span>
+  <span class="co"># P.diffusion = Probability matrix of diffusion</span>
+  <span class="co"># P.Arisal = Probability matrix of arisal</span>
+  <span class="co"># P.TakeOver = Probability matrix of takeover</span>
+  <span class="co"># N.steps = Number of steps in the model</span>
+  <span class="co"># multiplier = The number that will multiply the probabilities according</span>
+  <span class="co"># to environmetal fitness.</span>
+  <span class="co"># start = the point ID in &#39;myWorld&#39; that will give risen to humans.</span>
+  <span class="co"># (humans origin will be in one of the existing positions)</span>
+
+  world.size &lt;-<span class="st"> </span><span class="kw">nrow</span>(myWorld)
+  <span class="co"># Initialize parameters we will use later to build the phylogeny</span>
+  rootnode &lt;-<span class="st">  </span>world.size <span class="op">+</span><span class="st"> </span><span class="dv">1</span> <span class="co"># standard convention for root node number</span>
+
+  <span class="co"># set the seed for simulation</span>
+  <span class="cf">if</span> (<span class="kw">is.null</span>(start)) {
+    start &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span>world.size, <span class="dv">1</span>)
+  }
+
+  myWorld[start, <span class="dv">4</span><span class="op">:</span><span class="dv">6</span>] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>) <span class="co"># Setting root(0), time(0), ancestral(1, forager)</span>
+
+  mytree &lt;-<span class="st"> </span><span class="kw">TheOriginOfSpecies</span>(world.size, start) <span class="co"># Empty tree</span>
+  myT &lt;-<span class="st"> </span><span class="dv">0</span> <span class="co"># Time starts at zero</span>
+
+  <span class="co"># Common input and output for all the internal modules</span>
+  input &lt;-<span class="st"> </span><span class="kw">list</span>(P.speciation, P.Arisal, P.diffusion, P.extinction, P.TakeOver,
+                myWorld, mytree, myT, multiplier, nbs, independent)
+
+  <span class="co"># Functions order to be randomized</span>
+  rand_order_func_run &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;Extinction&quot;</span>, <span class="st">&quot;Diffusion&quot;</span>,
+                              <span class="st">&quot;SpeciationTakeOver.push&quot;</span>, <span class="st">&quot;Arisal&quot;</span>)
+
+  <span class="kw">cat</span>(<span class="st">&quot;0% [&quot;</span>) <span class="co"># Time count</span>
+
+  <span class="cf">for</span> (steps <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>N.steps) { <span class="co"># Starts the loop with &#39;n&#39; steps</span>
+
+    <span class="cf">if</span> (steps <span class="op">%%</span><span class="st"> </span><span class="kw">round</span>((N.steps <span class="op">/</span><span class="st"> </span><span class="dv">10</span>)) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) { <span class="co"># Time count</span>
+      <span class="kw">cat</span>(<span class="st">&#39;-&#39;</span>) <span class="co"># Time count</span>
+    }<span class="co"># Time count</span>
+    <span class="cf">if</span> (steps <span class="op">==</span><span class="st"> </span>N.steps) { <span class="co"># Time count</span>
+      <span class="kw">cat</span>(<span class="st">&quot;] 100 %</span><span class="ch">\n</span><span class="st">&quot;</span>)<span class="co"># Time count</span>
+    }<span class="co"># Time count</span>
+
+    <span class="co"># Randomize functions order</span>
+    rand_order &lt;-<span class="st"> </span><span class="kw">sample</span>(rand_order_func_run)
+    <span class="co"># Run the functions</span>
+    input &lt;-<span class="st"> </span><span class="kw">do.call</span>(rand_order[[<span class="dv">1</span>]], <span class="kw">list</span>(<span class="dt">input =</span> input))
+    input &lt;-<span class="st"> </span><span class="kw">do.call</span>(rand_order[[<span class="dv">2</span>]], <span class="kw">list</span>(<span class="dt">input =</span> input))
+    input &lt;-<span class="st"> </span><span class="kw">do.call</span>(rand_order[[<span class="dv">3</span>]], <span class="kw">list</span>(<span class="dt">input =</span> input))
+    input &lt;-<span class="st"> </span><span class="kw">do.call</span>(rand_order[[<span class="dv">4</span>]], <span class="kw">list</span>(<span class="dt">input =</span> input))
+
+  }
+  <span class="co"># Trunsform the input/output into the final result and return it</span>
+  myWorld &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(input[[<span class="dv">6</span>]])
+  myWorld[, <span class="dv">8</span>] &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;t&quot;</span>, myWorld[, <span class="dv">8</span>])
+  mytree &lt;-<span class="st"> </span><span class="kw">makePhy</span>(input[[<span class="dv">7</span>]])
+  mytree<span class="op">$</span>edge.length &lt;-<span class="st"> </span>mytree<span class="op">$</span>edge.length <span class="op">/</span><span class="st"> </span>N.steps
+  <span class="kw">return</span>(<span class="kw">list</span>(<span class="st">&#39;mytree&#39;</span> =<span class="st"> </span>mytree, <span class="st">&#39;myWorld&#39;</span> =<span class="st"> </span>myWorld))
+}</code></pre></div>
+<div id="the-second-set-of-runsim-functions-save-an-output-each-timestep-if-we-want-to-look-at-trends-through-time.-we-use-this-to-make-videos-of-the-simulation-running." class="section level4">
+<h4><span class="header-section-number">4.3.0.1</span> The second set of RunSim functions save an output each timestep if we want to look at trends through time. We use this to make videos of the simulation running.</h4>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">RunSimUltimate2 &lt;-<span class="st"> </span><span class="cf">function</span> (myWorld, P.extinction, P.speciation, P.diffusion, P.Arisal, 
+    P.TakeOver, nbs, independent, N.steps, multiplier, <span class="dt">silent =</span> <span class="ot">TRUE</span>, 
+    count, <span class="dt">resolution =</span> <span class="kw">seq</span>(<span class="dv">1</span>, N.steps, <span class="dv">100</span>), P.Arisal0, <span class="dt">start =</span> <span class="ot">NULL</span>) 
+{
+    result &lt;-<span class="st"> </span><span class="kw">try</span>(<span class="kw">RunSim2</span>(myWorld, P.extinction, P.speciation, 
+        P.diffusion, P.Arisal, P.TakeOver, nbs, independent, 
+        N.steps, multiplier, <span class="dt">count =</span> count, <span class="dt">resolution =</span> resolution, 
+        <span class="dt">P.Arisal0 =</span> P.Arisal0, start), <span class="dt">silent =</span> silent)
+    <span class="cf">if</span> (<span class="kw">class</span>(result) <span class="op">==</span><span class="st"> &quot;try-error&quot;</span>) {
+        result &lt;-<span class="st"> </span><span class="ot">NA</span>
+    }
+    <span class="kw">return</span>(result)
+}</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">RunSim2 &lt;-<span class="st"> </span><span class="cf">function</span> (myWorld, P.extinction, P.speciation, P.diffusion, P.Arisal, 
+    P.TakeOver, nbs, independent, N.steps, multiplier, count, 
+    resolution, P.Arisal0, <span class="dt">start =</span> <span class="ot">NULL</span>) 
+{
+    folder &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;./Module_1_outputs/myOut_rep_&quot;</span>, <span class="kw">formatC</span>(count, 
+        <span class="dt">width =</span> <span class="dv">2</span>, <span class="dt">flag =</span> <span class="dv">0</span>), <span class="st">&quot;_combo_&quot;</span>, <span class="kw">formatC</span>(count, <span class="dt">width =</span> <span class="dv">2</span>, 
+        <span class="dt">flag =</span> <span class="dv">0</span>), <span class="st">&quot;_&quot;</span>, <span class="st">&quot;params&quot;</span>, <span class="st">&quot;_P.speciation_&quot;</span>, <span class="kw">paste</span>(<span class="kw">formatC</span>(P.speciation, 
+        <span class="dt">width =</span> <span class="dv">2</span>, <span class="dt">flag =</span> <span class="dv">0</span>), <span class="dt">collapse =</span> <span class="st">&quot;_&quot;</span>), <span class="st">&quot;_P.extinction_&quot;</span>, 
+        <span class="kw">paste</span>(<span class="kw">formatC</span>(P.extinction, <span class="dt">width =</span> <span class="dv">2</span>, <span class="dt">flag =</span> <span class="dv">0</span>), <span class="dt">collapse =</span> <span class="st">&quot;_&quot;</span>), 
+        <span class="st">&quot;_P.diffusion_&quot;</span>, <span class="kw">paste</span>(<span class="kw">formatC</span>(P.diffusion, <span class="dt">width =</span> <span class="dv">2</span>, 
+            <span class="dt">flag =</span> <span class="dv">0</span>), <span class="dt">collapse =</span> <span class="st">&quot;_&quot;</span>), <span class="st">&quot;_P.TO_&quot;</span>, <span class="kw">paste</span>(<span class="kw">formatC</span>(P.TakeOver, 
+            <span class="dt">width =</span> <span class="dv">2</span>, <span class="dt">flag =</span> <span class="dv">0</span>), <span class="dt">collapse =</span> <span class="st">&quot;_&quot;</span>), <span class="st">&quot;_P.Arisal_&quot;</span>, 
+        <span class="kw">paste</span>(<span class="kw">formatC</span>(P.Arisal0, <span class="dt">width =</span> <span class="dv">2</span>, <span class="dt">flag =</span> <span class="dv">0</span>), <span class="dt">collapse =</span> <span class="st">&quot;_&quot;</span>), 
+        <span class="st">&quot;_timesteps_&quot;</span>, N.steps)
+    world.size &lt;-<span class="st"> </span><span class="kw">nrow</span>(myWorld)
+    rootnode &lt;-<span class="st"> </span>world.size <span class="op">+</span><span class="st"> </span><span class="dv">1</span>
+    <span class="cf">if</span> (<span class="kw">is.null</span>(start)) {
+        start &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span>world.size, <span class="dv">1</span>)
+    }
+    myWorld[start, <span class="dv">4</span><span class="op">:</span><span class="dv">6</span>] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>)
+    mytree &lt;-<span class="st"> </span><span class="kw">TheOriginOfSpecies</span>(world.size, start)
+    myT &lt;-<span class="st"> </span><span class="dv">0</span>
+    input &lt;-<span class="st"> </span><span class="kw">list</span>(P.speciation, P.Arisal, P.diffusion, P.extinction, 
+        P.TakeOver, myWorld, mytree, myT, multiplier, nbs, independent)
+    rand_order_func_run &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;Extinction&quot;</span>, <span class="st">&quot;Diffusion&quot;</span>, <span class="st">&quot;SpeciationTakeOver&quot;</span>, 
+        <span class="st">&quot;Arisal&quot;</span>)
+    <span class="kw">cat</span>(<span class="st">&quot;0% [&quot;</span>)
+    <span class="cf">for</span> (steps <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>N.steps) {
+        <span class="cf">if</span> (steps<span class="op">%%</span><span class="kw">round</span>((N.steps<span class="op">/</span><span class="dv">10</span>)) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) {
+            <span class="kw">cat</span>(<span class="st">&quot;-&quot;</span>)
+        }
+        <span class="cf">if</span> (steps <span class="op">==</span><span class="st"> </span>N.steps) {
+            <span class="kw">cat</span>(<span class="st">&quot;] 100 %</span><span class="ch">\n</span><span class="st">&quot;</span>)
+        }
+        rand_order &lt;-<span class="st"> </span><span class="kw">sample</span>(rand_order_func_run)
+        input &lt;-<span class="st"> </span><span class="kw">do.call</span>(rand_order[[<span class="dv">1</span>]], <span class="kw">list</span>(<span class="dt">input =</span> input))
+        input &lt;-<span class="st"> </span><span class="kw">do.call</span>(rand_order[[<span class="dv">2</span>]], <span class="kw">list</span>(<span class="dt">input =</span> input))
+        input &lt;-<span class="st"> </span><span class="kw">do.call</span>(rand_order[[<span class="dv">3</span>]], <span class="kw">list</span>(<span class="dt">input =</span> input))
+        input &lt;-<span class="st"> </span><span class="kw">do.call</span>(rand_order[[<span class="dv">4</span>]], <span class="kw">list</span>(<span class="dt">input =</span> input))
+        <span class="cf">if</span> (steps <span class="op">%in%</span><span class="st"> </span>resolution) {
+            myWorld &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(input[[<span class="dv">6</span>]])
+            myWorld[, <span class="dv">8</span>] &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;t&quot;</span>, myWorld[, <span class="dv">8</span>])
+            <span class="cf">if</span> (<span class="kw">nrow</span>(<span class="kw">na.omit</span>(input[[<span class="dv">7</span>]])) <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>) {
+                mytree &lt;-<span class="st"> </span><span class="kw">makePhy</span>(input[[<span class="dv">7</span>]])
+            }
+            <span class="cf">else</span> {
+                mytree &lt;-<span class="st"> </span><span class="ot">NA</span>
+            }
+            myOut &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">mytree =</span> mytree, <span class="dt">myWorld =</span> myWorld)
+            <span class="kw">save</span>(myOut, <span class="dt">file =</span> <span class="kw">paste0</span>(folder, <span class="st">&quot;_&quot;</span>, <span class="kw">formatC</span>(steps, 
+                <span class="dv">10</span>, <span class="dt">flag =</span> <span class="dv">0</span>), <span class="st">&quot;.Rdata&quot;</span>))
+            stats &lt;-<span class="st"> </span><span class="kw">Module_2</span>(myOut)
+            <span class="kw">save</span>(stats, <span class="dt">file =</span> <span class="kw">paste0</span>(folder, <span class="st">&quot;_&quot;</span>, <span class="kw">formatC</span>(steps, 
+                <span class="dv">10</span>, <span class="dt">flag =</span> <span class="dv">0</span>), <span class="st">&quot;_stats&quot;</span>, <span class="st">&quot;.Rdata&quot;</span>))
+        }
+    }
+    myWorld &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(input[[<span class="dv">6</span>]])
+    myWorld[, <span class="dv">8</span>] &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;t&quot;</span>, myWorld[, <span class="dv">8</span>])
+    mytree &lt;-<span class="st"> </span><span class="kw">makePhy</span>(input[[<span class="dv">7</span>]])
+    mytree<span class="op">$</span>edge.length &lt;-<span class="st"> </span>mytree<span class="op">$</span>edge.length<span class="op">/</span>N.steps
+    <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">mytree =</span> mytree, <span class="dt">myWorld =</span> myWorld))
+}</code></pre></div>
+<p>#..And the push version of saving each time step</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Run the simulation function skiping the erros and atributing NA if it occurs</span>
+RunSimUltimate2.push &lt;-<span class="st"> </span><span class="cf">function</span>(myWorld, P.extinction, P.speciation,
+                            P.diffusion, P.Arisal, P.TakeOver, nbs, independent,
+                            N.steps, multiplier,
+                            <span class="dt">silent =</span> <span class="ot">TRUE</span>, count, <span class="dt">resolution =</span> <span class="kw">seq</span>(<span class="dv">1</span>, N.steps, <span class="dv">100</span>),
+                            P.Arisal0, <span class="dt">start =</span> <span class="ot">NULL</span>) {
+
+  result &lt;-<span class="st"> </span><span class="kw">try</span>(<span class="kw">RunSim2.push</span>(myWorld, P.extinction, P.speciation,
+                        P.diffusion, P.Arisal, P.TakeOver, nbs,
+                        independent, N.steps,
+                        multiplier, <span class="dt">count =</span> count, <span class="dt">resolution =</span> resolution,
+                        <span class="dt">P.Arisal0 =</span> P.Arisal0, start),
+                <span class="dt">silent =</span> silent)
+  <span class="cf">if</span> (<span class="kw">class</span>(result) <span class="op">==</span><span class="st"> &quot;try-error&quot;</span>) {
+    result &lt;-<span class="st"> </span><span class="ot">NA</span>
+  }
+  <span class="kw">return</span>(result)
+}</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#==================================================================</span>
+RunSim2.push &lt;-<span class="st"> </span><span class="cf">function</span>(myWorld, P.extinction, P.speciation,
+                    P.diffusion, P.Arisal, P.TakeOver, nbs, independent,
+                    N.steps, multiplier, count, resolution, P.Arisal0,
+                    <span class="dt">start =</span> <span class="ot">NULL</span>) {
+  <span class="co"># myWorld = The hexagonal world created with the function BuildWorld</span>
+  <span class="co"># P.extinction = Probability matrix of extinction</span>
+  <span class="co"># P.speciation = Probability matrix of speciation</span>
+  <span class="co"># P.diffusion = Probability matrix of diffusion</span>
+  <span class="co"># P.Arisal = Probability matrix of arisal</span>
+  <span class="co"># P.TakeOver = Probability matrix of takeover</span>
+  <span class="co"># N.steps = Number of steps in the model</span>
+  <span class="co"># multiplier = The number that will multiply the probabilities according</span>
+  <span class="co"># to environmetal fitness.</span>
+  <span class="co"># start = the point ID in &#39;myWorld&#39; that will give risen to humans.</span>
+  <span class="co"># (humans origin will be in one of the existing positions)</span>
+  folder &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;./Module_1_outputs/myOut_rep_&quot;</span>,
+                   <span class="kw">formatC</span>(count, <span class="dt">width =</span> <span class="dv">2</span>,<span class="dt">flag =</span> <span class="dv">0</span>),
+                   <span class="st">&quot;_combo_&quot;</span>,
+                   <span class="kw">formatC</span>(count, <span class="dt">width =</span> <span class="dv">2</span>,<span class="dt">flag =</span> <span class="dv">0</span>),
+                   <span class="st">&quot;_&quot;</span>,<span class="st">&quot;params&quot;</span>, <span class="st">&quot;_P.speciation_&quot;</span>,
+                   <span class="kw">paste</span>(<span class="kw">formatC</span>(P.speciation, <span class="dt">width =</span> <span class="dv">2</span>,<span class="dt">flag =</span> <span class="dv">0</span>),
+                         <span class="dt">collapse=</span><span class="st">&quot;_&quot;</span>),<span class="st">&quot;_P.extinction_&quot;</span>,
+                   <span class="kw">paste</span>(<span class="kw">formatC</span>(P.extinction, <span class="dt">width =</span> <span class="dv">2</span>,<span class="dt">flag =</span> <span class="dv">0</span>),
+                         <span class="dt">collapse=</span><span class="st">&quot;_&quot;</span>), <span class="st">&quot;_P.diffusion_&quot;</span>,
+                   <span class="kw">paste</span>(<span class="kw">formatC</span>(P.diffusion, <span class="dt">width =</span> <span class="dv">2</span>,<span class="dt">flag =</span> <span class="dv">0</span>),
+                         <span class="dt">collapse=</span><span class="st">&quot;_&quot;</span>), <span class="st">&quot;_P.TO_&quot;</span>,
+                   <span class="kw">paste</span>(<span class="kw">formatC</span>(P.TakeOver, <span class="dt">width =</span> <span class="dv">2</span>,<span class="dt">flag =</span> <span class="dv">0</span>),
+                         <span class="dt">collapse=</span><span class="st">&quot;_&quot;</span>),<span class="st">&quot;_P.Arisal_&quot;</span>,
+                   <span class="kw">paste</span>(<span class="kw">formatC</span>(P.Arisal0, <span class="dt">width =</span> <span class="dv">2</span>,<span class="dt">flag =</span> <span class="dv">0</span>),
+                         <span class="dt">collapse=</span><span class="st">&quot;_&quot;</span>), <span class="st">&quot;_timesteps_&quot;</span>,
+                   N.steps)
+  world.size &lt;-<span class="st"> </span><span class="kw">nrow</span>(myWorld)
+  <span class="co"># Initialize parameters we will use later to build the phylogeny</span>
+  rootnode &lt;-<span class="st">  </span>world.size <span class="op">+</span><span class="st"> </span><span class="dv">1</span> <span class="co"># standard convention for root node number</span>
+
+  <span class="co"># set the seed for simulation</span>
+  <span class="cf">if</span> (<span class="kw">is.null</span>(start)) {
+    start &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span>world.size, <span class="dv">1</span>)
+  }
+
+  myWorld[start, <span class="dv">4</span><span class="op">:</span><span class="dv">6</span>] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>) <span class="co"># Setting root(0), time(0), ancestral(1, forager)</span>
+
+  mytree &lt;-<span class="st"> </span><span class="kw">TheOriginOfSpecies</span>(world.size, start) <span class="co"># Empty tree</span>
+  myT &lt;-<span class="st"> </span><span class="dv">0</span> <span class="co"># Time starts at zero</span>
+
+  <span class="co"># Common input and output for all the internal modules</span>
+  input &lt;-<span class="st"> </span><span class="kw">list</span>(P.speciation, P.Arisal, P.diffusion, P.extinction, P.TakeOver,
+                myWorld, mytree, myT, multiplier, nbs, independent)
+
+  <span class="co"># Functions order to be randomized</span>
+  rand_order_func_run &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;Extinction&quot;</span>, <span class="st">&quot;Diffusion&quot;</span>,
+                              <span class="st">&quot;SpeciationTakeOver.push&quot;</span>, <span class="st">&quot;Arisal&quot;</span>)
+
+  <span class="kw">cat</span>(<span class="st">&quot;0% [&quot;</span>) <span class="co"># Time count</span>
+
+  <span class="cf">for</span> (steps <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>N.steps) { <span class="co"># Starts the loop with &#39;n&#39; steps</span>
+
+    <span class="cf">if</span> (steps <span class="op">%%</span><span class="st"> </span><span class="kw">round</span>((N.steps <span class="op">/</span><span class="st"> </span><span class="dv">10</span>)) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) { <span class="co"># Time count</span>
+      <span class="kw">cat</span>(<span class="st">&#39;-&#39;</span>) <span class="co"># Time count</span>
+    }<span class="co"># Time count</span>
+    <span class="cf">if</span> (steps <span class="op">==</span><span class="st"> </span>N.steps) { <span class="co"># Time count</span>
+      <span class="kw">cat</span>(<span class="st">&quot;] 100 %</span><span class="ch">\n</span><span class="st">&quot;</span>)<span class="co"># Time count</span>
+    }<span class="co"># Time count</span>
+
+    <span class="co"># Randomize functions order</span>
+    rand_order &lt;-<span class="st"> </span><span class="kw">sample</span>(rand_order_func_run)
+    <span class="co"># Run the functions</span>
+    input &lt;-<span class="st"> </span><span class="kw">do.call</span>(rand_order[[<span class="dv">1</span>]], <span class="kw">list</span>(<span class="dt">input =</span> input))
+    input &lt;-<span class="st"> </span><span class="kw">do.call</span>(rand_order[[<span class="dv">2</span>]], <span class="kw">list</span>(<span class="dt">input =</span> input))
+    input &lt;-<span class="st"> </span><span class="kw">do.call</span>(rand_order[[<span class="dv">3</span>]], <span class="kw">list</span>(<span class="dt">input =</span> input))
+    input &lt;-<span class="st"> </span><span class="kw">do.call</span>(rand_order[[<span class="dv">4</span>]], <span class="kw">list</span>(<span class="dt">input =</span> input))
+    <span class="co"># Save</span>
+    <span class="cf">if</span>(steps <span class="op">%in%</span><span class="st"> </span>resolution) {
+      myWorld &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(input[[<span class="dv">6</span>]])
+      myWorld[, <span class="dv">8</span>] &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;t&quot;</span>, myWorld[, <span class="dv">8</span>])
+      <span class="cf">if</span>(<span class="kw">nrow</span>(<span class="kw">na.omit</span>(input[[<span class="dv">7</span>]])) <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>) {
+        mytree &lt;-<span class="st"> </span><span class="kw">makePhy</span>(input[[<span class="dv">7</span>]])
+      } <span class="cf">else</span> {
+        mytree &lt;-<span class="st"> </span><span class="ot">NA</span>
+      }
+      myOut &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">&#39;mytree&#39;</span> =<span class="st"> </span>mytree, <span class="st">&#39;myWorld&#39;</span> =<span class="st"> </span>myWorld)
+      <span class="kw">save</span>(myOut, <span class="dt">file=</span> <span class="kw">paste0</span>(folder,<span class="st">&quot;_&quot;</span>, <span class="kw">formatC</span>(steps, <span class="dv">10</span>, <span class="dt">flag =</span> <span class="dv">0</span>), <span class="st">&quot;.Rdata&quot;</span>))
+      stats &lt;-<span class="st"> </span><span class="kw">Module_2</span>(myOut)
+      <span class="kw">save</span>(stats, <span class="dt">file=</span> <span class="kw">paste0</span>(folder,<span class="st">&quot;_&quot;</span>, <span class="kw">formatC</span>(steps, <span class="dv">10</span>, <span class="dt">flag =</span> <span class="dv">0</span>),
+                               <span class="st">&quot;_stats&quot;</span>, <span class="st">&quot;.Rdata&quot;</span>))
+    }
+  }
+  <span class="co"># Trunsform the input/output into the final result and return it</span>
+  myWorld &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(input[[<span class="dv">6</span>]])
+  myWorld[, <span class="dv">8</span>] &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;t&quot;</span>, myWorld[, <span class="dv">8</span>])
+  mytree &lt;-<span class="st"> </span><span class="kw">makePhy</span>(input[[<span class="dv">7</span>]])
+  mytree<span class="op">$</span>edge.length &lt;-<span class="st"> </span>mytree<span class="op">$</span>edge.length <span class="op">/</span><span class="st"> </span>N.steps
+  <span class="kw">return</span>(<span class="kw">list</span>(<span class="st">&#39;mytree&#39;</span> =<span class="st"> </span>mytree, <span class="st">&#39;myWorld&#39;</span> =<span class="st"> </span>myWorld))
+}</code></pre></div>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="rule-sets.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="module-2-space-and-phylogeny-summary-statistics.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/03_Module_1.Rmd",
+"text": "Edit"
+},
+"download": ["bookdown-demo.pdf", "bookdown-demo.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

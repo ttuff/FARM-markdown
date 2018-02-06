@@ -4,14 +4,19 @@ author: "Ty Tuff, Bruno Vilela, and Carlos Botero"
 date: 'project began: 15 May 2016, document updated: `r strftime(Sys.time(), format
   = "%d %B %Y")`'
 output:
-  pdf_document: default
   html_notebook: default
   html_document: default
+  pdf_document: default
   word_document: default
 bibliography: FARM package.bib
 ---
 
 # Module 1: Simulation to produce a world and a tree 
+
+  After the spatial network was built to host the simulations, the machinery for tracking simulation progress was in place, and the input parameters were assigned, then each simulation could launch according to a set of initial launch rules and then play out according to a separate set of continuing behavioral rules. The initial launch rules begin by stipulating that the first human culture will originate within modern-day Ethiopia and radiate outward from that point. All of these original cultures use foraging as their only mode of subsistence until at least 80% of the available nodes are occupied by a culture and then agriculture can start to arise by foragers switching to agriculturalists. The ability to switch from forager to agriculturalist without any outside influence is restricted to within known origins of agriculture as defined by Larson et al. (2014).  Switching from forager to agriculturalist can only occur on nodes within those known origins, but agriculturalists can switch to foragers with equal probability on any node. Nodes can only interact via edges so, edges define neighboring nodes. These initial launch rules are the same for all simulations, regardless of the hypothesized mechanism they are simulating. 
+
+  When simulations were terminated at 30,000 time steps, they will have produced a spatial pattern of subsistence modes distributed across the geographic network and a phylogeny describing the relatedness of those societies through time. These two objects contain a great deal of information about the trajectory of particular replicates but that complexity makes it difficult to compare replicates directly. No test currently exists to compare a combination of spatial and phylogenetic patterns between replicated simulations. To simplify these outputs and allow them to be compared directly to each other, we calculated a suite of 12 summary statistics to describe different features of both the spatial distribution and the phylogeny. During preliminary tests of the simulations, we used 19 summary statistics but later eliminated 7 of those original statistics because they didn't stabilize over time to where they could be described by a linear model. The 12 remaining statistics stabilized by either increasing regularly through time or came to an asymptote as the simulation reached equilibrium (SI figure…).  After all of the simulations were complete, these summary statistics were concatenated into a single dataset, labelled with the rule set (mechanism) used to create each one, and then passed on to the random forest algorithm for analysis.
+
 
 ```{r eval=FALSE}
 # Install the most recent version of FARM from a .zip file
@@ -24,10 +29,11 @@ ls("package:FARM")
 ```
 
 ## Inputs
- 
-```{r}
+ The specific behavior of any particular replicate simulation is controlled by 17 input parameters. All of these values are unique to each replicate simulation, but don't change from the beginning to the end of a simulation.  These parameters are all constrained between 0 and 1 and fall within five general categories: speciation, extinction, cultural diffusion, diffusion by takeover, and arisal. The first two categories, speciation and extinction, each require four parameters to describe the different ways that farmers and foragers can interact with environments that are suitable or unsuitable for agriculture. Diffusion by takeover also requires four parameters to describe the four ways that farmers or foragers can displace their neighbors to expand their subsistence mode. Cultural diffusion is simpler than diffusion by takeover and only requires two input parameters: diffusion from farmers to foragers and diffusion from foragers to farmers. Arisal follows the same convention as the cultural diffusion inputs but the probability of switching from foragers to farmers is constraining to within the known origins of agriculture (see Figure 2). 
 
-```
+Most of the input parameters are drawn randomly from a uniform distribution constrained between 0 and 1, but some of these uniform random draws are constrained more narrowly. Parameter values in the speciation or extinction categories are ordered so that farmers in environments suitable for farming will have the highest speciation rate and lowest extinction rate, farmers in environments unsuitable for agriculture will have the lowest speciation rate and highest extinction rate, and all foragers will have an intermediate probability between them. The first value selected during a random draw is assigned to the high probability input, the second is constrained to be smaller than the first draw and assigned to the low probability input, the third is constrained between the first two values. Arisal is constrained so that the probability of switching from forager to farmer is always higher than switching from farmer to forager.  
+
+The input parameters are also where the model type is assigned to each simulation. The hypothesized mechanism prescribed to each simulation are relayed to the algorithm by setting specific sets of parameters to 0 so certain events have no chance of happening. The full ensemble model (+culture +takeover) assigns a value to all 17 parameters, the cultural diffusion only model (+culture) sets all takeover values to 0, the diffusion by takeover model (+takeover) sets all cultural diffusion values to 0, and the basic model sets all culture and takeover values to 0.  
 
 
 ## Module 1 functions
@@ -136,7 +142,7 @@ RunSim <- function(myWorld, P.extinction, P.speciation,
 ```
 
 
-
+We track each simulation from start to finish using two data storage objects, a spatial object storing the current subsistence mode of each node and a phylogenetic object tracking the relationship between all nodes through time. For each action taken during the simulation, the algorithm first checks the current state of these two objects, then prescribes a change to a single node within the network according to a set of rules, and then modifies that node in both storage objects before moving on to the next node. This process is repeated for each node within each time step and randomized across time steps to create an entire simulation. The phylogenetic object is built under standard evolutionary assumptions necessary for many of the summary statistics used later, so the tree is always bifurcating, non-reticulated, and ultrametric. 
 
 
 

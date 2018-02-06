@@ -10,6 +10,9 @@ output:
   word_document: default
 bibliography: FARM package.bib
 ---
+  While we have information on where nodes should be located, we still lack data on how cultural nodes should be connected. To compensate for a lack of data describing these connections between societies, we randomized the number of edges between nodes for different simulations. We created 11 different networks, each with a different minimum number of neighbors ranging from 4 to 14 computed using the function … in the R package … . This function builds a network where the minimum number of connections is achieved for every node, but some nodes may have more connections than that minimum in order to achieve the minimum connections for every node across the network. At the beginning of each simulation, the algorithm draws one of the 11 available networks and uses that network as the arena for carrying out that simulation. 
+  
+  Each node occupies a unique geographic location that is assigned a binary value indicating whether the environment of the region is more favorable to foragers or domesticators based on the results from Vilela et al (unpublished work). This designation was determined by the potential richness of domesticated species in each location estimated using ecological niche models. The threshold richness, above which we considered the region more favorable to domesticators, correspond to the potential number of species where farming societies become the dominant form of subsistence. Only some of these societies were inside of the known origins of agriculture as reported by Larson et al 2014 so, we assigned each node a value of 1 or 0 to distinguish between those inside or outside of those origins.
 
 # Spatial scaffolding for the simulations
   Using the ~8000 currently extant cultures cataloged in the glottolog repository

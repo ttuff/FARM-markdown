@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>FARM: simulating the spread of agriculture through cultural phylogenies</title>
+  <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook.">
+  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+
+  <meta property="og:title" content="FARM: simulating the spread of agriculture through cultural phylogenies" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:image" content="Conffusion_matrix_all.png" />
+  <meta property="og:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="FARM: simulating the spread of agriculture through cultural phylogenies" />
+  
+  <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <meta name="twitter:image" content="Conffusion_matrix_all.png" />
+
+<meta name="author" content="Ty Tuff, Bruno Vilela, and Carlos Botero">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="calling-module-1-and-module-2.html">
+<link rel="next" href="module-3-analysing-results-produce-from-modules-1-and-2.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="spatial-scaffolding-for-the-simulations.html"><a href="spatial-scaffolding-for-the-simulations.html"><i class="fa fa-check"></i><b>2</b> Spatial scaffolding for the simulations</a></li>
+<li class="chapter" data-level="3" data-path="rule-sets.html"><a href="rule-sets.html"><i class="fa fa-check"></i><b>3</b> Rule sets</a><ul>
+<li class="chapter" data-level="3.1" data-path="rule-sets.html"><a href="rule-sets.html#simulation"><i class="fa fa-check"></i><b>3.1</b> Simulation:</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="module-1-simulation-to-produce-a-world-and-a-tree.html"><a href="module-1-simulation-to-produce-a-world-and-a-tree.html"><i class="fa fa-check"></i><b>4</b> Module 1: Simulation to produce a world and a tree</a><ul>
+<li class="chapter" data-level="4.1" data-path="module-1-simulation-to-produce-a-world-and-a-tree.html"><a href="module-1-simulation-to-produce-a-world-and-a-tree.html#inputs"><i class="fa fa-check"></i><b>4.1</b> Inputs</a></li>
+<li class="chapter" data-level="4.2" data-path="module-1-simulation-to-produce-a-world-and-a-tree.html"><a href="module-1-simulation-to-produce-a-world-and-a-tree.html#module-1-functions"><i class="fa fa-check"></i><b>4.2</b> Module 1 functions</a></li>
+<li class="chapter" data-level="4.3" data-path="module-1-simulation-to-produce-a-world-and-a-tree.html"><a href="module-1-simulation-to-produce-a-world-and-a-tree.html#push-versions"><i class="fa fa-check"></i><b>4.3</b> Push versions</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html"><i class="fa fa-check"></i><b>5</b> Module 2: Space and phylogeny summary statistics</a><ul>
+<li class="chapter" data-level="5.1" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#phylogenetic-summary-statistics"><i class="fa fa-check"></i><b>5.1</b> Phylogenetic summary statistics</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#introduction-and-framework"><i class="fa fa-check"></i><b>5.1.1</b> Introduction and framework</a></li>
+<li class="chapter" data-level="5.1.2" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#alpha-diversity-metrics"><i class="fa fa-check"></i><b>5.1.2</b> Alpha diversity metrics</a></li>
+<li class="chapter" data-level="5.1.3" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#pairwise-distance-between-tips"><i class="fa fa-check"></i><b>5.1.3</b> Pairwise distance between tips</a></li>
+<li class="chapter" data-level="5.1.4" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#nearest-phylogenetic-neighbor"><i class="fa fa-check"></i><b>5.1.4</b> Nearest phylogenetic neighbor</a></li>
+<li class="chapter" data-level="5.1.5" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#phylogenetic-isolation"><i class="fa fa-check"></i><b>5.1.5</b> Phylogenetic isolation</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#beta-diversity"><i class="fa fa-check"></i><b>5.2</b> Beta diversity</a></li>
+<li class="chapter" data-level="5.3" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#tree-topology"><i class="fa fa-check"></i><b>5.3</b> Tree topology</a></li>
+<li class="chapter" data-level="5.4" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#macroevolutionary-rates"><i class="fa fa-check"></i><b>5.4</b> Macroevolutionary rates</a></li>
+<li class="chapter" data-level="5.5" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#spatial-locations"><i class="fa fa-check"></i><b>5.5</b> Spatial Locations</a></li>
+<li class="chapter" data-level="5.6" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#module2-returns-these-two-matrices-as-a-list"><i class="fa fa-check"></i><b>5.6</b> Module2() returns these two matrices as a list</a><ul>
+<li class="chapter" data-level="5.6.1" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#here-is-the-exact-version-in-r"><i class="fa fa-check"></i><b>5.6.1</b> Here is the exact version in R</a></li>
+</ul></li>
+<li class="chapter" data-level="5.7" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#references"><i class="fa fa-check"></i><b>5.7</b> References</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="calling-module-1-and-module-2.html"><a href="calling-module-1-and-module-2.html"><i class="fa fa-check"></i><b>6</b> Calling Module 1 and Module 2</a><ul>
+<li class="chapter" data-level="6.1" data-path="calling-module-1-and-module-2.html"><a href="calling-module-1-and-module-2.html#run-the-simulation-to-a-specified-timestep-and-then-save-one-output"><i class="fa fa-check"></i><b>6.1</b> Run the simulation to a specified timestep and then save one output</a></li>
+<li class="chapter" data-level="6.2" data-path="calling-module-1-and-module-2.html"><a href="calling-module-1-and-module-2.html#run-simulations-for-a-specified-time-but-run-stats-and-save-timesteps-along-the-way"><i class="fa fa-check"></i><b>6.2</b> Run simulations for a specified time but run stats and save timesteps along the way</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="running-module-1-and-module-2-on-the-cluster.html"><a href="running-module-1-and-module-2-on-the-cluster.html"><i class="fa fa-check"></i><b>7</b> Running Module 1 and Module 2 on the cluster</a><ul>
+<li class="chapter" data-level="7.1" data-path="running-module-1-and-module-2-on-the-cluster.html"><a href="running-module-1-and-module-2-on-the-cluster.html#not-for-the-faint-of-hart"><i class="fa fa-check"></i><b>7.1</b> Not for the faint of hart</a></li>
+<li class="chapter" data-level="7.2" data-path="running-module-1-and-module-2-on-the-cluster.html"><a href="running-module-1-and-module-2-on-the-cluster.html#bash-scripts"><i class="fa fa-check"></i><b>7.2</b> Bash scripts</a></li>
+<li class="chapter" data-level="7.3" data-path="running-module-1-and-module-2-on-the-cluster.html"><a href="running-module-1-and-module-2-on-the-cluster.html#passing-arguements-to-r-script"><i class="fa fa-check"></i><b>7.3</b> Passing arguements to R-script</a></li>
+<li class="chapter" data-level="7.4" data-path="running-module-1-and-module-2-on-the-cluster.html"><a href="running-module-1-and-module-2-on-the-cluster.html#accessing-and-working-with-the-cluster"><i class="fa fa-check"></i><b>7.4</b> Accessing and working with the cluster</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html"><i class="fa fa-check"></i><b>8</b> Module 3: Analysing results produce from Modules 1 and 2</a><ul>
+<li class="chapter" data-level="8.1" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#organize-data"><i class="fa fa-check"></i><b>8.1</b> Organize data</a></li>
+<li class="chapter" data-level="8.2" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#diagnostics"><i class="fa fa-check"></i><b>8.2</b> Diagnostics</a></li>
+<li class="chapter" data-level="8.3" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#random-forest-analysis"><i class="fa fa-check"></i><b>8.3</b> Random Forest Analysis</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#trainingbuilding"><i class="fa fa-check"></i><b>8.3.1</b> Training/Building</a></li>
+<li class="chapter" data-level="8.3.2" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#testing"><i class="fa fa-check"></i><b>8.3.2</b> Testing</a></li>
+<li class="chapter" data-level="8.3.3" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#matching"><i class="fa fa-check"></i><b>8.3.3</b> Matching</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#run-a-single-random-forest-on-available-outputs"><i class="fa fa-check"></i><b>8.4</b> Run a single random forest on available outputs</a></li>
+<li class="chapter" data-level="8.5" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#visualize-outputs-from-random-forest-analysis"><i class="fa fa-check"></i><b>8.5</b> Visualize outputs from Random Forest analysis</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">FARM: simulating the spread of agriculture through cultural phylogenies</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="running-module-1-and-module-2-on-the-cluster" class="section level1">
+<h1><span class="header-section-number">Chapter 7</span> Running Module 1 and Module 2 on the cluster</h1>
+<div id="not-for-the-faint-of-hart" class="section level2">
+<h2><span class="header-section-number">7.1</span> Not for the faint of hart</h2>
+</div>
+<div id="bash-scripts" class="section level2">
+<h2><span class="header-section-number">7.2</span> Bash scripts</h2>
+<p>Running an R script on the cluster requires two parts: an R script with the code to be run and a PBS script to control how that R script is run on the cluster.</p>
+<p>There are two different clusters at Wustl.edu, an old and a new cluster. This script runs the R code on the new cluster.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co">#!/bin/bash</span>
+<span class="co">#PBS -N Four_model_run </span>
+<span class="co">#PBS -V                     </span>
+<span class="co">#PBS -l walltime=23:59:00               </span>
+<span class="co">#PBS -l pmem=1200mb </span>
+<span class="co">#PBS -l nodes=1:ppn=1:haswell </span>
+<span class="co">#PBS -t 1-1000</span>
+
+
+<span class="bu">echo</span> <span class="va">$PBS_ARRAYID</span>
+
+<span class="bu">cd</span> /home/cbotero/mydirectory/Four_model_compare
+<span class="ex">module</span> load R
+
+<span class="bu">export</span> <span class="va">R_LIBS=$HOME</span>/rlibs
+<span class="co">#R CMD INSTALL --library=/home/ttuff/rlibs  FARM_1.0.tar.gz</span>
+
+<span class="ex">Rscript</span> --vanilla ./FARM_four_model_compare.R <span class="va">${PBS_ARRAYID}</span></code></pre></div>
+<p>We were regularly causing problems running to many jobs on the new cluster and we were asked to move to the old cluster. This cluster has slower individual processors, but we can run more jobs at one time, so productivity has stayed about the same.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co">#!/bin/bash</span>
+<span class="co">#PBS -N FARM_third_run_old </span>
+<span class="co">#PBS -V                     </span>
+<span class="co">#PBS -l walltime=160:00:00              </span>
+<span class="co">#PBS -l pmem=1200mb </span>
+<span class="co">#PBS -q old</span>
+<span class="co">#PBS -l nodes=1:ppn=1:nehalem </span>
+<span class="co">#PBS -t 1-500</span>
+
+
+<span class="bu">echo</span> <span class="va">$PBS_ARRAYID</span>
+
+<span class="bu">cd</span> /home/ttuff/mydirectory/Four_model_compare
+<span class="ex">module</span> load R
+
+<span class="bu">export</span> <span class="va">R_LIBS=$HOME</span>/rlibs
+<span class="co">#R CMD INSTALL --library=/home/ttuff/rlibs  FARM_1.0.tar.gz</span>
+
+<span class="ex">Rscript</span> --vanilla ./FARM_four_model_compare.R <span class="va">${PBS_ARRAYID}</span> </code></pre></div>
+</div>
+<div id="passing-arguements-to-r-script" class="section level2">
+<h2><span class="header-section-number">7.3</span> Passing arguements to R-script</h2>
+<p>The final argument in the #PBS script above (#PBS -t 1-500) controls the serial running schema for running many simultanious instances of the R script at a time. This argument is passes to R as an integer value using the following arguements inside R.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">args &lt;-<span class="st"> </span><span class="kw">commandArgs</span>(<span class="dt">trailingOnly =</span> <span class="ot">FALSE</span>) <span class="co">#7 elements are passed from the PBS</span>
+
+NAI &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(args[<span class="dv">7</span>]) <span class="co"># the seventh of those elements is the array integer.</span></code></pre></div>
+<p>Here is a working example of how to set up the R script.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#install.packages(&quot;rfoaas&quot;)</span>
+<span class="kw">library</span>(rfoaas)
+
+##If the PBS script started this code running and passed the number 13
+##to this particular run of a larger serial set. 
+
+
+<span class="co">#args &lt;- commandArgs(trailingOnly = FALSE) </span>
+
+NAI &lt;-<span class="st"> </span><span class="dv">13</span> <span class="co">#as.numeric(args[7])</span>
+
+    sayHello &lt;-<span class="st"> </span><span class="cf">function</span>(loop_number){
+      <span class="kw">print</span>(<span class="kw">paste0</span>(<span class="st">&quot;I can count to &quot;</span>, loop_number, <span class="st">&quot;!   &quot;</span>, <span class="kw">cool</span>(<span class="dt">from=</span><span class="st">&quot;Ty&quot;</span>)))
+    }
+
+    <span class="kw">sayHello</span>(NAI)</code></pre></div>
+<pre><code>## [1] &quot;I can count to 13!   Cool story, bro. - Ty&quot;</code></pre>
+</div>
+<div id="accessing-and-working-with-the-cluster" class="section level2">
+<h2><span class="header-section-number">7.4</span> Accessing and working with the cluster</h2>
+<p>You logon to the cluster using linux/unix code from the command line terminal on you computer. Open the terminal and put in you login info.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">ssh</span> -Y ttuff@login.chpc.wustl.edu
+<span class="ex">password</span>:_______</code></pre></div>
+<p>Upon first login, you will be in a folder called ‘HOME’ with a series of system files in it. You will want to use an FTP client to view and organize these files. I prefer Filezilla, but there are several other good clients available for free. Download filezilla, make sure it’s in your applications folder, and open it. You should see a window that looks like a newer version of this. The left panels are the files on the computer you’re working from and the right two panels will show the files on the server once you log in through Filezilla also.</p>
+<div class="figure">
+<img src="Filezilla.png" alt="A fresh Filezilla window" />
+<p class="caption">A fresh Filezilla window</p>
+</div>
+<div class="figure">
+<img src="site%20manager.png" alt="Start a new server link" />
+<p class="caption">Start a new server link</p>
+</div>
+<div class="figure">
+<img src="New%20site%20name.png" alt="Start a new site and name that new site" />
+<p class="caption">Start a new site and name that new site</p>
+</div>
+<div class="figure">
+<img src="SFTP.png" alt="Select a secure ssh file transfer protocol" />
+<p class="caption">Select a secure ssh file transfer protocol</p>
+</div>
+<div class="figure">
+<img src="Choose%20normal.png" alt="Login as normal" />
+<p class="caption">Login as normal</p>
+</div>
+<div class="figure">
+<img src="Enter%20password.png" alt="Enter password" />
+<p class="caption">Enter password</p>
+</div>
+<div class="figure">
+<img src="Create%20two%20files%20within%20your%20home%20file.png" alt="You need to create two new directories (folders) for us to work out of. Call one rlibs and the other mydirectory" />
+<p class="caption">You need to create two new directories (folders) for us to work out of. Call one ‘rlibs’ and the other ‘mydirectory’</p>
+</div>
+<div class="figure">
+<img src="Create%20Four_models_compare%20folder.png" alt="Within mydirectory, create another folder called Four_model_compare" />
+<p class="caption">Within mydirectory, create another folder called ‘Four_model_compare’</p>
+</div>
+<div class="figure">
+<img src="Create%20module%20folders.png" alt="Within Four_model_compare, create two folders called Module_1_outputs and Module_2_outputs. Then drag three files from your computer files on the left to the server folders on the right: one .R file, one .pbs file, and a zip file with the package FARM in it. These should be named FARM_four_model_compare.R, FARM_four_model_compare_old_cluster.pbs, and FARM_1.0.tar.gz ." />
+<p class="caption">Within ‘Four_model_compare’, create two folders called ‘Module_1_outputs’ and ‘Module_2_outputs’. Then drag three files from your computer files on the left to the server folders on the right: one .R file, one .pbs file, and a zip file with the package FARM in it. These should be named FARM_four_model_compare.R, FARM_four_model_compare_old_cluster.pbs, and FARM_1.0.tar.gz .</p>
+</div>
+<p>Once logged in, you need to change the directory</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="bu">cd</span> /home/ttuff/mydirectory/Four_model_compare</code></pre></div>
+<div class="figure">
+<img src="Files%20from%20module%201.png" />
+
+</div>
+<div class="figure">
+<img src="Files%20from%20module%202.png" />
+
+</div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="calling-module-1-and-module-2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="module-3-analysing-results-produce-from-modules-1-and-2.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/06_Running_simulations_on_the_cluster.Rmd",
+"text": "Edit"
+},
+"download": ["bookdown-demo.pdf", "bookdown-demo.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

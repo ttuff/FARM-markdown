@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>FARM: simulating the spread of agriculture through cultural phylogenies</title>
+  <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook.">
+  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+
+  <meta property="og:title" content="FARM: simulating the spread of agriculture through cultural phylogenies" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:image" content="Conffusion_matrix_all.png" />
+  <meta property="og:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="FARM: simulating the spread of agriculture through cultural phylogenies" />
+  
+  <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <meta name="twitter:image" content="Conffusion_matrix_all.png" />
+
+<meta name="author" content="Ty Tuff, Bruno Vilela, and Carlos Botero">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="index.html">
+<link rel="next" href="rule-sets.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="spatial-scaffolding-for-the-simulations.html"><a href="spatial-scaffolding-for-the-simulations.html"><i class="fa fa-check"></i><b>2</b> Spatial scaffolding for the simulations</a></li>
+<li class="chapter" data-level="3" data-path="rule-sets.html"><a href="rule-sets.html"><i class="fa fa-check"></i><b>3</b> Rule sets</a><ul>
+<li class="chapter" data-level="3.1" data-path="rule-sets.html"><a href="rule-sets.html#simulation"><i class="fa fa-check"></i><b>3.1</b> Simulation:</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="module-1-simulation-to-produce-a-world-and-a-tree.html"><a href="module-1-simulation-to-produce-a-world-and-a-tree.html"><i class="fa fa-check"></i><b>4</b> Module 1: Simulation to produce a world and a tree</a><ul>
+<li class="chapter" data-level="4.1" data-path="module-1-simulation-to-produce-a-world-and-a-tree.html"><a href="module-1-simulation-to-produce-a-world-and-a-tree.html#inputs"><i class="fa fa-check"></i><b>4.1</b> Inputs</a></li>
+<li class="chapter" data-level="4.2" data-path="module-1-simulation-to-produce-a-world-and-a-tree.html"><a href="module-1-simulation-to-produce-a-world-and-a-tree.html#module-1-functions"><i class="fa fa-check"></i><b>4.2</b> Module 1 functions</a></li>
+<li class="chapter" data-level="4.3" data-path="module-1-simulation-to-produce-a-world-and-a-tree.html"><a href="module-1-simulation-to-produce-a-world-and-a-tree.html#push-versions"><i class="fa fa-check"></i><b>4.3</b> Push versions</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html"><i class="fa fa-check"></i><b>5</b> Module 2: Space and phylogeny summary statistics</a><ul>
+<li class="chapter" data-level="5.1" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#phylogenetic-summary-statistics"><i class="fa fa-check"></i><b>5.1</b> Phylogenetic summary statistics</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#introduction-and-framework"><i class="fa fa-check"></i><b>5.1.1</b> Introduction and framework</a></li>
+<li class="chapter" data-level="5.1.2" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#alpha-diversity-metrics"><i class="fa fa-check"></i><b>5.1.2</b> Alpha diversity metrics</a></li>
+<li class="chapter" data-level="5.1.3" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#pairwise-distance-between-tips"><i class="fa fa-check"></i><b>5.1.3</b> Pairwise distance between tips</a></li>
+<li class="chapter" data-level="5.1.4" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#nearest-phylogenetic-neighbor"><i class="fa fa-check"></i><b>5.1.4</b> Nearest phylogenetic neighbor</a></li>
+<li class="chapter" data-level="5.1.5" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#phylogenetic-isolation"><i class="fa fa-check"></i><b>5.1.5</b> Phylogenetic isolation</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#beta-diversity"><i class="fa fa-check"></i><b>5.2</b> Beta diversity</a></li>
+<li class="chapter" data-level="5.3" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#tree-topology"><i class="fa fa-check"></i><b>5.3</b> Tree topology</a></li>
+<li class="chapter" data-level="5.4" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#macroevolutionary-rates"><i class="fa fa-check"></i><b>5.4</b> Macroevolutionary rates</a></li>
+<li class="chapter" data-level="5.5" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#spatial-locations"><i class="fa fa-check"></i><b>5.5</b> Spatial Locations</a></li>
+<li class="chapter" data-level="5.6" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#module2-returns-these-two-matrices-as-a-list"><i class="fa fa-check"></i><b>5.6</b> Module2() returns these two matrices as a list</a><ul>
+<li class="chapter" data-level="5.6.1" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#here-is-the-exact-version-in-r"><i class="fa fa-check"></i><b>5.6.1</b> Here is the exact version in R</a></li>
+</ul></li>
+<li class="chapter" data-level="5.7" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#references"><i class="fa fa-check"></i><b>5.7</b> References</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="calling-module-1-and-module-2.html"><a href="calling-module-1-and-module-2.html"><i class="fa fa-check"></i><b>6</b> Calling Module 1 and Module 2</a><ul>
+<li class="chapter" data-level="6.1" data-path="calling-module-1-and-module-2.html"><a href="calling-module-1-and-module-2.html#run-the-simulation-to-a-specified-timestep-and-then-save-one-output"><i class="fa fa-check"></i><b>6.1</b> Run the simulation to a specified timestep and then save one output</a></li>
+<li class="chapter" data-level="6.2" data-path="calling-module-1-and-module-2.html"><a href="calling-module-1-and-module-2.html#run-simulations-for-a-specified-time-but-run-stats-and-save-timesteps-along-the-way"><i class="fa fa-check"></i><b>6.2</b> Run simulations for a specified time but run stats and save timesteps along the way</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="running-module-1-and-module-2-on-the-cluster.html"><a href="running-module-1-and-module-2-on-the-cluster.html"><i class="fa fa-check"></i><b>7</b> Running Module 1 and Module 2 on the cluster</a><ul>
+<li class="chapter" data-level="7.1" data-path="running-module-1-and-module-2-on-the-cluster.html"><a href="running-module-1-and-module-2-on-the-cluster.html#not-for-the-faint-of-hart"><i class="fa fa-check"></i><b>7.1</b> Not for the faint of hart</a></li>
+<li class="chapter" data-level="7.2" data-path="running-module-1-and-module-2-on-the-cluster.html"><a href="running-module-1-and-module-2-on-the-cluster.html#bash-scripts"><i class="fa fa-check"></i><b>7.2</b> Bash scripts</a></li>
+<li class="chapter" data-level="7.3" data-path="running-module-1-and-module-2-on-the-cluster.html"><a href="running-module-1-and-module-2-on-the-cluster.html#passing-arguements-to-r-script"><i class="fa fa-check"></i><b>7.3</b> Passing arguements to R-script</a></li>
+<li class="chapter" data-level="7.4" data-path="running-module-1-and-module-2-on-the-cluster.html"><a href="running-module-1-and-module-2-on-the-cluster.html#accessing-and-working-with-the-cluster"><i class="fa fa-check"></i><b>7.4</b> Accessing and working with the cluster</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html"><i class="fa fa-check"></i><b>8</b> Module 3: Analysing results produce from Modules 1 and 2</a><ul>
+<li class="chapter" data-level="8.1" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#organize-data"><i class="fa fa-check"></i><b>8.1</b> Organize data</a></li>
+<li class="chapter" data-level="8.2" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#diagnostics"><i class="fa fa-check"></i><b>8.2</b> Diagnostics</a></li>
+<li class="chapter" data-level="8.3" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#random-forest-analysis"><i class="fa fa-check"></i><b>8.3</b> Random Forest Analysis</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#trainingbuilding"><i class="fa fa-check"></i><b>8.3.1</b> Training/Building</a></li>
+<li class="chapter" data-level="8.3.2" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#testing"><i class="fa fa-check"></i><b>8.3.2</b> Testing</a></li>
+<li class="chapter" data-level="8.3.3" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#matching"><i class="fa fa-check"></i><b>8.3.3</b> Matching</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#run-a-single-random-forest-on-available-outputs"><i class="fa fa-check"></i><b>8.4</b> Run a single random forest on available outputs</a></li>
+<li class="chapter" data-level="8.5" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#visualize-outputs-from-random-forest-analysis"><i class="fa fa-check"></i><b>8.5</b> Visualize outputs from Random Forest analysis</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">FARM: simulating the spread of agriculture through cultural phylogenies</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="spatial-scaffolding-for-the-simulations" class="section level1">
+<h1><span class="header-section-number">Chapter 2</span> Spatial scaffolding for the simulations</h1>
+<p>Using the ~8000 currently extant cultures cataloged in the glottolog repository (<a href="http://glottolog.org" class="uri">http://glottolog.org</a>), we calculated a symetrical spatial proximity network connecting them. This network provides the scaffolding for the simulation to grow on.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(FARM)</code></pre></div>
+<pre><code>## Warning: replacing previous import &#39;apTreeshape::is.binary.phylo&#39; by
+## &#39;ape::is.binary.phylo&#39; when loading &#39;FARM&#39;</code></pre>
+<pre><code>## Warning: replacing previous import &#39;ape::plot.mst&#39; by &#39;spdep::plot.mst&#39;
+## when loading &#39;FARM&#39;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(spdep)</code></pre></div>
+<pre><code>## Loading required package: sp</code></pre>
+<pre><code>## Loading required package: Matrix</code></pre>
+<pre><code>## Loading required package: spData</code></pre>
+<pre><code>## To access larger datasets in this package, install the spDataLarge
+## package with: `install.packages(&#39;spDataLarge&#39;)`</code></pre>
+<pre><code>## 
+## Attaching package: &#39;spData&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:FARM&#39;:
+## 
+##     coords</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(geosphere)
+<span class="kw">library</span>(maps)</code></pre></div>
+<p>We constructed this network using the functions knearneigh() and knn2nb() in the package spdep. The user identifies the number of neighbors and the algorythm identifies that many nearest neighbors calculated based on proximity. Using those neighbor identifiers, we then calculated the great circle distance between each point using the gcIntermediate() function from the geosphere package and ploted those lines over a map.</p>
+<p>Through a seperate analysis based on ecological niche models of agricultue, we determined that networks with 7 neighbors produced spatial distributions with the lowest level of autocorrelation. Accordingly, we ran the simulation on networks with 5-9 connections between neighbors to represent some variation in this parameter but centered these estimates around 7. At the begining of each simualation, one network was chosen from the 5 possible arrangements and used as simulation scaffolding. The number of neighbors assigned to a particular simulation replicate is recorded in the metadata so it can be extracted and used as a covariate in later models.</p>
+<p>Here is the code for producing and plotting these networks. The object language_centroids is in the FARM package, so make sure that package is loaded so R can find the required data. Below the code are plots of the 5 possible graph arrangements used in the FARM simulations.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">coords &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">apply</span>(language_centroids[, <span class="dv">3</span><span class="op">:</span><span class="dv">4</span>], <span class="dv">2</span>, as.numeric)) <span class="co">#coords</span>
+conds &lt;-<span class="st"> </span><span class="kw">ifelse</span>(suitability2 <span class="op">==</span><span class="st"> </span><span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>)
+conds[<span class="kw">is.na</span>(conds)] &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="kw">sum</span>(<span class="kw">is.na</span>(conds)), <span class="dt">replace =</span> <span class="ot">TRUE</span>) 
+origins &lt;-<span class="st"> </span>language_centroids[, <span class="dv">5</span>]
+
+
+
+nbs_number &lt;-<span class="st"> </span><span class="dv">2</span>
+this_row &lt;-<span class="st"> </span><span class="dv">1</span>
+number_of_neighbors &lt;-<span class="st"> </span><span class="dv">7</span>
+<span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">5</span><span class="op">:</span><span class="dv">9</span>){
+
+number_of_neighbors &lt;-<span class="st"> </span>i
+nbs &lt;-<span class="st"> </span><span class="kw">knearneigh</span>(coords, <span class="dt">k =</span> number_of_neighbors, <span class="dt">longlat =</span> <span class="ot">TRUE</span>) 
+
+nbs_list &lt;-<span class="st"> </span><span class="kw">knn2nb</span>(nbs, <span class="dt">sym =</span> <span class="ot">TRUE</span>)
+
+
+<span class="kw">png</span>(<span class="kw">paste</span>(<span class="st">&quot;network_scratch_&quot;</span>, number_of_neighbors, <span class="st">&quot;.png&quot;</span>), <span class="dt">width=</span><span class="dv">11</span>, <span class="dt">height=</span><span class="fl">5.5</span>, <span class="dt">res=</span><span class="dv">1000</span>, <span class="dt">units =</span> <span class="st">&quot;in&quot;</span>)
+
+
+<span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>))
+
+<span class="kw">plot</span>(<span class="dv">0</span>,<span class="dv">0</span>, <span class="dt">xlim=</span><span class="kw">c</span>(<span class="op">-</span><span class="dv">180</span>,<span class="dv">180</span>), <span class="dt">ylim=</span><span class="kw">c</span>(<span class="op">-</span><span class="dv">90</span>,<span class="dv">90</span>), <span class="dt">type=</span><span class="st">&quot;n&quot;</span>)
+<span class="kw">map</span>(<span class="st">&quot;world&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;lightgrey&quot;</span>, <span class="dt">alpha=</span><span class="fl">0.2</span>), <span class="dt">interior =</span> <span class="ot">FALSE</span>, <span class="dt">fill=</span><span class="ot">TRUE</span>, <span class="dt">border=</span><span class="ot">NA</span>)
+<span class="co">#map(&quot;state&quot;, col=&quot;lightgrey&quot;)</span>
+<span class="cf">for</span>(this_row <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(nbs_list)){
+<span class="cf">for</span>(nbs_number <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(nbs_list[[this_row]])){
+<span class="co">#pointser &lt;- NULL</span>
+pointser &lt;-<span class="st"> </span><span class="kw">gcIntermediate</span>(<span class="kw">c</span>(coords[nbs_list[[this_row]][nbs_number],<span class="dv">1</span>], coords[nbs_list[[this_row]][nbs_number],<span class="dv">2</span>]), <span class="kw">c</span>(coords[this_row,<span class="dv">1</span>], coords[this_row,<span class="dv">2</span>]), <span class="dt">n=</span><span class="dv">100</span>, <span class="dt">breakAtDateLine =</span> T)
+    <span class="kw">length</span>(pointser)
+        <span class="cf">if</span>(<span class="kw">length</span>(pointser) <span class="op">==</span><span class="st"> </span><span class="dv">200</span>){<span class="kw">lines</span>(pointser, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;black&quot;</span>, <span class="dt">alpha=</span><span class="dv">1</span>), <span class="dt">lwd=</span>.<span class="dv">3</span>)}
+<span class="cf">if</span>(<span class="kw">length</span>(pointser) <span class="op">==</span><span class="st"> </span><span class="dv">2</span>){<span class="kw">lines</span>(pointser[[<span class="dv">1</span>]], <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;black&quot;</span>, <span class="dt">alpha=</span><span class="dv">1</span>), <span class="dt">lwd=</span>.<span class="dv">3</span>)
+    <span class="kw">lines</span>(pointser[[<span class="dv">2</span>]], <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;black&quot;</span>, <span class="dt">alpha=</span><span class="dv">1</span>), <span class="dt">lwd=</span>.<span class="dv">3</span>)}
+    
+    <span class="co">#lines(pointser, col=&quot;red&quot;, lwd=.5)</span>
+<span class="cf">if</span>(<span class="kw">length</span>(pointser) <span class="op">==</span><span class="st"> </span><span class="dv">200</span>){<span class="kw">lines</span>(pointser, <span class="dt">col=</span><span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">lwd=</span>.<span class="dv">25</span>)}
+<span class="cf">if</span>(<span class="kw">length</span>(pointser) <span class="op">==</span><span class="st"> </span><span class="dv">2</span>){<span class="kw">lines</span>(pointser[[<span class="dv">1</span>]], <span class="dt">col=</span><span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">lwd=</span>.<span class="dv">25</span>)
+    <span class="kw">lines</span>(pointser[[<span class="dv">2</span>]], <span class="dt">col=</span><span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">lwd=</span>.<span class="dv">25</span>)}
+    
+
+    <span class="kw">mtext</span>(<span class="kw">paste0</span>(<span class="st">&quot;Network with at least &quot;</span>, number_of_neighbors, <span class="st">&quot; connections between each culture&quot;</span>), <span class="dv">3</span>, <span class="dt">line=</span><span class="dv">0</span>)
+}}
+
+<span class="kw">dev.off</span>()
+
+
+}</code></pre></div>
+<p><img src="network_scratch_%205%20.png" alt="5 neighbor network" /> <img src="network_scratch_%206%20.png" alt="6 neighbor network" /> <img src="network_scratch_%207%20.png" alt="7 neighbor network" /></p>
+<p><img src="network_scratch_%208%20.png" alt="8 neighbor network" /> <img src="network_scratch_%209%20.png" alt="9 neighbor network" /></p>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="rule-sets.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/01_Spatial_network.Rmd",
+"text": "Edit"
+},
+"download": ["bookdown-demo.pdf", "bookdown-demo.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -4,14 +4,16 @@ author: "Ty Tuff, Bruno Vilela, and Carlos Botero"
 date: 'project began: 15 May 2016, document updated: `r strftime(Sys.time(), format
   = "%d %B %Y")`'
 output:
-  pdf_document: default
   html_notebook: default
   html_document: default
+  pdf_document: default
   word_document: default
 bibliography: FARM package.bib
 ---
 
 # Calling Module 1 and Module 2
+Simulating 10000 replicates of each of the 4 hypothesized mechanisms (40000 total simulations) and then calculating summary statistics for all of those simulated worlds required a tremendous amount of computing power. We utilize a 1000-node cluster at Washington University in St. Louis and a 300-node cluster at MPI in Jena from August 2016 to January 2018 to first prototype the simulation and then run 1000 replicates of each hypothesized mechanism. Model development and prototyping took a full year and two major rebuilds to produce realistic worlds that could fit real world data. In that time, we changed modes of categorizing simulation outputs from approximate Bayesian computation (ABC) to random forest machine learning (CITE) because our simulations did not produce the linear posterior distributions required for ABC but we were able to work around those limitations using a supervised random forest algorithm. 
+
 There are two versions of this script, the first is for running each simulation to the 
 end and then saving the final step as the output of the model and the second 
 is to save outputs along the way so we can evaluate how different models change through time. 

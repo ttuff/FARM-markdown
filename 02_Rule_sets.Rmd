@@ -28,6 +28,27 @@ library(png)
 ```
 
 
+##Simulation:
+  Building a model that simulates the spread of agriculture across human cultures took several independently built and validated components. The simulations play out in an arena defined by a spatial network of cultural centroids and those networks needed to be defined. Assigning agricultural suitability measures to each society required first modeling agricultural suitability across all environments and then assigning suitability values to each node in the spatial network. Events unfold as simulations progress through time and those events must be tracked from beginning to end. Running these simulations required the development of a stand-alone system for generating input parameters that control the experimental design.  Rules for how simulations operate were carefully designed to describe the behavior of each hypothesized mechanism. Each replicate simulation produced a spatial pattern and phylogenetic tree that are too complex to compare to each other directly so, each simulation output is summarized by 12 summary statistics that can be passed to the random forest machine learning algorithm for categorization. These six components each play an important role in the design and operation such a large-scale simulation. We describe each component of the simulation in more detail below. 
+
+  There are 5 general behavioral continuation rules that correspond to the 5 categories of input variables described above. The first 3 rules are included in all models. Rules 4 and 5 are either included or excluded from the model to define different model types corresponding to different hypothesized mechanisms. These rules describe the possible ways that each node can change status (e.g. change from or to extant, extinct, forager, or domesticator) over the course of one time step and we define them as follows:
+
+####1.	Arisal - 
+A society switches their subsistence mode without any influence from ancestors or neighbors.  
+
+####2.	Extinction - 
+A society dies out. This terminates their branch of the phylogeny and resets their node to unoccupied. The probability of extinction is higher when the society's subsistence mode doesn't match their environment.  
+
+####3.	Speciation - 
+A society expands spatially across the network by sending a descendent diaspora to colonize an unoccupied adjoining node. This expansion into unoccupied territory creates a speciation event, where a new branch is added to the phylogeny showing a new society as a descendent of th e original society. If all adjoining nodes are occupied, then speciation cannot occur. The decedent society inherits their subsistence mode from the parent society, regardless of environment.
+
+####4.	Diffusion - 
+A society converts an occupied adjoining society to match its own subsistence mode. If there are no occupied neighboring nodes with an opposing subsistence mode, then diffusion cannot occur. 
+
+####5.	Takeover - 
+A society expands spatially across the network by sending a descendent diaspora to colonize an occupied adjoining node. If the target society is connected to an unoccupied node, then that society can flee this expansion and avoid extinction by abandoning their current node and colonizing that unoccupied node. If the target society is surrounded by occupied nodes, then they will go extinct when the expanding society colonizes their node. This extinction terminates their branch of the phylogeny and resets their spatial node to unoccupied. As with speciation, the expansion of the conquering society's diaspora creates a speciation event, where a new branch is added to the phylogeny showing a new society as a descendent of the original society. If all adjoining nodes are unoccupied, then takeover cannot occur. The decedent society of the conquer inherits their subsistence mode from the parent society, regardless of environment.
+
+  To avoid any implied hierarchy between these rules or between nodes, both were randomized regularly. Within a single time step, the order of the rules were randomized before applying them to any nodes and then they were applied one-rule-at-a-time randomly (sampled without replacement) across all the nodes. One time step was complete when all the rules had been applied to all of the individual nodes. When one time step turns over to another, the order of rules is redrawn and they are again applied randomly across the nodes. This process was repeated for 30,000 time steps, which preliminary experiments showed was long enough for the system to reach equilibrium. Using preliminary trials of the simulations, we concluded that the model had reached equilibrium by plotting summary statistics through time and showing that statistics that asymptote usually do so between 10 and 20 thousand time steps so they are stabilized well before 30,000 time steps. 
 
 
 

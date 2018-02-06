@@ -18,8 +18,8 @@ library(png)
 ```
 
 
-## Consolidate available files into a single table
-```{r}
+## Organize data
+```{r, eval=FALSE}
 # A frequent scenario in our analysis code is that we need to read thousands of 
 # output files into a single table. 
 # There are a couple flavors of file name that need to be dealt with and the 
@@ -120,7 +120,54 @@ save(Concatenated_data, file=paste0(path_save,
 ```
 
 
-## Summarize overall extinction rates
+## Diagnostics
+
+```{r}
+#objects()
+#head(Concatenated_data)
+#names(Concatenated_data)
+BL <- scale(log(as.numeric(as.character(Concatenated_data$Pylo_diversity_is_sum_of_BL))), scale=FALSE, center=TRUE)
+#25:54, ! 39, 
+
+load('~/Dropbox/Nature_FARM_publication_prep/Code for publication/RF after bruno/Four_model_compare_results_23_Oct_2017_crop_to_10323.Rdata')
+
+for(i in 25:54){
+s <- as.numeric(as.character(Concatenated_data[,i]))
+#range01 <- function(x){(x-min(x))/(max(x)-min(x))}
+
+Concatenated_data[,i] <- scale(s)
+
+
+}
+
+#head(Concatenated_data)
+#Concatenated_data$combo
+M1 <- subset(Concatenated_data, combo == "01")
+M2 <- subset(Concatenated_data, combo == "02")
+M3 <- subset(Concatenated_data, combo == "05")
+M4 <- subset(Concatenated_data, combo == "06")
+
+png("scaled stats per model.png", height=247, width=89, units = "mm", res = 1000)
+par(mfrow=c(4,1), mar=c(2,5,2,2))
+barplot(colMeans(M1[,26:54], na.rm = FALSE, dims = 1), col=rainbow(32), xlim=c(-1,1), las=2, main="Basic", horiz=TRUE, names.arg=seq(1,29), col.lab = 0.5)
+grid()
+barplot(colMeans(M2[,26:54], na.rm = FALSE, dims = 1), col=rainbow(32), xlim=c(-1,1), las=2, main="+Diffusion", horiz=TRUE, names.arg=seq(1,29))
+grid()
+barplot(colMeans(M3[,26:54], na.rm = FALSE, dims = 1), col=rainbow(32), xlim=c(-1,1), las=2, main="+Takeover", horiz=TRUE, names.arg=seq(1,29))
+grid()
+barplot(colMeans(M4[,26:54], na.rm = FALSE, dims = 1), col=rainbow(32), xlim=c(-1,1), las=2, main="+Diffusion \n +Takeover", horiz=TRUE, names.arg=seq(1,29))
+grid()
+dev.off()
+
+
+```
+![](scaled stats per model.png)
+
+
+
+
+
+
 ```{r eval=FALSE}
 load("Four_model_compare_results_02_Aug_2017_crop_to_6128.Rdata")
 extant <- Concatenated_data
@@ -251,17 +298,29 @@ dev.off()
 
 ![](Global_success_rate_per_parameter.png)
 
+## Random Forest Analysis
 
+### Training/Building
+  The procedures described so far have outlined the creation of a dataset that includes the input and output variables for each replicate simulation. When taken as a whole, that dataset describes a distribution of possible numerical outcomes that are possible given the 4 available input types. The purpose of the random forest machine learning algorithm (Breiman 2001, Liaw and Wiener 2015) was to correlate input and output variables as a means of categorizing simulation outputs according to the type of input that had created them. We used 70% of our available simulation data to build the random forest, the remaining 30% to test the forest's accuracy and precision at inferring input categories, and then used that trained and vetted algorithm to infer the most likely input category for real world human output data.
+
+  This random forest model was trained by building a forest of decision trees. Each decision tree describes a series of ordered dichotomous decisions that categorize the 12 output statistics into one of 4 input types. Individual trees were built by first taking a randomly sized and randomly selected sample of rows (replicate simulations) and columns (output variables) from the full simulation dataset to create a unique subset dataset. That unique dataset was then subjected to a bagging model to rank the variables in order of importance and build a decision tree off of that rank. We repeated this process, with replacement, to build 3000 individual decision trees sampled from 70% (n = 40000 x 0.7 = 28000) of the total simulation data. 
+
+### Testing
+  The random forest was vetted using the remaining 30% of the simulation data reserved for model testing. Rather than building decision trees with these data, we fed each replicate through the recently built forest so it could classify outputs and then compare those inferred input types to the known input types to the to see how frequently the forest returned the correct classification. The accuracy and precision of these tests are reported in a confusion matrix showing the number of matches that were correctly or incorrectly made between inputs and outputs for each model . 
+Our trained random forest algorithm could correctly match output statistics with input mechanisms with very good accuracy . It is noteworthy that there was very little confusion between the two competing hypothesized mechanisms, diffusion and diffusion by takeover. If the trained random forest algorithm is presented with a simulation created by diffusion, if is very unlikely to be classify it as coming from diffusion by takeover. 
+
+### Matching
+  The structure of our simulation outputs where designed to mimic the structure of our real cultural data so that the two could be compared directly. In the same way the output for replicate simulations where processed, the phylogeny and spatial pattern of extant human cultures were summarized using 12 summary statistics passed to the trained random forest algorithm. The random forest assigned the most likely mechanism to have caused that human's known historical trajectory. It does this by asking every dichotomous decision tree in the random forest to vote on which hypothesized mechanism created the output provided by the data and then tallying those votes into a consensus vote. Our consensus vote showed that over 50% of the trees believe that the current configuration of agriculture across the globe is the result of demic diffusion augmented by cultural diffusion. About 35% of the trees assigned known global trend to the basic model that includes only demic diffusion, while the other two models received almost no votes. This suggest that if we are wrong that demic and cultural diffusion contributed to current distributions of agriculturist cultures, the next most likely answer is that it diffusion created these patterns with no help from cultural diffusion.
 
 
 ## Run a single random forest on available outputs
-```{r}
+```{r, eval=FALSE}
 # Packages
 library(randomForest)
 
 # Radom Forest Function
 RF <- function(table_sim, table_real, ntree = 2000, stats_remove = NULL,
-              repetitions = 100) {
+              repetitions = 1) {
  # table_sim = table croped 
 
  begin <- which(colnames(table_sim) ==  "number_of_branches")
@@ -296,7 +355,9 @@ RF <- function(table_sim, table_real, ntree = 2000, stats_remove = NULL,
                        replace = TRUE)
   #dev.new()
   #plot(fit)
+  
    predictions <- predict(fit, rf_data_real, type = "prob")
+  
    var_import <- importance(fit)
 
    error <- mean(fit$test$confusion[, 5])
@@ -314,6 +375,7 @@ RF <- function(table_sim, table_real, ntree = 2000, stats_remove = NULL,
                                    "_",
                                    rownames(var_import))
    vec <- c(error, confusion, predictions_prob, var_import_vec)
+   
    results[i, ] <- vec
  }
  colnames(results) <- names(vec)
@@ -325,13 +387,14 @@ RF <- function(table_sim, table_real, ntree = 2000, stats_remove = NULL,
 
 # Multiple Random Forest
 RF_mult <- function(table_sim, table_real_mult, ntree = 2000, 
-                   stats_remove = NULL, repetitions = 100) {
+                   stats_remove = NULL, repetitions = 1) {
  n_r <- nrow(table_real_mult)
  n <- repetitions * n_r
  n_col <- ncol(table_real_mult) * 6 + 22
  results <- matrix(nrow = n, ncol = n_col)
  x <- 0
  for (i in seq(1, n, repetitions)) {
+   print(paste0("randomForest start for tree", i))
    x <- x + 1
    temp <- RF(table_sim, 
               table_real_mult[x, , drop = FALSE],
@@ -348,9 +411,9 @@ RF_mult <- function(table_sim, table_real_mult, ntree = 2000,
 
 # Accumulation function
 RF_acum <- function(table_sim, table_real_mult, ntree = 2000, 
-                   stats_remove = NULL, repetitions = 100,
+                   stats_remove = NULL, repetitions = 1,
                    resolution = 100, minimun = 100) {
- sequence <- seq(minimun, nrow(table_sim), resolution)
+ sequence <- seq(minimun, nrow(table_sim), resolution)[2]
  n_col <- ncol(table_real_mult) * 6 + 24 
  n_r <- nrow(table_real_mult)
  n_seq <- length(sequence)
@@ -371,6 +434,7 @@ RF_acum <- function(table_sim, table_real_mult, ntree = 2000,
      sub5 <- c(sub5, sample(lottery5[-sub5], sequence[1]/4, replace = FALSE))
      sub6 <- c(sub6, sample(lottery6[-sub6], sequence[1]/4, replace = FALSE))
    }
+  print(paste0("MULTI --------------------------- RF -- ", i))
    temp <- RF_mult(table_sim[c(sub1, sub2, sub5, sub6), ], table_real_mult,
                    ntree = ntree, repetitions = repetitions,
                    stats_remove = stats_remove)
@@ -384,36 +448,32 @@ RF_acum <- function(table_sim, table_real_mult, ntree = 2000,
 
 # TEST FINAL (RUN ONLY THIS)
 # Load data
-setwd("~/Desktop/RF after bruno")
-load("Four model compare third runFour_model_compare_results_28_Jul_2017_crop_to_5767.Rdata")
+setwd("~/Dropbox/Nature_FARM_publication_prep/Code for publication/RF after bruno")
+load('Four_model_compare_results_23_Oct_2017_crop_to_10323.Rdata')
 load("real.analysis_mult.RData")
 
 table_sim = Concatenated_data
 table_real = real.analysis.mult[[1]][[1]]
 table_real_mult = do.call(rbind, lapply(real.analysis.mult, 
                                        function(x){x[[1]]}))
-
+dim(table_real_mult[,,drop=FALSE])
 #start time
 time_start <- Sys.time()
 
 # Change the parameters as you wish
-res_acum <- RF_acum(table_sim, table_real_mult[100:110,,drop=FALSE], ntree = 2000, 
+## table_real_mult is the distribution of possible trees provided by MPI
+## table_sim is our simulated data
+res_acum <- RF_acum(table_sim, table_real_mult[1:200,,drop=FALSE], ntree = 10000, 
                    stats_remove = NULL, repetitions = 1,
-                   resolution = 5000, minimun = 1000)
+                   resolution = 5000, minimun = 9500)
                    
 #stop time
 time_stop <- Sys.time()
 difftime(time_stop, time_start)                   
 
-save(res_acum, file="~/Desktop/10_more_tree_out.Rdata")
+save(res_acum, file="Random_Forest_output_data_for_publication_5_February_2018.Rdata")
 
-# Change argument FUN to sd to obtain the standard deviation
-plot(aggregate(x = res_acum[, 4], by = list((res_acum[, 1])), FUN = mean), type = "n", ylim=c(0,1))
 
-lines(aggregate(x = res_acum[, 21], by = list((res_acum[, 1])), FUN = mean), type = "l", col="orange")
-lines(aggregate(x = res_acum[, 22], by = list((res_acum[, 1])), FUN = mean), type = "l", col="blue")
-lines(aggregate(x = res_acum[, 23], by = list((res_acum[, 1])), FUN = mean), type = "l", col="pink")
-lines(aggregate(x = res_acum[, 24], by = list((res_acum[, 1])), FUN = mean), type = "l", col="darkgreen")
 
 ```
 
@@ -434,10 +494,12 @@ c <- res_acum
 #object called res_acum
 res_acum <- rbind(b,c)
 
+load("Random_Forest_output_data_for_publication_2_February_2018.Rdata")
+
 ```
 
 
-```{r}
+```{r, eval=FALSE}
 png("overall_error_per_sample_size.png", width = 11, height = 8.5, res = 300, units = "in")
 plot(aggregate(x = res_acum[, 4], by = list((res_acum[, 1])), FUN = mean), type="l", ylim=c(0,0.5), ylab="overall confusion error", xlab="sample size")
 dev.off()
@@ -445,7 +507,7 @@ dev.off()
 ![](overall_error_per_sample_size.png)
 
 
-```{r}
+```{r, eval=FALSE}
 
 
 png("predictions.png", width = 11, height = 8.5, res = 300, units = "in")
@@ -512,7 +574,7 @@ dev.off()
 ![](last_step_predictions.png)
 
 
-```{r}
+```{r, eval=FALSE}
 #colnames(res_acum)
 
 long <- length(Confusion_0101_mean[,1])
@@ -521,10 +583,10 @@ Confusion_sum_02 <- aggregate(x = res_acum[, 9:12], by = list((res_acum[, 1])), 
 Confusion_sum_03 <- aggregate(x = res_acum[, 13:16], by = list((res_acum[, 1])), FUN = mean)
 Confusion_sum_04 <- aggregate(x = res_acum[, 17:20], by = list((res_acum[, 1])), FUN = mean)
 
-percent_one <- (Confusion_sum_01[long,2:5]/sum(Confusion_sum_01[long,2:5])) * 100
-percent_two <- (Confusion_sum_02[long,2:5]/sum(Confusion_sum_02[long,2:5])) * 100
-percent_three <- (Confusion_sum_03[long,2:5]/sum(Confusion_sum_03[long,2:5])) * 100
-percent_four <- (Confusion_sum_04[long,2:5]/sum(Confusion_sum_04[long,2:5])) * 100
+percent_one <- (Confusion_sum_01[,2:5]/sum(Confusion_sum_01[,2:5])) * 100
+percent_two <- (Confusion_sum_02[,2:5]/sum(Confusion_sum_02[,2:5])) * 100
+percent_three <- (Confusion_sum_03[,2:5]/sum(Confusion_sum_03[,2:5])) * 100
+percent_four <- (Confusion_sum_04[,2:5]/sum(Confusion_sum_04[,2:5])) * 100
 
 
 confusion <- matrix(c(percent_one, percent_two, percent_three, percent_four), 4,4)
@@ -562,15 +624,7 @@ for(i in 1:4) {
 
 
 
-```{r}
-
-#colnames(res_acum)
-
-long <- length(Confusion_0101_mean[,1])
-Confusion_sum_01 <- aggregate(x = res_acum[, 25:54], by = list((res_acum[, 1])), FUN = mean)
-Confusion_sum_02 <- aggregate(x = res_acum[, 9:12], by = list((res_acum[, 1])), FUN = mean)
-Confusion_sum_03 <- aggregate(x = res_acum[, 13:16], by = list((res_acum[, 1])), FUN = mean)
-Confusion_sum_04 <- aggregate(x = res_acum[, 17:20], by = list((res_acum[, 1])), FUN = mean)
+```{r, eval=FALSE}
 
 
 

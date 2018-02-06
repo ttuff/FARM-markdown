@@ -125,7 +125,7 @@
   \postauthor{\par}
   \predate{\centering\large\emph}
   \postdate{\par}
-  \date{project began: 15 May 2016, document updated: 27 July 2017}
+  \date{project began: 15 May 2016, document updated: 06 February 2018}
 
 \usepackage{booktabs}
 \usepackage{amsthm}
@@ -145,8 +145,11 @@
 \newtheorem{proposition}{Proposition}[chapter]
 \theoremstyle{definition}
 \newtheorem{example}{Example}[chapter]
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}[chapter]
 \theoremstyle{remark}
 \newtheorem*{remark}{Remark}
+\newtheorem*{solution}{Solution}
 \begin{document}
 \maketitle
 
@@ -156,52 +159,72 @@
 }
 \chapter{Introduction}\label{introduction}
 
-\chapter{Spatial network}\label{spatial-network}
+While we have information on where nodes should be located, we still
+lack data on how cultural nodes should be connected. To compensate for a
+lack of data describing these connections between societies, we
+randomized the number of edges between nodes for different simulations.
+We created 11 different networks, each with a different minimum number
+of neighbors ranging from 4 to 14 computed using the function \ldots{}
+in the R package \ldots{} . This function builds a network where the
+minimum number of connections is achieved for every node, but some nodes
+may have more connections than that minimum in order to achieve the
+minimum connections for every node across the network. At the beginning
+of each simulation, the algorithm draws one of the 11 available networks
+and uses that network as the arena for carrying out that simulation.
+
+Each node occupies a unique geographic location that is assigned a
+binary value indicating whether the environment of the region is more
+favorable to foragers or domesticators based on the results from Vilela
+et al (unpublished work). This designation was determined by the
+potential richness of domesticated species in each location estimated
+using ecological niche models. The threshold richness, above which we
+considered the region more favorable to domesticators, correspond to the
+potential number of species where farming societies become the dominant
+form of subsistence. Only some of these societies were inside of the
+known origins of agriculture as reported by Larson et al 2014 so, we
+assigned each node a value of 1 or 0 to distinguish between those inside
+or outside of those origins.
+
+\chapter{Spatial scaffolding for the
+simulations}\label{spatial-scaffolding-for-the-simulations}
+
+Using the \textasciitilde{}8000 currently extant cultures cataloged in
+the glottolog repository (\url{http://glottolog.org}), we calculated a
+symetrical spatial proximity network connecting them. This network
+provides the scaffolding for the simulation to grow on.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(FARM)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## Warning: replacing previous import 'apTreeshape::is.binary.phylo' by
-## 'ape::is.binary.phylo' when loading 'FARM'
-\end{verbatim}
-
-\begin{verbatim}
-## Warning: replacing previous import 'ape::plot.mst' by 'spdep::plot.mst'
-## when loading 'FARM'
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(spdep)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## Loading required package: methods
-\end{verbatim}
-
-\begin{verbatim}
-## Loading required package: sp
-\end{verbatim}
-
-\begin{verbatim}
-## Warning: package 'sp' was built under R version 3.4.1
-\end{verbatim}
-
-\begin{verbatim}
-## Loading required package: Matrix
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(geosphere)}
 \KeywordTok{library}\NormalTok{(maps)}
 \end{Highlighting}
 \end{Shaded}
+
+We constructed this network using the functions knearneigh() and
+knn2nb() in the package spdep. The user identifies the number of
+neighbors and the algorythm identifies that many nearest neighbors
+calculated based on proximity. Using those neighbor identifiers, we then
+calculated the great circle distance between each point using the
+gcIntermediate() function from the geosphere package and ploted those
+lines over a map.
+
+Through a seperate analysis based on ecological niche models of
+agricultue, we determined that networks with 7 neighbors produced
+spatial distributions with the lowest level of autocorrelation.
+Accordingly, we ran the simulation on networks with 5-9 connections
+between neighbors to represent some variation in this parameter but
+centered these estimates around 7. At the begining of each simualation,
+one network was chosen from the 5 possible arrangements and used as
+simulation scaffolding. The number of neighbors assigned to a particular
+simulation replicate is recorded in the metadata so it can be extracted
+and used as a covariate in later models.
+
+Here is the code for producing and plotting these networks. The object
+language\_centroids is in the FARM package, so make sure that package is
+loaded so R can find the required data. Below the code are plots of the
+5 possible graph arrangements used in the FARM simulations.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -214,7 +237,7 @@
 
 \NormalTok{nbs_number <-}\StringTok{ }\DecValTok{2}
 \NormalTok{this_row <-}\StringTok{ }\DecValTok{1}
-
+\NormalTok{number_of_neighbors <-}\StringTok{ }\DecValTok{7}
 \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{5}\OperatorTok{:}\DecValTok{9}\NormalTok{)\{}
 
 \NormalTok{number_of_neighbors <-}\StringTok{ }\NormalTok{i}
@@ -229,17 +252,23 @@
 \KeywordTok{par}\NormalTok{(}\DataTypeTok{mar=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{))}
 
 \KeywordTok{plot}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{, }\DataTypeTok{xlim=}\KeywordTok{c}\NormalTok{(}\OperatorTok{-}\DecValTok{180}\NormalTok{,}\DecValTok{180}\NormalTok{), }\DataTypeTok{ylim=}\KeywordTok{c}\NormalTok{(}\OperatorTok{-}\DecValTok{90}\NormalTok{,}\DecValTok{90}\NormalTok{), }\DataTypeTok{type=}\StringTok{"n"}\NormalTok{)}
-\KeywordTok{map}\NormalTok{(}\StringTok{"world"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"lightgrey"}\NormalTok{, }\DataTypeTok{alpha=}\FloatTok{0.4}\NormalTok{), }\DataTypeTok{interior =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{fill=}\OtherTok{TRUE}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{)}
+\KeywordTok{map}\NormalTok{(}\StringTok{"world"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"lightgrey"}\NormalTok{, }\DataTypeTok{alpha=}\FloatTok{0.2}\NormalTok{), }\DataTypeTok{interior =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{fill=}\OtherTok{TRUE}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{)}
 \CommentTok{#map("state", col="lightgrey")}
 \ControlFlowTok{for}\NormalTok{(this_row }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\KeywordTok{length}\NormalTok{(nbs_list))\{}
 \ControlFlowTok{for}\NormalTok{(nbs_number }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\KeywordTok{length}\NormalTok{(nbs_list[[this_row]]))\{}
 \CommentTok{#pointser <- NULL}
 \NormalTok{pointser <-}\StringTok{ }\KeywordTok{gcIntermediate}\NormalTok{(}\KeywordTok{c}\NormalTok{(coords[nbs_list[[this_row]][nbs_number],}\DecValTok{1}\NormalTok{], coords[nbs_list[[this_row]][nbs_number],}\DecValTok{2}\NormalTok{]), }\KeywordTok{c}\NormalTok{(coords[this_row,}\DecValTok{1}\NormalTok{], coords[this_row,}\DecValTok{2}\NormalTok{]), }\DataTypeTok{n=}\DecValTok{100}\NormalTok{, }\DataTypeTok{breakAtDateLine =}\NormalTok{ T)}
     \KeywordTok{length}\NormalTok{(pointser)}
+        \ControlFlowTok{if}\NormalTok{(}\KeywordTok{length}\NormalTok{(pointser) }\OperatorTok{==}\StringTok{ }\DecValTok{200}\NormalTok{)\{}\KeywordTok{lines}\NormalTok{(pointser, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"black"}\NormalTok{, }\DataTypeTok{alpha=}\DecValTok{1}\NormalTok{), }\DataTypeTok{lwd=}\NormalTok{.}\DecValTok{3}\NormalTok{)\}}
+\ControlFlowTok{if}\NormalTok{(}\KeywordTok{length}\NormalTok{(pointser) }\OperatorTok{==}\StringTok{ }\DecValTok{2}\NormalTok{)\{}\KeywordTok{lines}\NormalTok{(pointser[[}\DecValTok{1}\NormalTok{]], }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"black"}\NormalTok{, }\DataTypeTok{alpha=}\DecValTok{1}\NormalTok{), }\DataTypeTok{lwd=}\NormalTok{.}\DecValTok{3}\NormalTok{)}
+    \KeywordTok{lines}\NormalTok{(pointser[[}\DecValTok{2}\NormalTok{]], }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"black"}\NormalTok{, }\DataTypeTok{alpha=}\DecValTok{1}\NormalTok{), }\DataTypeTok{lwd=}\NormalTok{.}\DecValTok{3}\NormalTok{)\}}
+    
     \CommentTok{#lines(pointser, col="red", lwd=.5)}
-\ControlFlowTok{if}\NormalTok{(}\KeywordTok{length}\NormalTok{(pointser) }\OperatorTok{==}\StringTok{ }\DecValTok{200}\NormalTok{)\{}\KeywordTok{lines}\NormalTok{(pointser, }\DataTypeTok{col=}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{lwd=}\NormalTok{.}\DecValTok{2}\NormalTok{)\}}
-\ControlFlowTok{if}\NormalTok{(}\KeywordTok{length}\NormalTok{(pointser) }\OperatorTok{==}\StringTok{ }\DecValTok{2}\NormalTok{)\{}\KeywordTok{lines}\NormalTok{(pointser[[}\DecValTok{1}\NormalTok{]], }\DataTypeTok{col=}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{lwd=}\NormalTok{.}\DecValTok{2}\NormalTok{)}
-    \KeywordTok{lines}\NormalTok{(pointser[[}\DecValTok{2}\NormalTok{]], }\DataTypeTok{col=}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{lwd=}\NormalTok{.}\DecValTok{2}\NormalTok{)\}}
+\ControlFlowTok{if}\NormalTok{(}\KeywordTok{length}\NormalTok{(pointser) }\OperatorTok{==}\StringTok{ }\DecValTok{200}\NormalTok{)\{}\KeywordTok{lines}\NormalTok{(pointser, }\DataTypeTok{col=}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{lwd=}\NormalTok{.}\DecValTok{25}\NormalTok{)\}}
+\ControlFlowTok{if}\NormalTok{(}\KeywordTok{length}\NormalTok{(pointser) }\OperatorTok{==}\StringTok{ }\DecValTok{2}\NormalTok{)\{}\KeywordTok{lines}\NormalTok{(pointser[[}\DecValTok{1}\NormalTok{]], }\DataTypeTok{col=}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{lwd=}\NormalTok{.}\DecValTok{25}\NormalTok{)}
+    \KeywordTok{lines}\NormalTok{(pointser[[}\DecValTok{2}\NormalTok{]], }\DataTypeTok{col=}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{lwd=}\NormalTok{.}\DecValTok{25}\NormalTok{)\}}
+    
+
     \KeywordTok{mtext}\NormalTok{(}\KeywordTok{paste0}\NormalTok{(}\StringTok{"Network with at least "}\NormalTok{, number_of_neighbors, }\StringTok{" connections between each culture"}\NormalTok{), }\DecValTok{3}\NormalTok{, }\DataTypeTok{line=}\DecValTok{0}\NormalTok{)}
 \NormalTok{\}\}}
 
@@ -253,28 +282,119 @@
 \includegraphics{network_scratch_ 5 .png}
 \includegraphics{network_scratch_ 6 .png}
 \includegraphics{network_scratch_ 7 .png}
+
 \includegraphics{network_scratch_ 8 .png}
-\includegraphics{network_scratch_ 6 .png}
+\includegraphics{network_scratch_ 9 .png}
 
 \chapter{Rule sets}\label{rule-sets}
 
 \begin{verbatim}
 ## 
 ## The downloaded binary packages are in
-##  /var/folders/4v/qwc_jrrd1wd07klywdz9qv8c0000gq/T//Rtmp1d7IxA/downloaded_packages
+##  /var/folders/4v/qwc_jrrd1wd07klywdz9qv8c0000gq/T//RtmpMihxdG/downloaded_packages
 \end{verbatim}
 
 \begin{verbatim}
 ## 
 ## The downloaded binary packages are in
-##  /var/folders/4v/qwc_jrrd1wd07klywdz9qv8c0000gq/T//Rtmp1d7IxA/downloaded_packages
+##  /var/folders/4v/qwc_jrrd1wd07klywdz9qv8c0000gq/T//RtmpMihxdG/downloaded_packages
 \end{verbatim}
 
 \begin{verbatim}
 ## 
 ## The downloaded binary packages are in
-##  /var/folders/4v/qwc_jrrd1wd07klywdz9qv8c0000gq/T//Rtmp1d7IxA/downloaded_packages
+##  /var/folders/4v/qwc_jrrd1wd07klywdz9qv8c0000gq/T//RtmpMihxdG/downloaded_packages
 \end{verbatim}
+
+\section{Simulation:}\label{simulation}
+
+Building a model that simulates the spread of agriculture across human
+cultures took several independently built and validated components. The
+simulations play out in an arena defined by a spatial network of
+cultural centroids and those networks needed to be defined. Assigning
+agricultural suitability measures to each society required first
+modeling agricultural suitability across all environments and then
+assigning suitability values to each node in the spatial network. Events
+unfold as simulations progress through time and those events must be
+tracked from beginning to end. Running these simulations required the
+development of a stand-alone system for generating input parameters that
+control the experimental design. Rules for how simulations operate were
+carefully designed to describe the behavior of each hypothesized
+mechanism. Each replicate simulation produced a spatial pattern and
+phylogenetic tree that are too complex to compare to each other directly
+so, each simulation output is summarized by 12 summary statistics that
+can be passed to the random forest machine learning algorithm for
+categorization. These six components each play an important role in the
+design and operation such a large-scale simulation. We describe each
+component of the simulation in more detail below.
+
+There are 5 general behavioral continuation rules that correspond to the
+5 categories of input variables described above. The first 3 rules are
+included in all models. Rules 4 and 5 are either included or excluded
+from the model to define different model types corresponding to
+different hypothesized mechanisms. These rules describe the possible
+ways that each node can change status (e.g.~change from or to extant,
+extinct, forager, or domesticator) over the course of one time step and
+we define them as follows:
+
+\subsubsection{1. Arisal -}\label{arisal--}
+
+A society switches their subsistence mode without any influence from
+ancestors or neighbors.
+
+\subsubsection{2. Extinction -}\label{extinction--}
+
+A society dies out. This terminates their branch of the phylogeny and
+resets their node to unoccupied. The probability of extinction is higher
+when the society's subsistence mode doesn't match their environment.
+
+\subsubsection{3. Speciation -}\label{speciation--}
+
+A society expands spatially across the network by sending a descendent
+diaspora to colonize an unoccupied adjoining node. This expansion into
+unoccupied territory creates a speciation event, where a new branch is
+added to the phylogeny showing a new society as a descendent of th e
+original society. If all adjoining nodes are occupied, then speciation
+cannot occur. The decedent society inherits their subsistence mode from
+the parent society, regardless of environment.
+
+\subsubsection{4. Diffusion -}\label{diffusion--}
+
+A society converts an occupied adjoining society to match its own
+subsistence mode. If there are no occupied neighboring nodes with an
+opposing subsistence mode, then diffusion cannot occur.
+
+\subsubsection{5. Takeover -}\label{takeover--}
+
+A society expands spatially across the network by sending a descendent
+diaspora to colonize an occupied adjoining node. If the target society
+is connected to an unoccupied node, then that society can flee this
+expansion and avoid extinction by abandoning their current node and
+colonizing that unoccupied node. If the target society is surrounded by
+occupied nodes, then they will go extinct when the expanding society
+colonizes their node. This extinction terminates their branch of the
+phylogeny and resets their spatial node to unoccupied. As with
+speciation, the expansion of the conquering society's diaspora creates a
+speciation event, where a new branch is added to the phylogeny showing a
+new society as a descendent of the original society. If all adjoining
+nodes are unoccupied, then takeover cannot occur. The decedent society
+of the conquer inherits their subsistence mode from the parent society,
+regardless of environment.
+
+To avoid any implied hierarchy between these rules or between nodes,
+both were randomized regularly. Within a single time step, the order of
+the rules were randomized before applying them to any nodes and then
+they were applied one-rule-at-a-time randomly (sampled without
+replacement) across all the nodes. One time step was complete when all
+the rules had been applied to all of the individual nodes. When one time
+step turns over to another, the order of rules is redrawn and they are
+again applied randomly across the nodes. This process was repeated for
+30,000 time steps, which preliminary experiments showed was long enough
+for the system to reach equilibrium. Using preliminary trials of the
+simulations, we concluded that the model had reached equilibrium by
+plotting summary statistics through time and showing that statistics
+that asymptote usually do so between 10 and 20 thousand time steps so
+they are stabilized well before 30,000 time steps.
 
 \begin{figure}
 \centering
@@ -286,6 +406,46 @@
 
 \chapter{Module 1: Simulation to produce a world and a
 tree}\label{module-1-simulation-to-produce-a-world-and-a-tree}
+
+After the spatial network was built to host the simulations, the
+machinery for tracking simulation progress was in place, and the input
+parameters were assigned, then each simulation could launch according to
+a set of initial launch rules and then play out according to a separate
+set of continuing behavioral rules. The initial launch rules begin by
+stipulating that the first human culture will originate within
+modern-day Ethiopia and radiate outward from that point. All of these
+original cultures use foraging as their only mode of subsistence until
+at least 80\% of the available nodes are occupied by a culture and then
+agriculture can start to arise by foragers switching to
+agriculturalists. The ability to switch from forager to agriculturalist
+without any outside influence is restricted to within known origins of
+agriculture as defined by Larson et al. (2014). Switching from forager
+to agriculturalist can only occur on nodes within those known origins,
+but agriculturalists can switch to foragers with equal probability on
+any node. Nodes can only interact via edges so, edges define neighboring
+nodes. These initial launch rules are the same for all simulations,
+regardless of the hypothesized mechanism they are simulating.
+
+When simulations were terminated at 30,000 time steps, they will have
+produced a spatial pattern of subsistence modes distributed across the
+geographic network and a phylogeny describing the relatedness of those
+societies through time. These two objects contain a great deal of
+information about the trajectory of particular replicates but that
+complexity makes it difficult to compare replicates directly. No test
+currently exists to compare a combination of spatial and phylogenetic
+patterns between replicated simulations. To simplify these outputs and
+allow them to be compared directly to each other, we calculated a suite
+of 12 summary statistics to describe different features of both the
+spatial distribution and the phylogeny. During preliminary tests of the
+simulations, we used 19 summary statistics but later eliminated 7 of
+those original statistics because they didn't stabilize over time to
+where they could be described by a linear model. The 12 remaining
+statistics stabilized by either increasing regularly through time or
+came to an asymptote as the simulation reached equilibrium (SI
+figure\ldots{}). After all of the simulations were complete, these
+summary statistics were concatenated into a single dataset, labelled
+with the rule set (mechanism) used to create each one, and then passed
+on to the random forest algorithm for analysis.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -326,6 +486,49 @@ tree}\label{module-1-simulation-to-produce-a-world-and-a-tree}
 \end{verbatim}
 
 \section{Inputs}\label{inputs}
+
+The specific behavior of any particular replicate simulation is
+controlled by 17 input parameters. All of these values are unique to
+each replicate simulation, but don't change from the beginning to the
+end of a simulation. These parameters are all constrained between 0 and
+1 and fall within five general categories: speciation, extinction,
+cultural diffusion, diffusion by takeover, and arisal. The first two
+categories, speciation and extinction, each require four parameters to
+describe the different ways that farmers and foragers can interact with
+environments that are suitable or unsuitable for agriculture. Diffusion
+by takeover also requires four parameters to describe the four ways that
+farmers or foragers can displace their neighbors to expand their
+subsistence mode. Cultural diffusion is simpler than diffusion by
+takeover and only requires two input parameters: diffusion from farmers
+to foragers and diffusion from foragers to farmers. Arisal follows the
+same convention as the cultural diffusion inputs but the probability of
+switching from foragers to farmers is constraining to within the known
+origins of agriculture (see Figure 2).
+
+Most of the input parameters are drawn randomly from a uniform
+distribution constrained between 0 and 1, but some of these uniform
+random draws are constrained more narrowly. Parameter values in the
+speciation or extinction categories are ordered so that farmers in
+environments suitable for farming will have the highest speciation rate
+and lowest extinction rate, farmers in environments unsuitable for
+agriculture will have the lowest speciation rate and highest extinction
+rate, and all foragers will have an intermediate probability between
+them. The first value selected during a random draw is assigned to the
+high probability input, the second is constrained to be smaller than the
+first draw and assigned to the low probability input, the third is
+constrained between the first two values. Arisal is constrained so that
+the probability of switching from forager to farmer is always higher
+than switching from farmer to forager.
+
+The input parameters are also where the model type is assigned to each
+simulation. The hypothesized mechanism prescribed to each simulation are
+relayed to the algorithm by setting specific sets of parameters to 0 so
+certain events have no chance of happening. The full ensemble model
+(+culture +takeover) assigns a value to all 17 parameters, the cultural
+diffusion only model (+culture) sets all takeover values to 0, the
+diffusion by takeover model (+takeover) sets all cultural diffusion
+values to 0, and the basic model sets all culture and takeover values to
+0.
 
 \section{Module 1 functions}\label{module-1-functions}
 
@@ -438,6 +641,20 @@ This is the primary function running the simulation.
 \NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}
+
+We track each simulation from start to finish using two data storage
+objects, a spatial object storing the current subsistence mode of each
+node and a phylogenetic object tracking the relationship between all
+nodes through time. For each action taken during the simulation, the
+algorithm first checks the current state of these two objects, then
+prescribes a change to a single node within the network according to a
+set of rules, and then modifies that node in both storage objects before
+moving on to the next node. This process is repeated for each node
+within each time step and randomized across time steps to create an
+entire simulation. The phylogenetic object is built under standard
+evolutionary assumptions necessary for many of the summary statistics
+used later, so the tree is always bifurcating, non-reticulated, and
+ultrametric.
 
 \section{Push versions}\label{push-versions}
 
@@ -875,65 +1092,8 @@ that paper for an overview:
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(knitr)}
 \KeywordTok{library}\NormalTok{(phytools)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## Loading required package: ape
-\end{verbatim}
-
-\begin{verbatim}
-## 
-## Attaching package: 'ape'
-\end{verbatim}
-
-\begin{verbatim}
-## The following object is masked from 'package:spdep':
-## 
-##     plot.mst
-\end{verbatim}
-
-\begin{verbatim}
-## 
-## Attaching package: 'phytools'
-\end{verbatim}
-
-\begin{verbatim}
-## The following object is masked from 'package:Matrix':
-## 
-##     expm
-\end{verbatim}
-
-\begin{verbatim}
-## The following object is masked from 'package:FARM':
-## 
-##     bd
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(FARM)}
 \KeywordTok{library}\NormalTok{(ROCR)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## Loading required package: gplots
-\end{verbatim}
-
-\begin{verbatim}
-## 
-## Attaching package: 'gplots'
-\end{verbatim}
-
-\begin{verbatim}
-## The following object is masked from 'package:stats':
-## 
-##     lowess
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(spdep)}
 \end{Highlighting}
 \end{Shaded}
@@ -1001,7 +1161,7 @@ throughout the tree.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown-demo_files/figure-latex/unnamed-chunk-20-1.pdf}
+\includegraphics{bookdown-demo_files/figure-latex/unnamed-chunk-19-1.pdf}
 We can summarize branch lengths according to normal summary statistics,
 but it can be difficult to assign evolutionary meaning to some of these
 metrics and so they are not regularly used as best I can tell. This lack
@@ -1028,7 +1188,7 @@ distinguish between large simulated trees.
 ## [1] "standard deviation in branch lengths =  3.87230899263998"
 \end{verbatim}
 
-\includegraphics{bookdown-demo_files/figure-latex/unnamed-chunk-23-1.pdf}
+\includegraphics{bookdown-demo_files/figure-latex/unnamed-chunk-22-1.pdf}
 
 \subsubsection{\texorpdfstring{Phylogenetic diversity
 (\(PD\))}{Phylogenetic diversity (PD)}}\label{phylogenetic-diversity-pd}
@@ -2302,6 +2462,21 @@ R}\label{here-is-the-exact-version-in-r}
 \chapter{Calling Module 1 and Module
 2}\label{calling-module-1-and-module-2}
 
+Simulating 10000 replicates of each of the 4 hypothesized mechanisms
+(40000 total simulations) and then calculating summary statistics for
+all of those simulated worlds required a tremendous amount of computing
+power. We utilize a 1000-node cluster at Washington University in
+St.~Louis and a 300-node cluster at MPI in Jena from August 2016 to
+January 2018 to first prototype the simulation and then run 1000
+replicates of each hypothesized mechanism. Model development and
+prototyping took a full year and two major rebuilds to produce realistic
+worlds that could fit real world data. In that time, we changed modes of
+categorizing simulation outputs from approximate Bayesian computation
+(ABC) to random forest machine learning (CITE) because our simulations
+did not produce the linear posterior distributions required for ABC but
+we were able to work around those limitations using a supervised random
+forest algorithm.
+
 There are two versions of this script, the first is for running each
 simulation to the end and then saving the final step as the output of
 the model and the second is to save outputs along the way so we can
@@ -2955,327 +3130,137 @@ Once logged in, you need to change the directory
 \end{Highlighting}
 \end{Shaded}
 
-\section{Consolidate available files into a single
-table}\label{consolidate-available-files-into-a-single-table}
+\section{Organize data}\label{organize-data}
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\CommentTok{# A frequent scenario in our analysis code is that we need to read thousands of }
+\CommentTok{# output files into a single table. }
+\CommentTok{# There are a couple flavors of file name that need to be dealt with and the }
+\CommentTok{# output file needs to include a column with the full file name for reference }
+\CommentTok{# later. We want to save the final table as it's own file to a folder outside of }
+\CommentTok{# the one we just read. }
+
+\NormalTok{## Here is one flaver where the input is two folders, one with extant }
+\CommentTok{# simulations and one with extinct simulations. Need to read the files and }
+\CommentTok{# produce two tables, one for extinct and one for extant. }
+
 \NormalTok{## First consolidate the available files into a single table}
-    
-\NormalTok{      path <-}\StringTok{ "~/Box Sync/Four model compare/Module 2"}
-           
-     
-           \KeywordTok{setwd}\NormalTok{(path)}
-\NormalTok{    myfiles_full <-}\StringTok{ }\KeywordTok{list.dirs}\NormalTok{()}
-\NormalTok{    analyze_this_many <-}\StringTok{ }\KeywordTok{length}\NormalTok{(myfiles_full)}
-    
-\NormalTok{    available_files <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\OtherTok{NA}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{)}
-    
-        
-    \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\StringTok{ }\NormalTok{analyze_this_many)\{}
-\NormalTok{    available_files <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(available_files , }\KeywordTok{as.matrix}\NormalTok{(}\KeywordTok{list.files}\NormalTok{(myfiles_full[i], }\DataTypeTok{full.names =} \OtherTok{TRUE}\NormalTok{)))}
-\NormalTok{    \}}
-    \KeywordTok{dim}\NormalTok{(available_files)}
-    
-\NormalTok{    split.file.name <-}\StringTok{ }\KeywordTok{strsplit}\NormalTok{(available_files[}\DecValTok{10}\NormalTok{], }\DataTypeTok{split =} \StringTok{"_"}\NormalTok{) }
-    
-    
-    
+\NormalTok{concatenate <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(path) \{}
+\NormalTok{ available <-}\StringTok{ }\KeywordTok{list.files}\NormalTok{(path, }\DataTypeTok{full.names =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{ name <-}\StringTok{ }\KeywordTok{unlist}\NormalTok{(}\KeywordTok{strsplit}\NormalTok{(available[}\DecValTok{1}\NormalTok{], }\DataTypeTok{split=}\StringTok{"_"}\NormalTok{))}
+\NormalTok{ n <-}\StringTok{ }\KeywordTok{length}\NormalTok{(available)}
+\NormalTok{ n_name <-}\StringTok{ }\KeywordTok{length}\NormalTok{(name) }\OperatorTok{-}\StringTok{ }\DecValTok{1}
+ \KeywordTok{load}\NormalTok{(available[}\DecValTok{1}\NormalTok{])}
+\NormalTok{ ncol_files <-}\StringTok{ }\KeywordTok{length}\NormalTok{(Sim_statistics[[}\DecValTok{1}\NormalTok{]]) }\OperatorTok{+}\StringTok{ }\NormalTok{n_name}
+\NormalTok{ files <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\DataTypeTok{nrow =}\NormalTok{ n,}
+                 \DataTypeTok{ncol =}\NormalTok{ ncol_files)}
+\NormalTok{ split_names <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x)\{}\KeywordTok{unlist}\NormalTok{(}\KeywordTok{strsplit}\NormalTok{(x, }\DataTypeTok{split =} \StringTok{"_"}\NormalTok{))\}}
+\NormalTok{ name_available <-}\StringTok{ }\KeywordTok{do.call}\NormalTok{(rbind, }\KeywordTok{lapply}\NormalTok{(}\KeywordTok{as.list}\NormalTok{(available), split_names))}
+\NormalTok{ files[, }\DecValTok{1}\OperatorTok{:}\NormalTok{n_name] <-}\StringTok{ }\NormalTok{name_available[, }\OperatorTok{-}\KeywordTok{ncol}\NormalTok{(name_available)]}
+
+ \ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\NormalTok{n) \{}
+\NormalTok{   error <-}\StringTok{ }\KeywordTok{try}\NormalTok{(}\KeywordTok{load}\NormalTok{(available[i]), }\DataTypeTok{silent =} \OtherTok{TRUE}\NormalTok{)}
+   \ControlFlowTok{if}\NormalTok{ (}\KeywordTok{class}\NormalTok{(error) }\OperatorTok{!=}\StringTok{ "try-error"}\NormalTok{) \{}
+\NormalTok{     files[i, (n_name }\OperatorTok{+}\StringTok{ }\DecValTok{1}\NormalTok{)}\OperatorTok{:}\NormalTok{ncol_files] <-}\StringTok{ }\NormalTok{Sim_statistics[[}\DecValTok{1}\NormalTok{]]}
+\NormalTok{   \}}
+\NormalTok{ \}}
+
+
+\NormalTok{ files <-}\StringTok{ }\NormalTok{files[, }\OperatorTok{-}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{7}\NormalTok{, }\DecValTok{8}\NormalTok{, }\DecValTok{13}\NormalTok{, }\DecValTok{18}\NormalTok{, }\DecValTok{23}\NormalTok{, }\DecValTok{28}\NormalTok{, }\DecValTok{33}\NormalTok{, }\DecValTok{35}\NormalTok{)]}
+\NormalTok{ last_name <-}\StringTok{ }\KeywordTok{colnames}\NormalTok{(Sim_statistics[[}\DecValTok{1}\NormalTok{]])}
+ \ControlFlowTok{if}\NormalTok{ (}\KeywordTok{is.null}\NormalTok{(last_name)) \{}
+
+\NormalTok{   files <-}\StringTok{ }\NormalTok{files[, }\OperatorTok{-}\KeywordTok{ncol}\NormalTok{(files)]}
+\NormalTok{ \}}
+ \KeywordTok{colnames}\NormalTok{(files) <-}\StringTok{  }\KeywordTok{c}\NormalTok{(}\StringTok{"Sim_stats_rep"}\NormalTok{, }\StringTok{"combo"}\NormalTok{, }\KeywordTok{paste0}\NormalTok{(}\StringTok{"P.speciation"}\NormalTok{, }\DecValTok{1}\OperatorTok{:}\DecValTok{4}\NormalTok{),}
+                       \KeywordTok{paste0}\NormalTok{(}\StringTok{"P.extinct"}\NormalTok{, }\DecValTok{1}\OperatorTok{:}\DecValTok{4}\NormalTok{),  }\KeywordTok{paste0}\NormalTok{(}\StringTok{"P.diffus"}\NormalTok{, }\DecValTok{1}\OperatorTok{:}\DecValTok{4}\NormalTok{),}
+                       \KeywordTok{paste0}\NormalTok{(}\StringTok{"P.TO"}\NormalTok{, }\DecValTok{1}\OperatorTok{:}\DecValTok{4}\NormalTok{),  }\KeywordTok{paste0}\NormalTok{(}\StringTok{"P.Arisal"}\NormalTok{, }\DecValTok{1}\OperatorTok{:}\DecValTok{4}\NormalTok{), }
+                       \StringTok{"timesteps"}\NormalTok{, }\StringTok{"NBS"}\NormalTok{, last_name)}
+
+\NormalTok{ Concatenated_data <-}\StringTok{ }\KeywordTok{as.data.frame}\NormalTok{(files)}
+
+\NormalTok{ begin <-}\StringTok{ }\KeywordTok{which}\NormalTok{(}\KeywordTok{colnames}\NormalTok{(Concatenated_data) }\OperatorTok{==}\StringTok{  "number_of_branches"}\NormalTok{)}
+\NormalTok{ Concatenated_data_stat <-}\StringTok{ }\NormalTok{Concatenated_data[, begin}\OperatorTok{:}\KeywordTok{ncol}\NormalTok{(Concatenated_data)]}
+\NormalTok{ Concatenated_data_stat <-}\StringTok{ }\KeywordTok{apply}\NormalTok{(Concatenated_data_stat, }\DecValTok{2}\NormalTok{, as.numeric)}
+\NormalTok{ remove <-}\StringTok{ }\KeywordTok{which}\NormalTok{(}\KeywordTok{is.na}\NormalTok{(}\KeywordTok{rowSums}\NormalTok{(Concatenated_data_stat)))}
+\NormalTok{ Concatenated_data <-}\StringTok{ }\NormalTok{Concatenated_data[}\OperatorTok{-}\NormalTok{remove, ]}
+
+\NormalTok{ one <-}\StringTok{ }\KeywordTok{subset}\NormalTok{(Concatenated_data, combo }\OperatorTok{==}\StringTok{"01"}\NormalTok{)}
+\NormalTok{ two <-}\StringTok{ }\KeywordTok{subset}\NormalTok{(Concatenated_data, combo }\OperatorTok{==}\StringTok{"02"}\NormalTok{)}
+\NormalTok{ five <-}\StringTok{ }\KeywordTok{subset}\NormalTok{(Concatenated_data, combo }\OperatorTok{==}\StringTok{"05"}\NormalTok{)}
+\NormalTok{ six <-}\StringTok{ }\KeywordTok{subset}\NormalTok{(Concatenated_data, combo }\OperatorTok{==}\StringTok{"06"}\NormalTok{)}
+
+\NormalTok{ crop <-}\StringTok{ }\KeywordTok{min}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(}\KeywordTok{list}\NormalTok{(one, two, five, six), nrow))}
+
+\NormalTok{ one <-}\StringTok{ }\NormalTok{one[}\DecValTok{1}\OperatorTok{:}\NormalTok{crop, ]}
+\NormalTok{ two <-}\StringTok{ }\NormalTok{two[}\DecValTok{1}\OperatorTok{:}\NormalTok{crop, ]}
+\NormalTok{ five <-}\StringTok{ }\NormalTok{five[}\DecValTok{1}\OperatorTok{:}\NormalTok{crop, ]}
+\NormalTok{ six <-}\StringTok{ }\NormalTok{six[}\DecValTok{1}\OperatorTok{:}\NormalTok{crop, ]}
+
+\NormalTok{ Concatenated_data2 <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(one, two, five, six)}
+\NormalTok{ res <-}\StringTok{ }\KeywordTok{list}\NormalTok{(Concatenated_data, Concatenated_data2, crop)}
+ \KeywordTok{names}\NormalTok{(res) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Concatenated_data"}\NormalTok{, }\StringTok{"Concatenated_data_crop"}\NormalTok{, }\StringTok{"crop"}\NormalTok{)}
+ \KeywordTok{return}\NormalTok{(res)}
  
-\NormalTok{available <-}\StringTok{ }\KeywordTok{list.files}\NormalTok{()}
-\NormalTok{files <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\OtherTok{NA}\NormalTok{, }\DecValTok{62}\NormalTok{), }\KeywordTok{length}\NormalTok{(available), }\DecValTok{62}\NormalTok{)}
-\KeywordTok{dim}\NormalTok{(files)}
-\NormalTok{i <-}\StringTok{ }\DecValTok{10}
-
-
-\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\KeywordTok{length}\NormalTok{(available))\{}
-\KeywordTok{load}\NormalTok{(available[i])}
-\NormalTok{name <-}\StringTok{ }\KeywordTok{unlist}\NormalTok{(}\KeywordTok{strsplit}\NormalTok{(available[i], }\DataTypeTok{split=}\StringTok{"_"}\NormalTok{))}
-\NormalTok{files[i,] <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\KeywordTok{as.vector}\NormalTok{(}\KeywordTok{matrix}\NormalTok{(name, }\DecValTok{1}\NormalTok{,}\DecValTok{35}\NormalTok{)),}\KeywordTok{matrix}\NormalTok{(Sim_statistics[[}\DecValTok{1}\NormalTok{]], }\DecValTok{1}\NormalTok{, }\DecValTok{27}\NormalTok{))}
-
 \NormalTok{\}}
 
+\NormalTok{path <-}\StringTok{ "~/Box Sync/Four model compare third run/Module 2"}
+\NormalTok{Concatenated_data0 <-}\StringTok{ }\KeywordTok{concatenate}\NormalTok{(path)}
+\KeywordTok{print}\NormalTok{(Concatenated_data0[[}\DecValTok{3}\NormalTok{]])}
+\NormalTok{path_save <-}\StringTok{ "~/Box Sync/Four model compare third run"}
+\NormalTok{Concatenated_data <-}\StringTok{ }\NormalTok{Concatenated_data0[[}\DecValTok{1}\NormalTok{]]}
+\KeywordTok{save}\NormalTok{(Concatenated_data, }\DataTypeTok{file =} \KeywordTok{paste0}\NormalTok{(path_save,}
+                                     \StringTok{"/Four_model_compare_results_not_cropped.Rdata"}\NormalTok{))}
+\NormalTok{Concatenated_data <-}\StringTok{ }\NormalTok{Concatenated_data0[[}\DecValTok{2}\NormalTok{]]}
+\KeywordTok{save}\NormalTok{(Concatenated_data, }\DataTypeTok{file=}\KeywordTok{paste0}\NormalTok{(path_save,}
+                                   \StringTok{"/Four_model_compare_results_"}\NormalTok{, }
+                                   \KeywordTok{format}\NormalTok{(}\KeywordTok{Sys.time}\NormalTok{(), }\DataTypeTok{format=}\StringTok{"%d_%b_%Y"}\NormalTok{),}
+                                   \StringTok{"_crop_to_"}\NormalTok{, Concatenated_data0[[}\DecValTok{3}\NormalTok{]],}\StringTok{".Rdata"}\NormalTok{))}
 
-\KeywordTok{colnames}\NormalTok{(files) <-}\StringTok{  }\KeywordTok{c}\NormalTok{(}
+\NormalTok{### Repeated for extinct}
+\NormalTok{path <-}\StringTok{ "~/Box Sync/Four model compare third run/Module 2 extinct"}
+\NormalTok{Concatenated_data <-}\StringTok{ }\KeywordTok{concatenate}\NormalTok{(path)[[}\DecValTok{1}\NormalTok{]]}
+\NormalTok{path_save <-}\StringTok{ "~/Box Sync/Four model compare third run"}
 
-    \OtherTok{NA}\NormalTok{,}
-    \StringTok{"background_takeover_type"}\NormalTok{ ,}
-    \OtherTok{NA}\NormalTok{,}
-    \StringTok{"replicate"}\NormalTok{,}
-    \OtherTok{NA}\NormalTok{,}
-    \StringTok{"Model_type"}\NormalTok{,}
-    \KeywordTok{rep}\NormalTok{(}\OtherTok{NA}\NormalTok{,}\DecValTok{2}\NormalTok{),}
-    \StringTok{"speciation_of_Env_NonD"}\NormalTok{,}
-    \StringTok{"speciation_of_Env_D"}\NormalTok{,}
-    \StringTok{"speciation_of_For"}\NormalTok{,}
-    \StringTok{"speciation_of_Dom"}\NormalTok{,}
-    \OtherTok{NA}\NormalTok{,}
-    \StringTok{"extinction_of_Env_NonD"}\NormalTok{,}
-    \StringTok{"extinction_of_Env_D"}\NormalTok{,}
-    \StringTok{"extinction_of_For"}\NormalTok{,}
-    \StringTok{"extinction_of_Dom"}\NormalTok{,}
-    \OtherTok{NA}\NormalTok{,}
-    \StringTok{"P.diffusion_Target_forager"}\NormalTok{,}
-    \StringTok{"P.diffusion_Target_domesticator"}\NormalTok{,}
-    \StringTok{"P.diffusion_Source_forager"}\NormalTok{,}
-    \StringTok{"P.diffusion_Source_domesticator"}\NormalTok{,}
-    \OtherTok{NA}\NormalTok{,}
-    \StringTok{"P.takeover_Target_forager"}\NormalTok{,}
-    \StringTok{"P.takeover_Target_domesticator"}\NormalTok{,}
-    \StringTok{"P.takeover_Source_forager"}\NormalTok{,}
-    \StringTok{"P.takeover_Source_domesticator"}\NormalTok{,}
-    \OtherTok{NA}\NormalTok{,}
-    \StringTok{"arisal_of_Env_NonD"}\NormalTok{,}
-    \StringTok{"arisal_of_Env_D"}\NormalTok{,}
-    \StringTok{"arisal_of_For"}\NormalTok{,}
-    \StringTok{"arisal_of_Dom"}\NormalTok{,}
-    
-    \OtherTok{NA}\NormalTok{, }
-    \StringTok{"timesteps"}\NormalTok{, }
-    \OtherTok{NA}\NormalTok{,}
-        
-    \StringTok{"number_of_branches"}\NormalTok{,}
-    \StringTok{"Pylo_diversity_is_sum_of_BL"}\NormalTok{,}
-    \StringTok{"average_phylogenetic_diversity_is_mean_of_BL"}\NormalTok{,}
-    \StringTok{"variance_Pylo_diversity_is_variance_of_BL"}\NormalTok{,}
-
-    \StringTok{"F_quadratic_entropy_is_sum_of_PD"}\NormalTok{,}
-    \StringTok{"Mean_pairwise_distance"}\NormalTok{,}
-    \StringTok{"variance_pairwise_distance"}\NormalTok{,}
-
-    \StringTok{"Evolutionary_distinctiveness_sum"}\NormalTok{,}
-    \StringTok{"mean_Phylogenetic_isolation"}\NormalTok{,}
-    \StringTok{"variance_Phylogenetic_isolation"}\NormalTok{,}
-
-    \StringTok{"gamma"}\NormalTok{,}
-    \StringTok{"gamma_p_value"}\NormalTok{,}
-    \StringTok{"speciation_rate"}\NormalTok{,}
-    \StringTok{"extinction_rate"}\NormalTok{,}
-    \StringTok{"extinction_per_speciation"}\NormalTok{,}
-    \StringTok{"speciation_minus_extinction"}\NormalTok{,}
-    \StringTok{"trait_1_speciation"}\NormalTok{,}
-    \StringTok{"trait_2_speciation"}\NormalTok{ ,}
-    \StringTok{"trait_1_extinction"}\NormalTok{ ,}
-    \StringTok{"trait_2_extinction"}\NormalTok{ ,}
-    \StringTok{"transition_from_trait_1_to_2"}\NormalTok{ ,}
-    \StringTok{"transition_from_trait_2_to_1"}\NormalTok{ ,}
-    \StringTok{"transition_rate_ratio_1to2_over_2to1"}\NormalTok{ ,}
-    \StringTok{"Phylogenetic_signal"}\NormalTok{,}
-    \StringTok{"spatial.tests.fora"}\NormalTok{,}
-    \StringTok{"spatial.tests.dom"}\NormalTok{,}
-    \StringTok{"prevalence"}
-    
-    
-\NormalTok{  )}
-
-\NormalTok{results_table <-}\StringTok{ }\KeywordTok{as.data.frame}\NormalTok{(files)}
-\KeywordTok{head}\NormalTok{(results_table)}
-\KeywordTok{dim}\NormalTok{(results_table)}
-\NormalTok{Concatenated_data <-}\StringTok{ }\NormalTok{results_table}
-\KeywordTok{save}\NormalTok{(Concatenated_data, }\DataTypeTok{file=}\StringTok{"~/Desktop/Four_model_compare_results.Rdata"}\NormalTok{)}
-
-\NormalTok{one <-}\StringTok{ }\KeywordTok{subset}\NormalTok{(results_table, Model_type}\OperatorTok{==}\StringTok{"01"}\NormalTok{ )}
-\NormalTok{two <-}\StringTok{ }\KeywordTok{subset}\NormalTok{(results_table, Model_type}\OperatorTok{==}\StringTok{"02"}\NormalTok{ )}
-\NormalTok{three <-}\StringTok{ }\KeywordTok{subset}\NormalTok{(results_table, Model_type}\OperatorTok{==}\StringTok{"03"}\NormalTok{ )}
-\NormalTok{four <-}\StringTok{ }\KeywordTok{subset}\NormalTok{(results_table, Model_type}\OperatorTok{==}\StringTok{"04"}\NormalTok{ )}
-\NormalTok{crop <-}\StringTok{ }\KeywordTok{min}\NormalTok{(}\KeywordTok{length}\NormalTok{(one[,}\DecValTok{1}\NormalTok{]),}
-\KeywordTok{length}\NormalTok{(two[,}\DecValTok{1}\NormalTok{]),}
-\KeywordTok{length}\NormalTok{(three[,}\DecValTok{1}\NormalTok{]),}
-\KeywordTok{length}\NormalTok{(four[,}\DecValTok{1}\NormalTok{]))}
-\NormalTok{one <-}\StringTok{ }\NormalTok{one[}\DecValTok{1}\OperatorTok{:}\NormalTok{crop,]}
-\NormalTok{two <-}\StringTok{ }\NormalTok{two[}\DecValTok{1}\OperatorTok{:}\NormalTok{crop,]}
-\NormalTok{three <-}\StringTok{ }\NormalTok{three[}\DecValTok{1}\OperatorTok{:}\NormalTok{crop,]}
-\NormalTok{four <-}\StringTok{ }\NormalTok{four[}\DecValTok{1}\OperatorTok{:}\NormalTok{crop,]}
-
-\NormalTok{Concatenated_data <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(one, two, three, four)}
-\KeywordTok{dim}\NormalTok{(Concatenated_data)}
-
-
-
-
-
-\KeywordTok{save}\NormalTok{(Concatenated_data, }\DataTypeTok{file=}\KeywordTok{paste0}\NormalTok{(}\StringTok{"~/Box Sync/colliding ranges/Simulations_humans/Results/available daily summaries/Four_model_compare_results"}\NormalTok{, }\KeywordTok{format}\NormalTok{(}\KeywordTok{Sys.time}\NormalTok{(), }\DataTypeTok{format=}\StringTok{"%d_%b_%Y"}\NormalTok{),}\StringTok{"_crop_to_"}\NormalTok{, crop,}\StringTok{".Rdata"}\NormalTok{))}
-\NormalTok{crop}
+\KeywordTok{save}\NormalTok{(Concatenated_data, }\DataTypeTok{file=}\KeywordTok{paste0}\NormalTok{(path_save,}
+                                   \StringTok{"/Four_model_compare_results_extinct_"}\NormalTok{, }
+                                   \KeywordTok{format}\NormalTok{(}\KeywordTok{Sys.time}\NormalTok{(), }\DataTypeTok{format=}\StringTok{"%d_%b_%Y"}\NormalTok{),}\StringTok{".Rdata"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{## First consolidate the available files into a single table}
-    
-\NormalTok{      path <-}\StringTok{ "~/Box Sync/Four model compare/Module 2 extinct"}
-           
-     
-           \KeywordTok{setwd}\NormalTok{(path)}
-\NormalTok{    myfiles_full <-}\StringTok{ }\KeywordTok{list.dirs}\NormalTok{()}
-\NormalTok{    analyze_this_many <-}\StringTok{ }\KeywordTok{length}\NormalTok{(myfiles_full)}
-    
-\NormalTok{    available_files <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\OtherTok{NA}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{)}
-    
-        
-    \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\StringTok{ }\NormalTok{analyze_this_many)\{}
-\NormalTok{    available_files <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(available_files , }\KeywordTok{as.matrix}\NormalTok{(}\KeywordTok{list.files}\NormalTok{(myfiles_full[i], }\DataTypeTok{full.names =} \OtherTok{TRUE}\NormalTok{)))}
-\NormalTok{    \}}
-    \KeywordTok{dim}\NormalTok{(available_files)}
-    
-\NormalTok{    split.file.name <-}\StringTok{ }\KeywordTok{strsplit}\NormalTok{(available_files[}\DecValTok{10}\NormalTok{], }\DataTypeTok{split =} \StringTok{"_"}\NormalTok{) }
-    
-    
-    
- 
-\NormalTok{available <-}\StringTok{ }\KeywordTok{list.files}\NormalTok{()}
-\NormalTok{files <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\OtherTok{NA}\NormalTok{, }\DecValTok{62}\NormalTok{), }\KeywordTok{length}\NormalTok{(available), }\DecValTok{62}\NormalTok{)}
-\KeywordTok{dim}\NormalTok{(files)}
-\NormalTok{i <-}\StringTok{ }\DecValTok{10}
-
-
-\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\KeywordTok{length}\NormalTok{(available))\{}
-\KeywordTok{load}\NormalTok{(available[i])}
-\NormalTok{name <-}\StringTok{ }\KeywordTok{unlist}\NormalTok{(}\KeywordTok{strsplit}\NormalTok{(available[i], }\DataTypeTok{split=}\StringTok{"_"}\NormalTok{))}
-\NormalTok{files[i,] <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\KeywordTok{as.vector}\NormalTok{(}\KeywordTok{matrix}\NormalTok{(name, }\DecValTok{1}\NormalTok{,}\DecValTok{35}\NormalTok{)),}\KeywordTok{matrix}\NormalTok{(Sim_statistics[[}\DecValTok{1}\NormalTok{]], }\DecValTok{1}\NormalTok{, }\DecValTok{27}\NormalTok{))}
-
-\NormalTok{\}}
-
-
-\KeywordTok{colnames}\NormalTok{(files) <-}\StringTok{  }\KeywordTok{c}\NormalTok{(}
-
-    \OtherTok{NA}\NormalTok{,}
-    \StringTok{"background_takeover_type"}\NormalTok{ ,}
-    \OtherTok{NA}\NormalTok{,}
-    \StringTok{"replicate"}\NormalTok{,}
-    \OtherTok{NA}\NormalTok{,}
-    \StringTok{"Model_type"}\NormalTok{,}
-    \KeywordTok{rep}\NormalTok{(}\OtherTok{NA}\NormalTok{,}\DecValTok{2}\NormalTok{),}
-    \StringTok{"speciation_of_Env_NonD"}\NormalTok{,}
-    \StringTok{"speciation_of_Env_D"}\NormalTok{,}
-    \StringTok{"speciation_of_For"}\NormalTok{,}
-    \StringTok{"speciation_of_Dom"}\NormalTok{,}
-    \OtherTok{NA}\NormalTok{,}
-    \StringTok{"extinction_of_Env_NonD"}\NormalTok{,}
-    \StringTok{"extinction_of_Env_D"}\NormalTok{,}
-    \StringTok{"extinction_of_For"}\NormalTok{,}
-    \StringTok{"extinction_of_Dom"}\NormalTok{,}
-    \OtherTok{NA}\NormalTok{,}
-    \StringTok{"P.diffusion_Target_forager"}\NormalTok{,}
-    \StringTok{"P.diffusion_Target_domesticator"}\NormalTok{,}
-    \StringTok{"P.diffusion_Source_forager"}\NormalTok{,}
-    \StringTok{"P.diffusion_Source_domesticator"}\NormalTok{,}
-    \OtherTok{NA}\NormalTok{,}
-    \StringTok{"P.takeover_Target_forager"}\NormalTok{,}
-    \StringTok{"P.takeover_Target_domesticator"}\NormalTok{,}
-    \StringTok{"P.takeover_Source_forager"}\NormalTok{,}
-    \StringTok{"P.takeover_Source_domesticator"}\NormalTok{,}
-    \OtherTok{NA}\NormalTok{,}
-    \StringTok{"arisal_of_Env_NonD"}\NormalTok{,}
-    \StringTok{"arisal_of_Env_D"}\NormalTok{,}
-    \StringTok{"arisal_of_For"}\NormalTok{,}
-    \StringTok{"arisal_of_Dom"}\NormalTok{,}
-    
-    \OtherTok{NA}\NormalTok{, }
-    \StringTok{"timesteps"}\NormalTok{, }
-    \OtherTok{NA}\NormalTok{,}
-        
-    \StringTok{"number_of_branches"}\NormalTok{,}
-    \StringTok{"Pylo_diversity_is_sum_of_BL"}\NormalTok{,}
-    \StringTok{"average_phylogenetic_diversity_is_mean_of_BL"}\NormalTok{,}
-    \StringTok{"variance_Pylo_diversity_is_variance_of_BL"}\NormalTok{,}
-
-    \StringTok{"F_quadratic_entropy_is_sum_of_PD"}\NormalTok{,}
-    \StringTok{"Mean_pairwise_distance"}\NormalTok{,}
-    \StringTok{"variance_pairwise_distance"}\NormalTok{,}
-
-    \StringTok{"Evolutionary_distinctiveness_sum"}\NormalTok{,}
-    \StringTok{"mean_Phylogenetic_isolation"}\NormalTok{,}
-    \StringTok{"variance_Phylogenetic_isolation"}\NormalTok{,}
-
-    \StringTok{"gamma"}\NormalTok{,}
-    \StringTok{"gamma_p_value"}\NormalTok{,}
-    \StringTok{"speciation_rate"}\NormalTok{,}
-    \StringTok{"extinction_rate"}\NormalTok{,}
-    \StringTok{"extinction_per_speciation"}\NormalTok{,}
-    \StringTok{"speciation_minus_extinction"}\NormalTok{,}
-    \StringTok{"trait_1_speciation"}\NormalTok{,}
-    \StringTok{"trait_2_speciation"}\NormalTok{ ,}
-    \StringTok{"trait_1_extinction"}\NormalTok{ ,}
-    \StringTok{"trait_2_extinction"}\NormalTok{ ,}
-    \StringTok{"transition_from_trait_1_to_2"}\NormalTok{ ,}
-    \StringTok{"transition_from_trait_2_to_1"}\NormalTok{ ,}
-    \StringTok{"transition_rate_ratio_1to2_over_2to1"}\NormalTok{ ,}
-    \StringTok{"Phylogenetic_signal"}\NormalTok{,}
-    \StringTok{"spatial.tests.fora"}\NormalTok{,}
-    \StringTok{"spatial.tests.dom"}\NormalTok{,}
-    \StringTok{"prevalence"}
-    
-    
-\NormalTok{  )}
-
-\NormalTok{Concatenated_data <-}\StringTok{ }\KeywordTok{as.data.frame}\NormalTok{(files)}
-\KeywordTok{head}\NormalTok{(Concatenated_data)}
-\KeywordTok{dim}\NormalTok{(Concatenated_data)}
-
-\KeywordTok{save}\NormalTok{(Concatenated_data, }\DataTypeTok{file=}\KeywordTok{paste0}\NormalTok{(}\StringTok{"~/Box Sync/colliding ranges/Simulations_humans/Results/available daily summaries/Four_model_compare_results_extinct_"}\NormalTok{, }\KeywordTok{format}\NormalTok{(}\KeywordTok{Sys.time}\NormalTok{(), }\DataTypeTok{format=}\StringTok{"%d_%b_%Y"}\NormalTok{),}\StringTok{"_crop_to_"}\NormalTok{, crop,}\StringTok{".Rdata"}\NormalTok{))}
-\end{Highlighting}
-\end{Shaded}
-
-\section{Summarize overall extinction
-rates}\label{summarize-overall-extinction-rates}
+\section{Diagnostics}\label{diagnostics}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{load}\NormalTok{(}\StringTok{'~/Box Sync/colliding ranges/Simulations_humans/Results/available daily summaries/Four_model_compare_results_02_Mar_2017_crop_to_3481.Rdata'}\NormalTok{)}
+\KeywordTok{load}\NormalTok{(}\StringTok{"Four_model_compare_results_02_Aug_2017_crop_to_6128.Rdata"}\NormalTok{)}
 \NormalTok{extant <-}\StringTok{ }\NormalTok{Concatenated_data}
 \NormalTok{extant}
-\end{Highlighting}
-\end{Shaded}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{setwd}\NormalTok{(}\StringTok{"~/Box Sync/colliding ranges/Simulations_humans/Results/available daily summaries"}\NormalTok{)}
-\NormalTok{details <-}\StringTok{ }\KeywordTok{file.info}\NormalTok{(}\KeywordTok{list.files}\NormalTok{())}
-
-\NormalTok{trimmed_details <-}\StringTok{ }\NormalTok{details[}\KeywordTok{which}\NormalTok{(}\KeywordTok{list.files}\NormalTok{() }\OperatorTok{==}\StringTok{ }\KeywordTok{list.files}\NormalTok{(}\DataTypeTok{pattern =} \StringTok{"Four_model_compare_results_extinct*"}\NormalTok{)),]}
-\NormalTok{ord <-}\StringTok{ }\KeywordTok{order}\NormalTok{(trimmed_details}\OperatorTok{$}\NormalTok{mtime, }\DataTypeTok{decreasing =} \OtherTok{TRUE}\NormalTok{)}
-\KeywordTok{rownames}\NormalTok{(trimmed_details[ord,])[}\DecValTok{1}\NormalTok{]}
-\KeywordTok{load}\NormalTok{(}\KeywordTok{rownames}\NormalTok{(trimmed_details[ord,])[}\DecValTok{1}\NormalTok{])}
+ \KeywordTok{load}\NormalTok{(}\StringTok{"Four_model_compare_results_extinct_02_Aug_2017.Rdata"}\NormalTok{)}
 \NormalTok{extinct <-}\StringTok{ }\NormalTok{Concatenated_data}
+\NormalTok{extinct}
 
-\NormalTok{trimmed_details <-}\StringTok{ }\NormalTok{details[}\KeywordTok{which}\NormalTok{(}\KeywordTok{list.files}\NormalTok{() }\OperatorTok{!=}\StringTok{ }\KeywordTok{list.files}\NormalTok{(}\DataTypeTok{pattern =} \StringTok{"Four_model_compare_results_extinct*"}\NormalTok{)),]}
-\NormalTok{ord <-}\StringTok{ }\KeywordTok{order}\NormalTok{(trimmed_details}\OperatorTok{$}\NormalTok{mtime, }\DataTypeTok{decreasing =} \OtherTok{TRUE}\NormalTok{)}
-\KeywordTok{rownames}\NormalTok{(trimmed_details[ord,])[}\DecValTok{1}\NormalTok{]}
-\KeywordTok{load}\NormalTok{(}\KeywordTok{rownames}\NormalTok{(trimmed_details[ord,])[}\DecValTok{1}\NormalTok{])}
-\NormalTok{extant <-}\StringTok{ }\NormalTok{Concatenated_data}
+\KeywordTok{head}\NormalTok{(extant)}
+\KeywordTok{head}\NormalTok{(extinct)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{dim}\NormalTok{(extinct)}
-\KeywordTok{dim}\NormalTok{(extant)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \KeywordTok{c}\NormalTok{(}\DecValTok{9}\NormalTok{,}\DecValTok{10}\NormalTok{,}\DecValTok{11}\NormalTok{,}\DecValTok{12}\NormalTok{,}\DecValTok{14}\NormalTok{,}\DecValTok{15}\NormalTok{,}\DecValTok{16}\NormalTok{,}\DecValTok{17}\NormalTok{,}\DecValTok{19}\NormalTok{,}\DecValTok{20}\NormalTok{,}\DecValTok{21}\NormalTok{,}\DecValTok{22}\NormalTok{,}\DecValTok{24}\NormalTok{,}\DecValTok{25}\NormalTok{,}\DecValTok{26}\NormalTok{,}\DecValTok{27}\NormalTok{,}\DecValTok{29}\NormalTok{,}\DecValTok{30}\NormalTok{,}\DecValTok{31}\NormalTok{,}\DecValTok{32}\NormalTok{))\{}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \KeywordTok{c}\NormalTok{(}\DecValTok{3}\OperatorTok{:}\DecValTok{22}\NormalTok{))\{}
 \NormalTok{    extinct[}\KeywordTok{which}\NormalTok{(}\KeywordTok{is.nan}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, i]))) }\OperatorTok{==}\StringTok{ }\OtherTok{TRUE}\NormalTok{), i] <-}\StringTok{ }\OtherTok{NA}
 \NormalTok{\}}
 
-\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \KeywordTok{c}\NormalTok{(}\DecValTok{9}\NormalTok{,}\DecValTok{10}\NormalTok{,}\DecValTok{11}\NormalTok{,}\DecValTok{12}\NormalTok{,}\DecValTok{14}\NormalTok{,}\DecValTok{15}\NormalTok{,}\DecValTok{16}\NormalTok{,}\DecValTok{17}\NormalTok{,}\DecValTok{19}\NormalTok{,}\DecValTok{20}\NormalTok{,}\DecValTok{21}\NormalTok{,}\DecValTok{22}\NormalTok{,}\DecValTok{24}\NormalTok{,}\DecValTok{25}\NormalTok{,}\DecValTok{26}\NormalTok{,}\DecValTok{27}\NormalTok{,}\DecValTok{29}\NormalTok{,}\DecValTok{30}\NormalTok{,}\DecValTok{31}\NormalTok{,}\DecValTok{32}\NormalTok{))\{}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \KeywordTok{c}\NormalTok{(}\DecValTok{3}\OperatorTok{:}\DecValTok{22}\NormalTok{))\{}
 \NormalTok{    extant[}\KeywordTok{which}\NormalTok{(}\KeywordTok{is.nan}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, i]))) }\OperatorTok{==}\StringTok{ }\OtherTok{TRUE}\NormalTok{), i] <-}\StringTok{ }\OtherTok{NA}
 \NormalTok{\}}
 
-\NormalTok{i <-}\StringTok{ }\DecValTok{19}
-\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \KeywordTok{c}\NormalTok{(}\DecValTok{20}\NormalTok{,}\DecValTok{21}\NormalTok{,}\DecValTok{24}\NormalTok{,}\DecValTok{25}\NormalTok{,}\DecValTok{26}\NormalTok{,}\DecValTok{27}\NormalTok{))\{}
-\NormalTok{    extinct[}\KeywordTok{which}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, i])) }\OperatorTok{==}\StringTok{ }\DecValTok{0}\NormalTok{), i] <-}\StringTok{ }\OtherTok{NA}
-\NormalTok{\}}
 
-\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \KeywordTok{c}\NormalTok{(}\DecValTok{20}\NormalTok{,}\DecValTok{21}\NormalTok{,}\DecValTok{24}\NormalTok{,}\DecValTok{25}\NormalTok{,}\DecValTok{26}\NormalTok{,}\DecValTok{27}\NormalTok{))\{}
-\NormalTok{    extant[}\KeywordTok{which}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, i])) }\OperatorTok{==}\StringTok{ }\DecValTok{0}\NormalTok{), i] <-}\StringTok{ }\OtherTok{NA}
-\NormalTok{\}}
 
 
 \NormalTok{xlimit <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{)}
-\NormalTok{ylimit <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{600}\NormalTok{)}
+\NormalTok{ylimit <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{3000}\NormalTok{)}
 \NormalTok{maincex <-}\StringTok{ }\FloatTok{0.9}
 
 \KeywordTok{png}\NormalTok{(}\DataTypeTok{file=}\StringTok{"Global_success_rate_per_parameter.png"}\NormalTok{, }\DataTypeTok{width=}\FloatTok{8.5}\NormalTok{, }\DataTypeTok{height=}\DecValTok{11}\NormalTok{, }\DataTypeTok{units=}\StringTok{"in"}\NormalTok{, }\DataTypeTok{res=}\DecValTok{300}\NormalTok{)}
@@ -3283,83 +3268,82 @@ rates}\label{summarize-overall-extinction-rates}
 \KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{5}\NormalTok{,}\DecValTok{4}\NormalTok{), }\DataTypeTok{mar=}\KeywordTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{0}\NormalTok{))}
 
 
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[,}\DecValTok{9}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"speciation of F in F env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=}\FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[,}\DecValTok{9}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"speciation of F in F env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=}\FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[,}\DecValTok{3}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"speciation of F in F env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=}\FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[,}\DecValTok{3}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"speciation of F in F env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=}\FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
 
 
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[,}\DecValTok{10}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"speciation of D in F env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[,}\DecValTok{10}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"speciation of D in F env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[,}\DecValTok{4}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"speciation of D in F env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[,}\DecValTok{4}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"speciation of D in F env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
 
 
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[,}\DecValTok{11}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"speciation of F in D env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[,}\DecValTok{11}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"speciation of F in D env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[,}\DecValTok{5}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"speciation of F in D env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[,}\DecValTok{5}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"speciation of F in D env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
 
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[,}\DecValTok{12}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"speciation of D in D env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[,}\DecValTok{12}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"speciation of D in D env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[,}\DecValTok{6}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"speciation of D in D env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[,}\DecValTok{6}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"speciation of D in D env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
 
 \NormalTok{#######}
 
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{14}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"extinction of F in F env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{14}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"extinction of F in F env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{7}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"extinction of F in F env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{7}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"extinction of F in F env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
 
 
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{8}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"extinction of D in F env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{8}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"extinction of D in F env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
 
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{15}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"extinction of D in F env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{15}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"extinction of D in F env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{9}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"extinction of F in D env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{9}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"extinction of F in D env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
 
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{16}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"extinction of F in D env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{16}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"extinction of F in D env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
-
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{17}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"extinction of D in D env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{17}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"extinction of D in D env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
-
-\NormalTok{######}
-
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{29}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"arisal of F in F env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{29}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"arisal of F in F env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
-
-
-
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{30}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"arisal of D in F env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{30}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"arisal of D in F env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
-
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{31}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"arisal of F in D env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{31}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"arisal of F in D env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
-
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{32}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"arisal of D in D env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{32}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"arisal of D in D env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{10}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"extinction of D in D env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{10}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"extinction of D in D env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
 
 \NormalTok{######}
 
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{19}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"NOPE -- Diffusion: source F, target F"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{18000}\NormalTok{), }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{19}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"NOPE -- Diffusion: source F, target F"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{18000}\NormalTok{), }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{11}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"arisal of F in F env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{11}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"arisal of F in F env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
 
 
 
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{20}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"Diffusion: source D, target F"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{20}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"Diffusion: source D, target F"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{12}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"arisal of D in F env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{12}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"arisal of D in F env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
 
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{21}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"Diffusion: source F, target D"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{21}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"Diffusion: source F, target D"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{13}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"arisal of F in D env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{13}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"arisal of F in D env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
 
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{22}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"NOPE -- Diffusion: source D, target D"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{18000}\NormalTok{), }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{22}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"NOPE -- Diffusion: source D, target D"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{18000}\NormalTok{), }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{14}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"arisal of D in D env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{14}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"arisal of D in D env"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
+
+\NormalTok{######}
+
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{15}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"NOPE -- Diffusion: source F, target F"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{18000}\NormalTok{), }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{15}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"NOPE -- Diffusion: source F, target F"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{18000}\NormalTok{), }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
+
+
+
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{16}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"Diffusion: source D, target F"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{16}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"Diffusion: source D, target F"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
+
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{17}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"Diffusion: source F, target D"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{17}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"Diffusion: source F, target D"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
+
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{18}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"NOPE -- Diffusion: source D, target D"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{18000}\NormalTok{), }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{18}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"NOPE -- Diffusion: source D, target D"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{18000}\NormalTok{), }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
 
 \NormalTok{####}
 
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{24}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"Takeover: source F, target F"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{24}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"Takeover: source F, target F"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{19}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"Takeover: source F, target F"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{19}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"Takeover: source F, target F"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
 
 
 
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{25}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"Takeover: source D, target F"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{25}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"Takeover: source D, target F"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{20}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"Takeover: source D, target F"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{20}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"Takeover: source D, target F"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
 
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{26}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"Takeover: source F, target D"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{26}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"Takeover: source F, target D"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{21}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"Takeover: source F, target D"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{21}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"Takeover: source F, target D"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
 
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{27}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"Takeover: source D, target D"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{27}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"Takeover: source D, target D"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[, }\DecValTok{22}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"Takeover: source D, target D"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[, }\DecValTok{22}\NormalTok{])), }\DataTypeTok{main=}\StringTok{"Takeover: source D, target D"}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=} \FloatTok{0.7}\NormalTok{), }\DataTypeTok{breaks=}\DecValTok{100}\NormalTok{, }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{xlim=}\NormalTok{ xlimit, }\DataTypeTok{ylim=}\NormalTok{ ylimit, }\DataTypeTok{cex.main=}\NormalTok{ maincex, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{)}
 
 
 \KeywordTok{dev.off}\NormalTok{()}
@@ -3372,144 +3356,238 @@ rates}\label{summarize-overall-extinction-rates}
 \caption{}
 \end{figure}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{png}\NormalTok{(}\DataTypeTok{file=}\StringTok{"extiction minus extant per outcome.png"}\NormalTok{, }\DataTypeTok{width=}\FloatTok{8.5}\NormalTok{, }\DataTypeTok{height=}\DecValTok{11}\NormalTok{, }\DataTypeTok{units=}\StringTok{"in"}\NormalTok{, }\DataTypeTok{res=}\DecValTok{300}\NormalTok{)}
-\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+\section{Random Forest Analysis}\label{random-forest-analysis}
 
-\KeywordTok{plot}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[,}\DecValTok{9}\NormalTok{])), }\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[,}\DecValTok{14}\NormalTok{])), }\DataTypeTok{xlab=}\StringTok{"speciation"}\NormalTok{, }\DataTypeTok{ylab=}\StringTok{"extinction"}\NormalTok{, }\DataTypeTok{col=} \KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=}\FloatTok{0.2}\NormalTok{), }\DataTypeTok{pch=}\DecValTok{19}\NormalTok{, }\DataTypeTok{cex=}\FloatTok{0.6}\NormalTok{, }\DataTypeTok{ylim=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{))}
-\KeywordTok{plot}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[,}\DecValTok{9}\NormalTok{])), }\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[,}\DecValTok{14}\NormalTok{])), }\DataTypeTok{xlab=}\StringTok{"speciation"}\NormalTok{, }\DataTypeTok{ylab=}\StringTok{"extinction"}\NormalTok{, }\DataTypeTok{col=} \KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=}\FloatTok{0.2}\NormalTok{), }\DataTypeTok{pch=}\DecValTok{19}\NormalTok{, }\DataTypeTok{cex=}\FloatTok{0.6}\NormalTok{, }\DataTypeTok{ylim=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+\subsection{Training/Building}\label{trainingbuilding}
 
-\KeywordTok{plot}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[,}\DecValTok{9}\NormalTok{])), }\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extinct[,}\DecValTok{14}\NormalTok{])), }\DataTypeTok{xlab=}\StringTok{"speciation"}\NormalTok{, }\DataTypeTok{ylab=}\StringTok{"extinction"}\NormalTok{, }\DataTypeTok{col=} \KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"firebrick"}\NormalTok{, }\DataTypeTok{alpha=}\FloatTok{0.2}\NormalTok{), }\DataTypeTok{pch=}\DecValTok{19}\NormalTok{, }\DataTypeTok{cex=}\FloatTok{0.6}\NormalTok{, }\DataTypeTok{ylim=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{))}
-\KeywordTok{points}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[,}\DecValTok{9}\NormalTok{])), }\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(extant[,}\DecValTok{14}\NormalTok{])), }\DataTypeTok{xlab=}\StringTok{"speciation"}\NormalTok{, }\DataTypeTok{ylab=}\StringTok{"extinction"}\NormalTok{, }\DataTypeTok{col=} \KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=}\FloatTok{0.2}\NormalTok{), }\DataTypeTok{pch=}\DecValTok{19}\NormalTok{, }\DataTypeTok{cex=}\FloatTok{0.6}\NormalTok{)}
+The procedures described so far have outlined the creation of a dataset
+that includes the input and output variables for each replicate
+simulation. When taken as a whole, that dataset describes a distribution
+of possible numerical outcomes that are possible given the 4 available
+input types. The purpose of the random forest machine learning algorithm
+(Breiman 2001, Liaw and Wiener 2015) was to correlate input and output
+variables as a means of categorizing simulation outputs according to the
+type of input that had created them. We used 70\% of our available
+simulation data to build the random forest, the remaining 30\% to test
+the forest's accuracy and precision at inferring input categories, and
+then used that trained and vetted algorithm to infer the most likely
+input category for real world human output data.
 
+This random forest model was trained by building a forest of decision
+trees. Each decision tree describes a series of ordered dichotomous
+decisions that categorize the 12 output statistics into one of 4 input
+types. Individual trees were built by first taking a randomly sized and
+randomly selected sample of rows (replicate simulations) and columns
+(output variables) from the full simulation dataset to create a unique
+subset dataset. That unique dataset was then subjected to a bagging
+model to rank the variables in order of importance and build a decision
+tree off of that rank. We repeated this process, with replacement, to
+build 3000 individual decision trees sampled from 70\% (n = 40000 x 0.7
+= 28000) of the total simulation data.
 
-\KeywordTok{dev.off}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
+\subsection{Testing}\label{testing}
 
-\begin{figure}
-\centering
-\includegraphics{extiction minus extant per outcome.png}
-\caption{}
-\end{figure}
+The random forest was vetted using the remaining 30\% of the simulation
+data reserved for model testing. Rather than building decision trees
+with these data, we fed each replicate through the recently built forest
+so it could classify outputs and then compare those inferred input types
+to the known input types to the to see how frequently the forest
+returned the correct classification. The accuracy and precision of these
+tests are reported in a confusion matrix showing the number of matches
+that were correctly or incorrectly made between inputs and outputs for
+each model . Our trained random forest algorithm could correctly match
+output statistics with input mechanisms with very good accuracy . It is
+noteworthy that there was very little confusion between the two
+competing hypothesized mechanisms, diffusion and diffusion by takeover.
+If the trained random forest algorithm is presented with a simulation
+created by diffusion, if is very unlikely to be classify it as coming
+from diffusion by takeover.
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{params <-}\StringTok{ }\NormalTok{extant[,}\OperatorTok{-}\DecValTok{1}\OperatorTok{:-}\DecValTok{35}\NormalTok{]}
-\KeywordTok{names}\NormalTok{(params)}
-\NormalTok{break_number <-}\StringTok{ }\DecValTok{10}
-\NormalTok{xmin <-}
-\NormalTok{xmax <-}\StringTok{ }
+\subsection{Matching}\label{matching}
 
-\NormalTok{x1 <-}\StringTok{ }\KeywordTok{as.numeric}\NormalTok{(params[,}\DecValTok{1}\NormalTok{])}
-\NormalTok{h1 <-}\StringTok{ }\KeywordTok{hist}\NormalTok{(x1,  }\DataTypeTok{plot=}\OtherTok{FALSE}\NormalTok{, }\DataTypeTok{breaks=}\NormalTok{ break_number)}
-\NormalTok{xfit1 <-}\StringTok{ }\KeywordTok{seq}\NormalTok{(xmin, xmax, }\DataTypeTok{length=} \DecValTok{100}\NormalTok{)}
-\NormalTok{yfit1 <-}\StringTok{ }\KeywordTok{dnorm}\NormalTok{(xfit1, }\DataTypeTok{mean=}\KeywordTok{mean}\NormalTok{(x1), }\DataTypeTok{sd=}\KeywordTok{sd}\NormalTok{(x1))}
-\NormalTok{yfit1 <-}\StringTok{ }\NormalTok{yfit1}\OperatorTok{*}\KeywordTok{diff}\NormalTok{(h1}\OperatorTok{$}\NormalTok{mids[}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{])}\OperatorTok{*}\KeywordTok{length}\NormalTok{(x1)}\OperatorTok{+}\FloatTok{101.5}
-\KeywordTok{polygon}\NormalTok{(xfit1, yfit1, }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"limegreen"}\NormalTok{, }\DataTypeTok{alpha=}\FloatTok{0.5}\NormalTok{), }\DataTypeTok{lwd=}\DecValTok{2}\NormalTok{, }\DataTypeTok{border=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"limegreen"}\NormalTok{, }\DataTypeTok{alpha=}\FloatTok{0.6}\NormalTok{))}
-\end{Highlighting}
-\end{Shaded}
+The structure of our simulation outputs where designed to mimic the
+structure of our real cultural data so that the two could be compared
+directly. In the same way the output for replicate simulations where
+processed, the phylogeny and spatial pattern of extant human cultures
+were summarized using 12 summary statistics passed to the trained random
+forest algorithm. The random forest assigned the most likely mechanism
+to have caused that human's known historical trajectory. It does this by
+asking every dichotomous decision tree in the random forest to vote on
+which hypothesized mechanism created the output provided by the data and
+then tallying those votes into a consensus vote. Our consensus vote
+showed that over 50\% of the trees believe that the current
+configuration of agriculture across the globe is the result of demic
+diffusion augmented by cultural diffusion. About 35\% of the trees
+assigned known global trend to the basic model that includes only demic
+diffusion, while the other two models received almost no votes. This
+suggest that if we are wrong that demic and cultural diffusion
+contributed to current distributions of agriculturist cultures, the next
+most likely answer is that it diffusion created these patterns with no
+help from cultural diffusion.
 
 \section{Run a single random forest on available
 outputs}\label{run-a-single-random-forest-on-available-outputs}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{setwd}\NormalTok{(}\StringTok{"~/Box Sync/colliding ranges/Simulations_humans/Results/available daily summaries"}\NormalTok{)}
-\NormalTok{details <-}\StringTok{ }\KeywordTok{file.info}\NormalTok{(}\KeywordTok{list.files}\NormalTok{())}
-
-\NormalTok{trimmed_details <-}\StringTok{ }\NormalTok{details[}\KeywordTok{which}\NormalTok{(}\KeywordTok{list.files}\NormalTok{() }\OperatorTok{==}\StringTok{ }\KeywordTok{list.files}\NormalTok{(}\DataTypeTok{pattern =} \StringTok{"Four_model_compare_results_extinct*"}\NormalTok{)),]}
-\NormalTok{ord <-}\StringTok{ }\KeywordTok{order}\NormalTok{(trimmed_details}\OperatorTok{$}\NormalTok{mtime, }\DataTypeTok{decreasing =} \OtherTok{TRUE}\NormalTok{)}
-\KeywordTok{rownames}\NormalTok{(trimmed_details[ord,])[}\DecValTok{1}\NormalTok{]}
-\KeywordTok{load}\NormalTok{(}\KeywordTok{rownames}\NormalTok{(trimmed_details[ord,])[}\DecValTok{1}\NormalTok{])}
-\NormalTok{extinct <-}\StringTok{ }\NormalTok{Concatenated_data}
-
-\NormalTok{trimmed_details <-}\StringTok{ }\NormalTok{details[}\KeywordTok{which}\NormalTok{(}\KeywordTok{list.files}\NormalTok{() }\OperatorTok{!=}\StringTok{ }\KeywordTok{list.files}\NormalTok{(}\DataTypeTok{pattern =} \StringTok{"Four_model_compare_results_extinct*"}\NormalTok{)),]}
-\NormalTok{ord <-}\StringTok{ }\KeywordTok{order}\NormalTok{(trimmed_details}\OperatorTok{$}\NormalTok{mtime, }\DataTypeTok{decreasing =} \OtherTok{TRUE}\NormalTok{)}
-\KeywordTok{rownames}\NormalTok{(trimmed_details[ord,])[}\DecValTok{1}\NormalTok{]}
-\KeywordTok{load}\NormalTok{(}\KeywordTok{rownames}\NormalTok{(trimmed_details[ord,])[}\DecValTok{1}\NormalTok{])}
-\NormalTok{extant <-}\StringTok{ }\NormalTok{Concatenated_data}
-
-
-
-\KeywordTok{load}\NormalTok{(}\StringTok{'~/Box Sync/colliding ranges/Simulations_humans/Available trees/real.analysis.RData'}\NormalTok{)}
-
-\NormalTok{Concatenated_data <-}\StringTok{ }\NormalTok{extant}
-\KeywordTok{head}\NormalTok{(Concatenated_data)}
-\CommentTok{#Concatenated_data <- Concatenated_data[Concatenated_data[, 2] == "stats.no.bTO", ]}
-\CommentTok{#Concatenated_data <- Concatenated_data[Concatenated_data[, 6] != "05", ]}
-\CommentTok{# Concatenated_data[, 6] <- as.numeric(Concatenated_data[, 6])}
-\CommentTok{# # Concatenated_data[original[, 2] == "background_takeover", 6] <-  Concatenated_data[original[, 2] == "background_takeover", 6] + 4}
-\NormalTok{Concatenated_data[, }\DecValTok{6}\NormalTok{] <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(Concatenated_data[, }\DecValTok{6}\NormalTok{])}
-\CommentTok{#head(Concatenated_data)}
-\CommentTok{#names(Concatenated_data)}
-
-\NormalTok{PCAdata <-}\StringTok{ }\NormalTok{Concatenated_data[, }\OperatorTok{-}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{35}\NormalTok{)]}
-\NormalTok{PCAdata <-}\StringTok{ }\NormalTok{PCAdata[, }\OperatorTok{-}\DecValTok{12}\NormalTok{]}
-\NormalTok{PCAdata <-}\StringTok{ }\KeywordTok{apply}\NormalTok{(PCAdata, }\DecValTok{2}\NormalTok{, as.numeric)}
-\NormalTok{remove <-}\StringTok{ }\KeywordTok{apply}\NormalTok{(}\KeywordTok{is.na}\NormalTok{(PCAdata), }\DecValTok{1}\NormalTok{, any)}
-\NormalTok{PCAdata <-}\StringTok{ }\NormalTok{PCAdata[}\OperatorTok{!}\NormalTok{remove, ]}
-
-\CommentTok{# Predictions}
+\CommentTok{# Packages}
 \KeywordTok{library}\NormalTok{(randomForest)}
 
-\NormalTok{data.analysis.comp2 <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\StringTok{"Model"}\NormalTok{ =}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(Concatenated_data[}\OperatorTok{!}\NormalTok{remove, }\DecValTok{6}\NormalTok{]),}
-\NormalTok{                                  PCAdata)}
-\NormalTok{data.analysis.comp2}\OperatorTok{$}\NormalTok{sprate <-}\StringTok{ }\NormalTok{data.analysis.comp2}\OperatorTok{$}\NormalTok{trait_1_speciation}\OperatorTok{/}\NormalTok{data.analysis.comp2}\OperatorTok{$}\NormalTok{trait_2_speciation}
-\NormalTok{data.analysis.comp2}\OperatorTok{$}\NormalTok{extrate <-}\StringTok{ }\NormalTok{data.analysis.comp2}\OperatorTok{$}\NormalTok{trait_1_extinction}\OperatorTok{/}\NormalTok{data.analysis.comp2}\OperatorTok{$}\NormalTok{trait_2_extinction}
+\CommentTok{# Radom Forest Function}
+\NormalTok{RF <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(table_sim, table_real, }\DataTypeTok{ntree =} \DecValTok{2000}\NormalTok{, }\DataTypeTok{stats_remove =} \OtherTok{NULL}\NormalTok{,}
+              \DataTypeTok{repetitions =} \DecValTok{100}\NormalTok{) \{}
+ \CommentTok{# table_sim = table croped }
 
+\NormalTok{ begin <-}\StringTok{ }\KeywordTok{which}\NormalTok{(}\KeywordTok{colnames}\NormalTok{(table_sim) }\OperatorTok{==}\StringTok{  "number_of_branches"}\NormalTok{)}
+\NormalTok{ table_sim_data <-}\StringTok{ }\NormalTok{table_sim[, begin}\OperatorTok{:}\KeywordTok{ncol}\NormalTok{(table_sim)]}
+\NormalTok{ table_sim_data <-}\StringTok{ }\KeywordTok{apply}\NormalTok{(table_sim_data, }\DecValTok{2}\NormalTok{, as.numeric)}
+ \ControlFlowTok{if}\NormalTok{ (}\KeywordTok{any}\NormalTok{(}\KeywordTok{is.infinite}\NormalTok{(table_sim_data))) \{}
+   \KeywordTok{stop}\NormalTok{(}\StringTok{"There is infinite values in the simulation statistics"}\NormalTok{)}
+\NormalTok{ \}}
+\NormalTok{ rf_data <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\StringTok{"Model"}\NormalTok{ =}\StringTok{ }\NormalTok{table_sim}\OperatorTok{$}\NormalTok{combo, table_sim_data)}
+\NormalTok{ rf_data_real <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(table_real)}
 
-\CommentTok{#load("Real_phy/real.analysis.RData")}
-\NormalTok{a <-}\StringTok{ }\KeywordTok{as.data.frame}\NormalTok{(real.analysis}\OperatorTok{$}\NormalTok{results_summary_of_single_value_outputs)}
-\NormalTok{a}\OperatorTok{$}\NormalTok{sprate <-}\StringTok{ }\NormalTok{a}\OperatorTok{$}\NormalTok{trait_1_speciation }\OperatorTok{/}\StringTok{ }\NormalTok{a}\OperatorTok{$}\NormalTok{trait_2_speciation}
-\NormalTok{a}\OperatorTok{$}\NormalTok{extrate <-}\StringTok{ }\NormalTok{a}\OperatorTok{$}\NormalTok{trait_1_extinction }\OperatorTok{/}\StringTok{ }\NormalTok{a}\OperatorTok{$}\NormalTok{trait_2_extinction}
+ \ControlFlowTok{if}\NormalTok{ (}\OperatorTok{!}\KeywordTok{is.null}\NormalTok{(stats_remove)) \{}
+\NormalTok{   rf_data <-}\StringTok{ }\NormalTok{rf_data[, }\OperatorTok{-}\NormalTok{stats_remove]}
+\NormalTok{   rf_data_real <-}\StringTok{ }\NormalTok{rf_data_real[, }\OperatorTok{-}\NormalTok{stats_remove]}
+\NormalTok{ \}}
 
-\NormalTok{data.analysis.comp3 <-}\StringTok{ }\NormalTok{data.analysis.comp2[, }\OperatorTok{-}\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{13}\OperatorTok{:}\DecValTok{14}\NormalTok{, }\DecValTok{16}\OperatorTok{:}\DecValTok{20}\NormalTok{)]}
-\CommentTok{#data.analysis.comp3 <- data.analysis.comp3[data.analysis.comp3$Model %in% 1:4, ]}
-\CommentTok{#data.analysis.comp3$Model <- factor(data.analysis.comp3$Model)}
-\CommentTok{#sub <- unlist(lapply(as.list(c(1:4)), function(x, y) \{}
-\CommentTok{#  sample(which(y$Model == x), min(table(data.analysis.comp3$Model)))\},}
-\CommentTok{#  y = data.analysis.comp3))}
-\CommentTok{# data.analysis.comp3 <- data.analysis.comp3[sub, ]}
-\NormalTok{fun <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x, y, }\DataTypeTok{per =}\NormalTok{ .}\DecValTok{33}\NormalTok{) \{}\KeywordTok{sample}\NormalTok{(}\KeywordTok{which}\NormalTok{(y}\OperatorTok{$}\NormalTok{Model }\OperatorTok{==}\StringTok{ }\NormalTok{x), }\KeywordTok{round}\NormalTok{(}\KeywordTok{table}\NormalTok{(y}\OperatorTok{$}\NormalTok{Model)[}\DecValTok{1}\NormalTok{]}\OperatorTok{*}\NormalTok{per))\}}
+\NormalTok{ fun <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x, y, }\DataTypeTok{per =}\NormalTok{ .}\DecValTok{33}\NormalTok{) \{}
+   \KeywordTok{sample}\NormalTok{(}\KeywordTok{which}\NormalTok{(y}\OperatorTok{$}\NormalTok{Model }\OperatorTok{==}\StringTok{ }\NormalTok{x), }\KeywordTok{round}\NormalTok{(}\KeywordTok{table}\NormalTok{(y}\OperatorTok{$}\NormalTok{Model)[}\DecValTok{1}\NormalTok{]}\OperatorTok{*}\NormalTok{per))}
+\NormalTok{ \}}
 
-\NormalTok{sub.test <-}\StringTok{ }\KeywordTok{unlist}\NormalTok{(}\KeywordTok{lapply}\NormalTok{(}\KeywordTok{as.list}\NormalTok{(}\KeywordTok{paste0}\NormalTok{(}\DecValTok{0}\NormalTok{, }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{4}\NormalTok{))), fun,}
-                          \DataTypeTok{y =}\NormalTok{ data.analysis.comp3))}
-\NormalTok{test2 <-}\StringTok{ }\NormalTok{data.analysis.comp3[sub.test, }\DecValTok{2}\OperatorTok{:}\KeywordTok{ncol}\NormalTok{(data.analysis.comp3)]}
-\NormalTok{test1 <-}\StringTok{ }\NormalTok{data.analysis.comp3[sub.test, }\DecValTok{1}\NormalTok{]}
-\NormalTok{train <-}\StringTok{ }\NormalTok{data.analysis.comp3[}\OperatorTok{-}\NormalTok{sub.test, ]}
+\NormalTok{ results <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\DataTypeTok{nrow =}\NormalTok{ repetitions, }\DataTypeTok{ncol =} \KeywordTok{length}\NormalTok{(table_real) }\OperatorTok{*}\StringTok{ }\DecValTok{6} \OperatorTok{+}\StringTok{ }\DecValTok{21}\NormalTok{)}
+ \ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\NormalTok{repetitions) \{}
+\NormalTok{   sub.test <-}\StringTok{ }\KeywordTok{unlist}\NormalTok{(}\KeywordTok{lapply}\NormalTok{(}\KeywordTok{as.list}\NormalTok{(}\KeywordTok{paste0}\NormalTok{(}\DecValTok{0}\NormalTok{, }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{6}\NormalTok{))), fun,}
+                             \DataTypeTok{y =}\NormalTok{ rf_data))}
+\NormalTok{   test2 <-}\StringTok{ }\NormalTok{rf_data[sub.test, }\DecValTok{2}\OperatorTok{:}\KeywordTok{ncol}\NormalTok{(rf_data)]}
+\NormalTok{   test1 <-}\StringTok{ }\NormalTok{rf_data[sub.test, }\DecValTok{1}\NormalTok{]}
+\NormalTok{   train <-}\StringTok{ }\NormalTok{rf_data[}\OperatorTok{-}\NormalTok{sub.test, ]}
 
-\NormalTok{train[, }\OperatorTok{-}\DecValTok{1}\NormalTok{] <-}\StringTok{ }\KeywordTok{apply}\NormalTok{(train[, }\OperatorTok{-}\DecValTok{1}\NormalTok{], }\DecValTok{2}\NormalTok{, as.numeric)}
-\NormalTok{test2 <-}\StringTok{ }\KeywordTok{as.data.frame}\NormalTok{(}\KeywordTok{apply}\NormalTok{(test2, }\DecValTok{2}\NormalTok{, as.numeric))}
-\NormalTok{infinites <-}\StringTok{ }\KeywordTok{which}\NormalTok{(}\KeywordTok{apply}\NormalTok{(train[, }\OperatorTok{-}\DecValTok{1}\NormalTok{], }\DecValTok{2}\NormalTok{, is.infinite), }\DataTypeTok{arr.ind=}\NormalTok{T)}
-\ControlFlowTok{if}\NormalTok{ (}\KeywordTok{nrow}\NormalTok{(infinites) }\OperatorTok{>}\StringTok{ }\DecValTok{0}\NormalTok{) \{}
-\NormalTok{train <-}\StringTok{ }\NormalTok{train[}\OperatorTok{-}\NormalTok{infinites[, }\DecValTok{1}\NormalTok{], ]}
+\NormalTok{   fit <-}\StringTok{ }\KeywordTok{randomForest}\NormalTok{(Model }\OperatorTok{~}\StringTok{ }\NormalTok{., }\DataTypeTok{data =}\NormalTok{ train, }\DataTypeTok{xtest =}\NormalTok{ test2, }
+                       \DataTypeTok{ytest =}\NormalTok{ test1, }\DataTypeTok{importance =} \OtherTok{TRUE}\NormalTok{, }
+                       \DataTypeTok{ntree =}\NormalTok{ ntree, }\DataTypeTok{keep.forest =} \OtherTok{TRUE}\NormalTok{,}
+                       \DataTypeTok{replace =} \OtherTok{TRUE}\NormalTok{)}
+  \CommentTok{#dev.new()}
+  \CommentTok{#plot(fit)}
+\NormalTok{   predictions <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(fit, rf_data_real, }\DataTypeTok{type =} \StringTok{"prob"}\NormalTok{)}
+\NormalTok{   var_import <-}\StringTok{ }\KeywordTok{importance}\NormalTok{(fit)}
+
+\NormalTok{   error <-}\StringTok{ }\KeywordTok{mean}\NormalTok{(fit}\OperatorTok{$}\NormalTok{test}\OperatorTok{$}\NormalTok{confusion[, }\DecValTok{5}\NormalTok{])}
+\NormalTok{   confusion <-}\StringTok{ }\KeywordTok{as.numeric}\NormalTok{(fit}\OperatorTok{$}\NormalTok{test}\OperatorTok{$}\NormalTok{confusion[, }\DecValTok{1}\OperatorTok{:}\DecValTok{4}\NormalTok{])}
+   \KeywordTok{names}\NormalTok{(confusion) <-}\StringTok{ }\KeywordTok{paste0}\NormalTok{(}\StringTok{"Confusion_"}\NormalTok{, }
+                              \KeywordTok{rep}\NormalTok{(}\KeywordTok{colnames}\NormalTok{(fit}\OperatorTok{$}\NormalTok{test}\OperatorTok{$}\NormalTok{confusion[, }\DecValTok{1}\OperatorTok{:}\DecValTok{4}\NormalTok{]),}
+                                  \DataTypeTok{each =} \DecValTok{4}\NormalTok{),}
+                              \KeywordTok{rownames}\NormalTok{(fit}\OperatorTok{$}\NormalTok{test}\OperatorTok{$}\NormalTok{confusion[, }\DecValTok{1}\OperatorTok{:}\DecValTok{4}\NormalTok{]))}
+\NormalTok{   predictions_prob <-}\StringTok{ }\KeywordTok{as.numeric}\NormalTok{(predictions)}
+   \KeywordTok{names}\NormalTok{(predictions_prob) <-}\StringTok{ }\KeywordTok{paste0}\NormalTok{(}\StringTok{"Prediction_prob"}\NormalTok{, }\KeywordTok{colnames}\NormalTok{(predictions))}
+\NormalTok{   var_import_vec <-}\StringTok{ }\KeywordTok{as.numeric}\NormalTok{(var_import)}
+   \KeywordTok{names}\NormalTok{(var_import_vec) <-}\StringTok{ }\KeywordTok{paste0}\NormalTok{(}\StringTok{"var_imp_"}\NormalTok{, }
+                                   \KeywordTok{rep}\NormalTok{(}\KeywordTok{colnames}\NormalTok{(var_import), }
+                                       \DataTypeTok{each =} \KeywordTok{nrow}\NormalTok{(var_import)),}
+                                   \StringTok{"_"}\NormalTok{,}
+                                   \KeywordTok{rownames}\NormalTok{(var_import))}
+\NormalTok{   vec <-}\StringTok{ }\KeywordTok{c}\NormalTok{(error, confusion, predictions_prob, var_import_vec)}
+\NormalTok{   results[i, ] <-}\StringTok{ }\NormalTok{vec}
+\NormalTok{ \}}
+ \KeywordTok{colnames}\NormalTok{(results) <-}\StringTok{ }\KeywordTok{names}\NormalTok{(vec)}
+ \KeywordTok{colnames}\NormalTok{(results)[}\DecValTok{1}\NormalTok{] <-}\StringTok{ "Error_test"}
+\NormalTok{ results <-}\StringTok{ }\KeywordTok{cbind}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\KeywordTok{nrow}\NormalTok{(results), results)}
+ \KeywordTok{colnames}\NormalTok{(results)[}\DecValTok{1}\NormalTok{] <-}\StringTok{ "Replicate"}
+ \KeywordTok{return}\NormalTok{(results)}
 \NormalTok{\}}
-\NormalTok{infinites2 <-}\StringTok{ }\KeywordTok{which}\NormalTok{(}\KeywordTok{apply}\NormalTok{(test2, }\DecValTok{2}\NormalTok{, is.infinite), }\DataTypeTok{arr.ind=}\NormalTok{T)}
-\ControlFlowTok{if}\NormalTok{ (}\KeywordTok{nrow}\NormalTok{(infinites2) }\OperatorTok{>}\StringTok{ }\DecValTok{0}\NormalTok{) \{}
-\NormalTok{test2 <-}\StringTok{ }\NormalTok{test2[}\OperatorTok{-}\NormalTok{infinites2[, }\DecValTok{1}\NormalTok{], ]}
-\NormalTok{test1 <-}\StringTok{ }\NormalTok{test1[}\OperatorTok{-}\NormalTok{infinites2[, }\DecValTok{1}\NormalTok{]]}
+
+\CommentTok{# Multiple Random Forest}
+\NormalTok{RF_mult <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(table_sim, table_real_mult, }\DataTypeTok{ntree =} \DecValTok{2000}\NormalTok{, }
+                   \DataTypeTok{stats_remove =} \OtherTok{NULL}\NormalTok{, }\DataTypeTok{repetitions =} \DecValTok{100}\NormalTok{) \{}
+\NormalTok{ n_r <-}\StringTok{ }\KeywordTok{nrow}\NormalTok{(table_real_mult)}
+\NormalTok{ n <-}\StringTok{ }\NormalTok{repetitions }\OperatorTok{*}\StringTok{ }\NormalTok{n_r}
+\NormalTok{ n_col <-}\StringTok{ }\KeywordTok{ncol}\NormalTok{(table_real_mult) }\OperatorTok{*}\StringTok{ }\DecValTok{6} \OperatorTok{+}\StringTok{ }\DecValTok{22}
+\NormalTok{ results <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\DataTypeTok{nrow =}\NormalTok{ n, }\DataTypeTok{ncol =}\NormalTok{ n_col)}
+\NormalTok{ x <-}\StringTok{ }\DecValTok{0}
+ \ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \KeywordTok{seq}\NormalTok{(}\DecValTok{1}\NormalTok{, n, repetitions)) \{}
+\NormalTok{   x <-}\StringTok{ }\NormalTok{x }\OperatorTok{+}\StringTok{ }\DecValTok{1}
+\NormalTok{   temp <-}\StringTok{ }\KeywordTok{RF}\NormalTok{(table_sim, }
+\NormalTok{              table_real_mult[x, , }\DataTypeTok{drop =} \OtherTok{FALSE}\NormalTok{],}
+              \DataTypeTok{ntree =}\NormalTok{ ntree, }
+              \DataTypeTok{repetitions =}\NormalTok{ repetitions, }
+              \DataTypeTok{stats_remove =}\NormalTok{ stats_remove)}
+\NormalTok{   results[i}\OperatorTok{:}\NormalTok{(i }\OperatorTok{+}\StringTok{ }\NormalTok{repetitions }\OperatorTok{-}\StringTok{ }\DecValTok{1}\NormalTok{), ] <-}\StringTok{ }\NormalTok{temp}
+\NormalTok{ \}}
+\NormalTok{ tree <-}\StringTok{ }\KeywordTok{rep}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\NormalTok{n_r, }\DataTypeTok{each =}\NormalTok{ repetitions)}
+\NormalTok{ results <-}\StringTok{ }\KeywordTok{cbind}\NormalTok{(tree, results)}
+ \KeywordTok{colnames}\NormalTok{(results) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Tree"}\NormalTok{, }\KeywordTok{colnames}\NormalTok{(temp))}
+ \KeywordTok{return}\NormalTok{(results)}
 \NormalTok{\}}
 
-
-\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\DecValTok{100}\NormalTok{)\{}
-\NormalTok{(fit <-}\StringTok{ }\KeywordTok{randomForest}\NormalTok{(Model }\OperatorTok{~}\StringTok{ }\NormalTok{., }\DataTypeTok{data=}\NormalTok{train, }\DataTypeTok{xtest =}\NormalTok{ test2, }\DataTypeTok{ytest =}\NormalTok{ test1, }
-                    \DataTypeTok{importance=}\OtherTok{TRUE}\NormalTok{, }\DataTypeTok{ntree=}\DecValTok{1000}\NormalTok{, }\DataTypeTok{keep.forest =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{replace=}\OtherTok{FALSE}\NormalTok{))}
-
-\NormalTok{predictions <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(fit, }
-\NormalTok{                       a,}
-                       \DataTypeTok{type=}\StringTok{"prob"}\NormalTok{)}
-\NormalTok{predictions}
-
-\KeywordTok{save}\NormalTok{(fit, }\DataTypeTok{file=}\KeywordTok{paste0}\NormalTok{(}\StringTok{"~/Box Sync/colliding ranges/Simulations_humans/Results/RF_daily_output/RF_daily_output_"}\NormalTok{, }\KeywordTok{format}\NormalTok{(}\KeywordTok{Sys.time}\NormalTok{(), }\DataTypeTok{format=}\StringTok{"%d_%b_%Y"}\NormalTok{), }\StringTok{"_"}\NormalTok{,i, }\StringTok{"_NoREPLACEMENT_.Rdata"}\NormalTok{))}
+\CommentTok{# Accumulation function}
+\NormalTok{RF_acum <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(table_sim, table_real_mult, }\DataTypeTok{ntree =} \DecValTok{2000}\NormalTok{, }
+                   \DataTypeTok{stats_remove =} \OtherTok{NULL}\NormalTok{, }\DataTypeTok{repetitions =} \DecValTok{100}\NormalTok{,}
+                   \DataTypeTok{resolution =} \DecValTok{100}\NormalTok{, }\DataTypeTok{minimun =} \DecValTok{100}\NormalTok{) \{}
+\NormalTok{ sequence <-}\StringTok{ }\KeywordTok{seq}\NormalTok{(minimun, }\KeywordTok{nrow}\NormalTok{(table_sim), resolution)}
+\NormalTok{ n_col <-}\StringTok{ }\KeywordTok{ncol}\NormalTok{(table_real_mult) }\OperatorTok{*}\StringTok{ }\DecValTok{6} \OperatorTok{+}\StringTok{ }\DecValTok{24} 
+\NormalTok{ n_r <-}\StringTok{ }\KeywordTok{nrow}\NormalTok{(table_real_mult)}
+\NormalTok{ n_seq <-}\StringTok{ }\KeywordTok{length}\NormalTok{(sequence)}
+\NormalTok{ n <-}\StringTok{ }\NormalTok{repetitions }\OperatorTok{*}\StringTok{ }\NormalTok{n_r }\OperatorTok{*}\StringTok{ }\NormalTok{n_seq}
+\NormalTok{ results <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\DataTypeTok{nrow =}\NormalTok{ n, }\DataTypeTok{ncol =}\NormalTok{ n_col)}
+\NormalTok{ lottery1 <-}\StringTok{ }\KeywordTok{which}\NormalTok{(table_sim}\OperatorTok{$}\NormalTok{combo }\OperatorTok{==}\StringTok{ "01"}\NormalTok{)}
+\NormalTok{ lottery2 <-}\StringTok{ }\KeywordTok{which}\NormalTok{(table_sim}\OperatorTok{$}\NormalTok{combo }\OperatorTok{==}\StringTok{ "02"}\NormalTok{)}
+\NormalTok{ lottery5 <-}\StringTok{ }\KeywordTok{which}\NormalTok{(table_sim}\OperatorTok{$}\NormalTok{combo }\OperatorTok{==}\StringTok{ "05"}\NormalTok{)}
+\NormalTok{ lottery6 <-}\StringTok{ }\KeywordTok{which}\NormalTok{(table_sim}\OperatorTok{$}\NormalTok{combo }\OperatorTok{==}\StringTok{ "06"}\NormalTok{)}
+\NormalTok{ sub1 <-}\StringTok{ }\KeywordTok{sample}\NormalTok{(lottery1, sequence[}\DecValTok{1}\NormalTok{]}\OperatorTok{/}\DecValTok{4}\NormalTok{, }\DataTypeTok{replace =} \OtherTok{FALSE}\NormalTok{)}
+\NormalTok{ sub2 <-}\StringTok{ }\KeywordTok{sample}\NormalTok{(lottery2, sequence[}\DecValTok{1}\NormalTok{]}\OperatorTok{/}\DecValTok{4}\NormalTok{, }\DataTypeTok{replace =} \OtherTok{FALSE}\NormalTok{)}
+\NormalTok{ sub5 <-}\StringTok{ }\KeywordTok{sample}\NormalTok{(lottery5, sequence[}\DecValTok{1}\NormalTok{]}\OperatorTok{/}\DecValTok{4}\NormalTok{, }\DataTypeTok{replace =} \OtherTok{FALSE}\NormalTok{)}
+\NormalTok{ sub6 <-}\StringTok{ }\KeywordTok{sample}\NormalTok{(lottery6, sequence[}\DecValTok{1}\NormalTok{]}\OperatorTok{/}\DecValTok{4}\NormalTok{, }\DataTypeTok{replace =} \OtherTok{FALSE}\NormalTok{)}
+ \ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\NormalTok{n_seq) \{}
+   \ControlFlowTok{if}\NormalTok{ (i }\OperatorTok{!=}\StringTok{ }\DecValTok{1}\NormalTok{) \{}
+\NormalTok{     sub1 <-}\StringTok{ }\KeywordTok{c}\NormalTok{(sub1, }\KeywordTok{sample}\NormalTok{(lottery1[}\OperatorTok{-}\NormalTok{sub1], sequence[}\DecValTok{1}\NormalTok{]}\OperatorTok{/}\DecValTok{4}\NormalTok{, }\DataTypeTok{replace =} \OtherTok{FALSE}\NormalTok{))}
+\NormalTok{     sub2 <-}\StringTok{ }\KeywordTok{c}\NormalTok{(sub2, }\KeywordTok{sample}\NormalTok{(lottery2[}\OperatorTok{-}\NormalTok{sub2], sequence[}\DecValTok{1}\NormalTok{]}\OperatorTok{/}\DecValTok{4}\NormalTok{, }\DataTypeTok{replace =} \OtherTok{FALSE}\NormalTok{))}
+\NormalTok{     sub5 <-}\StringTok{ }\KeywordTok{c}\NormalTok{(sub5, }\KeywordTok{sample}\NormalTok{(lottery5[}\OperatorTok{-}\NormalTok{sub5], sequence[}\DecValTok{1}\NormalTok{]}\OperatorTok{/}\DecValTok{4}\NormalTok{, }\DataTypeTok{replace =} \OtherTok{FALSE}\NormalTok{))}
+\NormalTok{     sub6 <-}\StringTok{ }\KeywordTok{c}\NormalTok{(sub6, }\KeywordTok{sample}\NormalTok{(lottery6[}\OperatorTok{-}\NormalTok{sub6], sequence[}\DecValTok{1}\NormalTok{]}\OperatorTok{/}\DecValTok{4}\NormalTok{, }\DataTypeTok{replace =} \OtherTok{FALSE}\NormalTok{))}
+\NormalTok{   \}}
+\NormalTok{   temp <-}\StringTok{ }\KeywordTok{RF_mult}\NormalTok{(table_sim[}\KeywordTok{c}\NormalTok{(sub1, sub2, sub5, sub6), ], table_real_mult,}
+                   \DataTypeTok{ntree =}\NormalTok{ ntree, }\DataTypeTok{repetitions =}\NormalTok{ repetitions,}
+                   \DataTypeTok{stats_remove =}\NormalTok{ stats_remove)}
+\NormalTok{   n_temp <-}\StringTok{ }\KeywordTok{nrow}\NormalTok{(temp)}
+\NormalTok{   results[}\DecValTok{1}\OperatorTok{:}\NormalTok{n_temp }\OperatorTok{+}\StringTok{ }\NormalTok{(n_temp }\OperatorTok{*}\StringTok{ }\NormalTok{(i }\OperatorTok{-}\StringTok{ }\DecValTok{1}\NormalTok{)), ] <-}\StringTok{ }\KeywordTok{cbind}\NormalTok{(}\KeywordTok{rep}\NormalTok{(sequence[i],}
+\NormalTok{                                                         n_temp), temp)}
+\NormalTok{ \}}
+ \KeywordTok{colnames}\NormalTok{(results) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Subsample_size"}\NormalTok{, }\KeywordTok{colnames}\NormalTok{(temp))}
+ \KeywordTok{return}\NormalTok{(results)}
 \NormalTok{\}}
-\end{Highlighting}
-\end{Shaded}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{save}\NormalTok{(fit, }\DataTypeTok{file=}\KeywordTok{paste0}\NormalTok{(}\StringTok{"~/Box Sync/colliding ranges/Simulations_humans/Results/RF_daily_output/RF_daily_output_"}\NormalTok{, }\KeywordTok{format}\NormalTok{(}\KeywordTok{Sys.time}\NormalTok{(), }\DataTypeTok{format=}\StringTok{"%d_%b_%Y"}\NormalTok{),}\StringTok{".Rdata"}\NormalTok{))}
+\CommentTok{# }\AlertTok{TEST}\CommentTok{ FINAL (RUN ONLY THIS)}
+\CommentTok{# Load data}
+\KeywordTok{setwd}\NormalTok{(}\StringTok{"~/Desktop/RF after bruno"}\NormalTok{)}
+\KeywordTok{load}\NormalTok{(}\StringTok{"Four model compare third runFour_model_compare_results_28_Jul_2017_crop_to_5767.Rdata"}\NormalTok{)}
+\KeywordTok{load}\NormalTok{(}\StringTok{"real.analysis_mult.RData"}\NormalTok{)}
+
+\NormalTok{table_sim =}\StringTok{ }\NormalTok{Concatenated_data}
+\NormalTok{table_real =}\StringTok{ }\NormalTok{real.analysis.mult[[}\DecValTok{1}\NormalTok{]][[}\DecValTok{1}\NormalTok{]]}
+\NormalTok{table_real_mult =}\StringTok{ }\KeywordTok{do.call}\NormalTok{(rbind, }\KeywordTok{lapply}\NormalTok{(real.analysis.mult, }
+                                       \ControlFlowTok{function}\NormalTok{(x)\{x[[}\DecValTok{1}\NormalTok{]]\}))}
+
+\CommentTok{#start time}
+\NormalTok{time_start <-}\StringTok{ }\KeywordTok{Sys.time}\NormalTok{()}
+
+\CommentTok{# Change the parameters as you wish}
+\NormalTok{res_acum <-}\StringTok{ }\KeywordTok{RF_acum}\NormalTok{(table_sim, table_real_mult[}\DecValTok{100}\OperatorTok{:}\DecValTok{110}\NormalTok{,,}\DataTypeTok{drop=}\OtherTok{FALSE}\NormalTok{], }\DataTypeTok{ntree =} \DecValTok{2000}\NormalTok{, }
+                   \DataTypeTok{stats_remove =} \OtherTok{NULL}\NormalTok{, }\DataTypeTok{repetitions =} \DecValTok{1}\NormalTok{,}
+                   \DataTypeTok{resolution =} \DecValTok{5000}\NormalTok{, }\DataTypeTok{minimun =} \DecValTok{1000}\NormalTok{)}
+                   
+\CommentTok{#stop time}
+\NormalTok{time_stop <-}\StringTok{ }\KeywordTok{Sys.time}\NormalTok{()}
+\KeywordTok{difftime}\NormalTok{(time_stop, time_start)                   }
+
+\KeywordTok{save}\NormalTok{(res_acum, }\DataTypeTok{file=}\StringTok{"~/Desktop/10_more_tree_out.Rdata"}\NormalTok{)}
+
+\CommentTok{# Change argument FUN to sd to obtain the standard deviation}
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{aggregate}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ res_acum[, }\DecValTok{4}\NormalTok{], }\DataTypeTok{by =} \KeywordTok{list}\NormalTok{((res_acum[, }\DecValTok{1}\NormalTok{])), }\DataTypeTok{FUN =}\NormalTok{ mean), }\DataTypeTok{type =} \StringTok{"n"}\NormalTok{, }\DataTypeTok{ylim=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+
+\KeywordTok{lines}\NormalTok{(}\KeywordTok{aggregate}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ res_acum[, }\DecValTok{21}\NormalTok{], }\DataTypeTok{by =} \KeywordTok{list}\NormalTok{((res_acum[, }\DecValTok{1}\NormalTok{])), }\DataTypeTok{FUN =}\NormalTok{ mean), }\DataTypeTok{type =} \StringTok{"l"}\NormalTok{, }\DataTypeTok{col=}\StringTok{"orange"}\NormalTok{)}
+\KeywordTok{lines}\NormalTok{(}\KeywordTok{aggregate}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ res_acum[, }\DecValTok{22}\NormalTok{], }\DataTypeTok{by =} \KeywordTok{list}\NormalTok{((res_acum[, }\DecValTok{1}\NormalTok{])), }\DataTypeTok{FUN =}\NormalTok{ mean), }\DataTypeTok{type =} \StringTok{"l"}\NormalTok{, }\DataTypeTok{col=}\StringTok{"blue"}\NormalTok{)}
+\KeywordTok{lines}\NormalTok{(}\KeywordTok{aggregate}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ res_acum[, }\DecValTok{23}\NormalTok{], }\DataTypeTok{by =} \KeywordTok{list}\NormalTok{((res_acum[, }\DecValTok{1}\NormalTok{])), }\DataTypeTok{FUN =}\NormalTok{ mean), }\DataTypeTok{type =} \StringTok{"l"}\NormalTok{, }\DataTypeTok{col=}\StringTok{"pink"}\NormalTok{)}
+\KeywordTok{lines}\NormalTok{(}\KeywordTok{aggregate}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ res_acum[, }\DecValTok{24}\NormalTok{], }\DataTypeTok{by =} \KeywordTok{list}\NormalTok{((res_acum[, }\DecValTok{1}\NormalTok{])), }\DataTypeTok{FUN =}\NormalTok{ mean), }\DataTypeTok{type =} \StringTok{"l"}\NormalTok{, }\DataTypeTok{col=}\StringTok{"darkgreen"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3518,63 +3596,253 @@ analysis}\label{visualize-outputs-from-random-forest-analysis}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{plot}\NormalTok{(fit, }\DataTypeTok{ylim=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+\CommentTok{# load outputs from RF runs}
+\KeywordTok{load}\NormalTok{(}\StringTok{"/Users/Ty/Desktop/small_RF_out.Rdata"}\NormalTok{)}
+\NormalTok{a <-}\StringTok{ }\NormalTok{res_acum}
+
+\KeywordTok{load}\NormalTok{(}\StringTok{"/Users/Ty/Desktop/10_more_tree_out.Rdata"}\NormalTok{)}
+\NormalTok{b <-}\StringTok{ }\NormalTok{res_acum}
+
+\KeywordTok{load}\NormalTok{(}\StringTok{"/Users/Ty/Desktop/10_tree_out.Rdata"}\NormalTok{)}
+\NormalTok{c <-}\StringTok{ }\NormalTok{res_acum}
+
+\CommentTok{#object called res_acum}
+\NormalTok{res_acum <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(b,c)}
+
+\KeywordTok{load}\NormalTok{(}\StringTok{"Random_Forest_output_data_for_publication_2_February_2018.Rdata"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{labs <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Basic"}\NormalTok{, }\StringTok{"+Diffusion"}\NormalTok{, }\StringTok{"+Takeover"}\NormalTok{, }\StringTok{"+Diffusion +Takeover"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# bar plot}
-\KeywordTok{png}\NormalTok{(}\StringTok{"Prob_aus.png"}\NormalTok{, }\DataTypeTok{width =} \DecValTok{25}\NormalTok{, }\DataTypeTok{height =} \DecValTok{25}\NormalTok{, }\DataTypeTok{res =} \DecValTok{300}\NormalTok{, }\DataTypeTok{units =} \StringTok{"in"}\NormalTok{)}
-\KeywordTok{par}\NormalTok{(}\DataTypeTok{mar =} \KeywordTok{c}\NormalTok{(}\DecValTok{8}\NormalTok{, }\DecValTok{8}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{))}
-\NormalTok{pred <-}\StringTok{ }\KeywordTok{setNames}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(predictions), labs)}
-\NormalTok{cols <-}\StringTok{ }\KeywordTok{rev}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"darkgreen"}\NormalTok{, }\StringTok{"red"}\NormalTok{, }\StringTok{"blue"}\NormalTok{, }\StringTok{"darkorange1"}\NormalTok{))}
-\KeywordTok{barplot}\NormalTok{(pred, }\DataTypeTok{col =}\NormalTok{ cols, }\DataTypeTok{ylab =} \StringTok{"Proability"}\NormalTok{, }\DataTypeTok{cex.lab =} \DecValTok{3}\NormalTok{, }\DataTypeTok{cex.names =} \DecValTok{2}\NormalTok{)}
+\KeywordTok{png}\NormalTok{(}\StringTok{"overall_error_per_sample_size.png"}\NormalTok{, }\DataTypeTok{width =} \DecValTok{11}\NormalTok{, }\DataTypeTok{height =} \FloatTok{8.5}\NormalTok{, }\DataTypeTok{res =} \DecValTok{300}\NormalTok{, }\DataTypeTok{units =} \StringTok{"in"}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{aggregate}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ res_acum[, }\DecValTok{4}\NormalTok{], }\DataTypeTok{by =} \KeywordTok{list}\NormalTok{((res_acum[, }\DecValTok{1}\NormalTok{])), }\DataTypeTok{FUN =}\NormalTok{ mean), }\DataTypeTok{type=}\StringTok{"l"}\NormalTok{, }\DataTypeTok{ylim=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\FloatTok{0.5}\NormalTok{), }\DataTypeTok{ylab=}\StringTok{"overall confusion error"}\NormalTok{, }\DataTypeTok{xlab=}\StringTok{"sample size"}\NormalTok{)}
 \KeywordTok{dev.off}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{figure}
 \centering
-\includegraphics{Prob_aus.png}
+\includegraphics{overall_error_per_sample_size.png}
 \caption{}
 \end{figure}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{# Plot confusion matrix}
-\KeywordTok{png}\NormalTok{(}\StringTok{"Conffusion_matrix_all.png"}\NormalTok{, }\DataTypeTok{width =} \DecValTok{25}\NormalTok{, }\DataTypeTok{height =} \DecValTok{25}\NormalTok{, }\DataTypeTok{res=}\DecValTok{300}\NormalTok{, }\DataTypeTok{units=}\StringTok{"in"}\NormalTok{)}
-\KeywordTok{par}\NormalTok{(}\DataTypeTok{mar =} \KeywordTok{c}\NormalTok{(}\DecValTok{10}\NormalTok{, }\DecValTok{11}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{))}
-\NormalTok{colors1 <-}\StringTok{ }\KeywordTok{colorRampPalette}\NormalTok{(}\DataTypeTok{colors =} \KeywordTok{c}\NormalTok{(}\StringTok{"#f0f0f0"}\NormalTok{, }\StringTok{"#bdbdbd"}\NormalTok{,}\StringTok{"#636363"}\NormalTok{))}
-\NormalTok{prop <-}\StringTok{ }\KeywordTok{apply}\NormalTok{(fit}\OperatorTok{$}\NormalTok{confusion[, }\OperatorTok{-}\DecValTok{5}\NormalTok{], }\DecValTok{2}\NormalTok{, }\ControlFlowTok{function}\NormalTok{(x)\{x }\OperatorTok{/}\StringTok{ }\KeywordTok{sum}\NormalTok{(x)\}) }\OperatorTok{*}\StringTok{ }\DecValTok{100}
+\KeywordTok{png}\NormalTok{(}\StringTok{"predictions.png"}\NormalTok{, }\DataTypeTok{width =} \DecValTok{11}\NormalTok{, }\DataTypeTok{height =} \FloatTok{8.5}\NormalTok{, }\DataTypeTok{res =} \DecValTok{300}\NormalTok{, }\DataTypeTok{units =} \StringTok{"in"}\NormalTok{)}
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mar=}\KeywordTok{c}\NormalTok{(}\DecValTok{5}\NormalTok{,}\DecValTok{6}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{))}
 
-\KeywordTok{image}\NormalTok{(prop, }\DataTypeTok{col =} \KeywordTok{colors1}\NormalTok{(}\DecValTok{20}\NormalTok{), }\DataTypeTok{axes=}\OtherTok{FALSE}\NormalTok{)}
-\KeywordTok{axis}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DataTypeTok{at=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, .}\DecValTok{33}\NormalTok{, .}\DecValTok{66}\NormalTok{, }\DecValTok{1}\NormalTok{), }\DataTypeTok{labels=}\NormalTok{labs, }\DataTypeTok{tick =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{line =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{cex.axis =} \FloatTok{3.5}\NormalTok{, }\DataTypeTok{pos =} \OperatorTok{-}\NormalTok{.}\DecValTok{19}\NormalTok{)}
-\KeywordTok{axis}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DataTypeTok{at=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, .}\DecValTok{33}\NormalTok{, .}\DecValTok{66}\NormalTok{, }\DecValTok{1}\NormalTok{), }\DataTypeTok{labels=}\NormalTok{labs, }\DataTypeTok{tick =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{line =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{cex.axis =} \FloatTok{3.5}\NormalTok{)}
-\KeywordTok{mtext}\NormalTok{(}\StringTok{"ACTUAL"}\NormalTok{, }\DataTypeTok{side =} \DecValTok{1}\NormalTok{, }\DataTypeTok{padj =} \DecValTok{3}\NormalTok{, }\DataTypeTok{cex =} \DecValTok{4}\NormalTok{)}
-\KeywordTok{mtext}\NormalTok{(}\StringTok{"PREDICTED"}\NormalTok{, }\DataTypeTok{side =} \DecValTok{2}\NormalTok{, }\DataTypeTok{padj =} \OperatorTok{-}\DecValTok{3}\NormalTok{, }\DataTypeTok{cex =} \DecValTok{4}\NormalTok{)}
+\CommentTok{# Change argument FUN to sd to obtain the standard deviation}
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{aggregate}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ res_acum[, }\DecValTok{4}\NormalTok{], }\DataTypeTok{by =} \KeywordTok{list}\NormalTok{((res_acum[, }\DecValTok{1}\NormalTok{])), }\DataTypeTok{FUN =}\NormalTok{ mean), }\DataTypeTok{type =} \StringTok{"n"}\NormalTok{, }\DataTypeTok{ylim=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{), }\DataTypeTok{ylab=}\StringTok{"probability that our known cultural phylogeny came }\CharTok{\textbackslash{}n}\StringTok{ from each type of simulated mechanism"}\NormalTok{, }\DataTypeTok{xlab=}\StringTok{"number of simulation replicates"}\NormalTok{, }\DataTypeTok{cex.axis=}\FloatTok{1.5}\NormalTok{, }\DataTypeTok{cex.lab=}\FloatTok{1.5}\NormalTok{)}
+
+
+\NormalTok{basic_mean <-}\StringTok{ }\KeywordTok{aggregate}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ res_acum[, }\DecValTok{21}\NormalTok{], }\DataTypeTok{by =} \KeywordTok{list}\NormalTok{((res_acum[, }\DecValTok{1}\NormalTok{])), }\DataTypeTok{FUN =}\NormalTok{ mean)}
+\NormalTok{diffusion_mean <-}\StringTok{ }\KeywordTok{aggregate}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ res_acum[, }\DecValTok{22}\NormalTok{], }\DataTypeTok{by =} \KeywordTok{list}\NormalTok{((res_acum[, }\DecValTok{1}\NormalTok{])), }\DataTypeTok{FUN =}\NormalTok{ mean)}
+\NormalTok{TO_mean <-}\StringTok{ }\KeywordTok{aggregate}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ res_acum[, }\DecValTok{23}\NormalTok{], }\DataTypeTok{by =} \KeywordTok{list}\NormalTok{((res_acum[, }\DecValTok{1}\NormalTok{])), }\DataTypeTok{FUN =}\NormalTok{ mean)}
+\NormalTok{both_mean <-}\StringTok{ }\KeywordTok{aggregate}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ res_acum[, }\DecValTok{24}\NormalTok{], }\DataTypeTok{by =} \KeywordTok{list}\NormalTok{((res_acum[, }\DecValTok{1}\NormalTok{])), }\DataTypeTok{FUN =}\NormalTok{ mean)}
+                   
+\NormalTok{basic_sd <-}\StringTok{ }\KeywordTok{aggregate}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ res_acum[, }\DecValTok{21}\NormalTok{], }\DataTypeTok{by =} \KeywordTok{list}\NormalTok{((res_acum[, }\DecValTok{1}\NormalTok{])), }\DataTypeTok{FUN =}\NormalTok{ sd)}
+\NormalTok{diffusion_sd <-}\StringTok{ }\KeywordTok{aggregate}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ res_acum[, }\DecValTok{22}\NormalTok{], }\DataTypeTok{by =} \KeywordTok{list}\NormalTok{((res_acum[, }\DecValTok{1}\NormalTok{])), }\DataTypeTok{FUN =}\NormalTok{ sd)}
+\NormalTok{TO_sd <-}\StringTok{ }\KeywordTok{aggregate}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ res_acum[, }\DecValTok{23}\NormalTok{], }\DataTypeTok{by =} \KeywordTok{list}\NormalTok{((res_acum[, }\DecValTok{1}\NormalTok{])), }\DataTypeTok{FUN =}\NormalTok{ sd)}
+\NormalTok{both_sd <-}\StringTok{ }\KeywordTok{aggregate}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ res_acum[, }\DecValTok{24}\NormalTok{], }\DataTypeTok{by =} \KeywordTok{list}\NormalTok{((res_acum[, }\DecValTok{1}\NormalTok{])), }\DataTypeTok{FUN =}\NormalTok{ sd)}
+
+
+\KeywordTok{polygon}\NormalTok{(}\DataTypeTok{x=}\KeywordTok{c}\NormalTok{(basic_mean[,}\DecValTok{1}\NormalTok{], }\KeywordTok{rev}\NormalTok{(basic_mean[,}\DecValTok{1}\NormalTok{])), }\DataTypeTok{y=}\KeywordTok{c}\NormalTok{(basic_mean[,}\DecValTok{2}\NormalTok{] }\OperatorTok{+}\StringTok{ }\NormalTok{basic_sd[,}\DecValTok{2}\NormalTok{], }\KeywordTok{rev}\NormalTok{(basic_mean[,}\DecValTok{2}\NormalTok{] }\OperatorTok{-}\StringTok{ }\NormalTok{basic_sd[,}\DecValTok{2}\NormalTok{])), }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"orange"}\NormalTok{, }\DataTypeTok{alpha=}\FloatTok{0.5}\NormalTok{), }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{)}
+\KeywordTok{polygon}\NormalTok{(}\DataTypeTok{x=}\KeywordTok{c}\NormalTok{(diffusion_mean[,}\DecValTok{1}\NormalTok{], }\KeywordTok{rev}\NormalTok{(diffusion_mean[,}\DecValTok{1}\NormalTok{])), }\DataTypeTok{y=}\KeywordTok{c}\NormalTok{(diffusion_mean[,}\DecValTok{2}\NormalTok{] }\OperatorTok{+}\StringTok{ }\NormalTok{diffusion_sd[,}\DecValTok{2}\NormalTok{], }\KeywordTok{rev}\NormalTok{(diffusion_mean[,}\DecValTok{2}\NormalTok{] }\OperatorTok{-}\StringTok{ }\NormalTok{diffusion_sd[,}\DecValTok{2}\NormalTok{])), }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=}\FloatTok{0.5}\NormalTok{), }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{)}
+\KeywordTok{polygon}\NormalTok{(}\DataTypeTok{x=}\KeywordTok{c}\NormalTok{(TO_mean[,}\DecValTok{1}\NormalTok{], }\KeywordTok{rev}\NormalTok{(TO_mean[,}\DecValTok{1}\NormalTok{])), }\DataTypeTok{y=}\KeywordTok{c}\NormalTok{(TO_mean[,}\DecValTok{2}\NormalTok{] }\OperatorTok{+}\StringTok{ }\NormalTok{TO_sd[,}\DecValTok{2}\NormalTok{], }\KeywordTok{rev}\NormalTok{(TO_mean[,}\DecValTok{2}\NormalTok{] }\OperatorTok{-}\StringTok{ }\NormalTok{TO_sd[,}\DecValTok{2}\NormalTok{])), }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"pink"}\NormalTok{, }\DataTypeTok{alpha=}\FloatTok{0.5}\NormalTok{), }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{)}
+\KeywordTok{polygon}\NormalTok{(}\DataTypeTok{x=}\KeywordTok{c}\NormalTok{(both_mean[,}\DecValTok{1}\NormalTok{], }\KeywordTok{rev}\NormalTok{(both_mean[,}\DecValTok{1}\NormalTok{])), }\DataTypeTok{y=}\KeywordTok{c}\NormalTok{(both_mean[,}\DecValTok{2}\NormalTok{] }\OperatorTok{+}\StringTok{ }\NormalTok{both_sd[,}\DecValTok{2}\NormalTok{], }\KeywordTok{rev}\NormalTok{(both_mean[,}\DecValTok{2}\NormalTok{] }\OperatorTok{-}\StringTok{ }\NormalTok{both_sd[,}\DecValTok{2}\NormalTok{])), }\DataTypeTok{col=}\KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"darkgreen"}\NormalTok{, }\DataTypeTok{alpha=}\FloatTok{0.5}\NormalTok{), }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{)}
+
+
+
+\KeywordTok{lines}\NormalTok{(basic_mean,  }\DataTypeTok{col=}\StringTok{"orange"}\NormalTok{)}
+\KeywordTok{lines}\NormalTok{(diffusion_mean,  }\DataTypeTok{col=}\StringTok{"cornflowerblue"}\NormalTok{)}
+\KeywordTok{lines}\NormalTok{(TO_mean,  }\DataTypeTok{col=}\StringTok{"pink"}\NormalTok{)}
+\KeywordTok{lines}\NormalTok{(both_mean,  }\DataTypeTok{col=}\StringTok{"darkgreen"}\NormalTok{)}
+
+\NormalTok{labs <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Basic"}\NormalTok{, }\StringTok{"+Diffusion"}\NormalTok{, }\StringTok{"+Takeover"}\NormalTok{, }\StringTok{"+Diffusion +Takeover"}\NormalTok{)}
+\KeywordTok{legend}\NormalTok{(}\StringTok{"topright"}\NormalTok{, }\DataTypeTok{legend=}\NormalTok{labs, }\DataTypeTok{col=}\KeywordTok{c}\NormalTok{(}\StringTok{"orange"}\NormalTok{, }\StringTok{"cornflowerblue"}\NormalTok{, }\StringTok{"pink"}\NormalTok{, }\StringTok{"darkgreen"}\NormalTok{), }\DataTypeTok{lty=}\DecValTok{1}\NormalTok{, }\DataTypeTok{cex=}\FloatTok{1.5}\NormalTok{, }\DataTypeTok{lwd=}\DecValTok{10}\NormalTok{)}
+
+\KeywordTok{dev.off}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{predictions.png}
+\caption{}
+\end{figure}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{png}\NormalTok{(}\StringTok{"last_step_predictions.png"}\NormalTok{, }\DataTypeTok{width =} \DecValTok{11}\NormalTok{, }\DataTypeTok{height =} \FloatTok{8.5}\NormalTok{, }\DataTypeTok{res =} \DecValTok{300}\NormalTok{, }\DataTypeTok{units =} \StringTok{"in"}\NormalTok{)}
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mar=}\KeywordTok{c}\NormalTok{(}\DecValTok{5}\NormalTok{,}\DecValTok{6}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+\NormalTok{this <-}\StringTok{ }\KeywordTok{length}\NormalTok{(basic_mean[,}\DecValTok{1}\NormalTok{])}
+
+\KeywordTok{plot}\NormalTok{(}\DataTypeTok{x=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{5}\NormalTok{), }\DataTypeTok{y=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{), }\DataTypeTok{type=}\StringTok{"n"}\NormalTok{,  }\DataTypeTok{xaxt=}\StringTok{"n"}\NormalTok{, }\DataTypeTok{ylab=}\StringTok{"probability that our known cultural phylogeny came }\CharTok{\textbackslash{}n}\StringTok{ from each type of simulated mechanism"}\NormalTok{, }\DataTypeTok{xlab=}\StringTok{""}\NormalTok{, }\DataTypeTok{xlim=}\KeywordTok{c}\NormalTok{(}\FloatTok{0.5}\NormalTok{,}\FloatTok{4.5}\NormalTok{))}
+\KeywordTok{polygon}\NormalTok{(}\DataTypeTok{x=}\KeywordTok{c}\NormalTok{(}\FloatTok{0.75}\NormalTok{,}\FloatTok{0.75}\NormalTok{,}\FloatTok{1.25}\NormalTok{,}\FloatTok{1.25}\NormalTok{), }\DataTypeTok{y=}\KeywordTok{c}\NormalTok{(basic_mean[this,}\DecValTok{2}\NormalTok{] }\OperatorTok{-}\StringTok{ }\NormalTok{basic_sd[this,}\DecValTok{2}\NormalTok{], basic_mean[this,}\DecValTok{2}\NormalTok{] }\OperatorTok{+}\StringTok{ }\NormalTok{basic_sd[this,}\DecValTok{2}\NormalTok{], basic_mean[this,}\DecValTok{2}\NormalTok{] }\OperatorTok{+}\StringTok{ }\NormalTok{basic_sd[this,}\DecValTok{2}\NormalTok{], basic_mean[this,}\DecValTok{2}\NormalTok{] }\OperatorTok{-}\StringTok{ }\NormalTok{basic_sd[this,}\DecValTok{2}\NormalTok{]), }\DataTypeTok{col =} \KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"orange"}\NormalTok{, }\DataTypeTok{alpha=}\FloatTok{0.5}\NormalTok{), }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{ )}
+\KeywordTok{polygon}\NormalTok{(}\DataTypeTok{x=}\KeywordTok{c}\NormalTok{(}\FloatTok{1.75}\NormalTok{,}\FloatTok{1.75}\NormalTok{,}\FloatTok{2.25}\NormalTok{,}\FloatTok{2.25}\NormalTok{), }\DataTypeTok{y=}\KeywordTok{c}\NormalTok{(diffusion_mean[this,}\DecValTok{2}\NormalTok{] }\OperatorTok{-}\StringTok{ }\NormalTok{diffusion_sd[this,}\DecValTok{2}\NormalTok{], diffusion_mean[this,}\DecValTok{2}\NormalTok{] }\OperatorTok{+}\StringTok{ }\NormalTok{diffusion_sd[this,}\DecValTok{2}\NormalTok{], diffusion_mean[this,}\DecValTok{2}\NormalTok{] }\OperatorTok{+}\StringTok{ }\NormalTok{diffusion_sd[this,}\DecValTok{2}\NormalTok{], diffusion_mean[this,}\DecValTok{2}\NormalTok{] }\OperatorTok{-}\StringTok{ }\NormalTok{diffusion_sd[this,}\DecValTok{2}\NormalTok{]), }\DataTypeTok{col =} \KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"cornflowerblue"}\NormalTok{, }\DataTypeTok{alpha=}\FloatTok{0.5}\NormalTok{), }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{)}
+\KeywordTok{polygon}\NormalTok{(}\DataTypeTok{x=}\KeywordTok{c}\NormalTok{(}\FloatTok{2.75}\NormalTok{,}\FloatTok{2.75}\NormalTok{,}\FloatTok{3.25}\NormalTok{,}\FloatTok{3.25}\NormalTok{), }\DataTypeTok{y=}\KeywordTok{c}\NormalTok{(TO_mean[this,}\DecValTok{2}\NormalTok{] }\OperatorTok{-}\StringTok{ }\NormalTok{TO_sd[this,}\DecValTok{2}\NormalTok{], TO_mean[this,}\DecValTok{2}\NormalTok{] }\OperatorTok{+}\StringTok{ }\NormalTok{TO_sd[this,}\DecValTok{2}\NormalTok{], TO_mean[this,}\DecValTok{2}\NormalTok{] }\OperatorTok{+}\StringTok{ }\NormalTok{TO_sd[this,}\DecValTok{2}\NormalTok{], TO_mean[this,}\DecValTok{2}\NormalTok{] }\OperatorTok{-}\StringTok{ }\NormalTok{TO_sd[this,}\DecValTok{2}\NormalTok{]), }\DataTypeTok{col =} \KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"pink"}\NormalTok{, }\DataTypeTok{alpha=}\FloatTok{0.5}\NormalTok{), }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{)}
+\KeywordTok{polygon}\NormalTok{(}\DataTypeTok{x=}\KeywordTok{c}\NormalTok{(}\FloatTok{3.75}\NormalTok{,}\FloatTok{3.75}\NormalTok{,}\FloatTok{4.25}\NormalTok{,}\FloatTok{4.25}\NormalTok{), }\DataTypeTok{y=}\KeywordTok{c}\NormalTok{(both_mean[this,}\DecValTok{2}\NormalTok{] }\OperatorTok{-}\StringTok{ }\NormalTok{both_sd[this,}\DecValTok{2}\NormalTok{], both_mean[this,}\DecValTok{2}\NormalTok{] }\OperatorTok{+}\StringTok{ }\NormalTok{both_sd[this,}\DecValTok{2}\NormalTok{], both_mean[this,}\DecValTok{2}\NormalTok{] }\OperatorTok{+}\StringTok{ }\NormalTok{both_sd[this,}\DecValTok{2}\NormalTok{], both_mean[this,}\DecValTok{2}\NormalTok{] }\OperatorTok{-}\StringTok{ }\NormalTok{both_sd[this,}\DecValTok{2}\NormalTok{]), }\DataTypeTok{col =} \KeywordTok{adjustcolor}\NormalTok{(}\StringTok{"darkgreen"}\NormalTok{, }\DataTypeTok{alpha=}\FloatTok{0.5}\NormalTok{), }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{)}
+
+
+\KeywordTok{lines}\NormalTok{(}\DataTypeTok{x=}\KeywordTok{c}\NormalTok{(}\FloatTok{0.5}\NormalTok{, }\FloatTok{1.5}\NormalTok{), }\KeywordTok{c}\NormalTok{(basic_mean[this,}\DecValTok{2}\NormalTok{], basic_mean[this,}\DecValTok{2}\NormalTok{]),  }\DataTypeTok{col=}\StringTok{"orange"}\NormalTok{)}
+\KeywordTok{lines}\NormalTok{(}\DataTypeTok{x=}\KeywordTok{c}\NormalTok{(}\FloatTok{1.5}\NormalTok{, }\FloatTok{2.5}\NormalTok{), }\KeywordTok{c}\NormalTok{(diffusion_mean[this,}\DecValTok{2}\NormalTok{], diffusion_mean[this,}\DecValTok{2}\NormalTok{]),  }\DataTypeTok{col=}\StringTok{"cornflowerblue"}\NormalTok{)}
+\KeywordTok{lines}\NormalTok{(}\DataTypeTok{x=}\KeywordTok{c}\NormalTok{(}\FloatTok{2.5}\NormalTok{, }\FloatTok{3.5}\NormalTok{), }\KeywordTok{c}\NormalTok{(TO_mean[this,}\DecValTok{2}\NormalTok{], TO_mean[this,}\DecValTok{2}\NormalTok{]),  }\DataTypeTok{col=}\StringTok{"pink"}\NormalTok{)}
+\KeywordTok{lines}\NormalTok{(}\DataTypeTok{x=}\KeywordTok{c}\NormalTok{(}\FloatTok{3.5}\NormalTok{, }\FloatTok{4.5}\NormalTok{), }\KeywordTok{c}\NormalTok{(both_mean[this,}\DecValTok{2}\NormalTok{], both_mean[this,}\DecValTok{2}\NormalTok{]),  }\DataTypeTok{col=}\StringTok{"darkgreen"}\NormalTok{)}
+
+\KeywordTok{legend}\NormalTok{(}\StringTok{"topright"}\NormalTok{, }\DataTypeTok{legend=}\NormalTok{labs, }\DataTypeTok{col=}\KeywordTok{c}\NormalTok{(}\StringTok{"orange"}\NormalTok{, }\StringTok{"cornflowerblue"}\NormalTok{, }\StringTok{"pink"}\NormalTok{, }\StringTok{"darkgreen"}\NormalTok{), }\DataTypeTok{lty=}\DecValTok{1}\NormalTok{, }\DataTypeTok{cex=}\FloatTok{1.5}\NormalTok{, }\DataTypeTok{lwd=}\DecValTok{10}\NormalTok{)}
+
+\KeywordTok{dev.off}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{last_step_predictions.png}
+\caption{}
+\end{figure}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#colnames(res_acum)}
+
+\NormalTok{long <-}\StringTok{ }\KeywordTok{length}\NormalTok{(Confusion_0101_mean[,}\DecValTok{1}\NormalTok{])}
+\NormalTok{Confusion_sum_}\DecValTok{01}\NormalTok{ <-}\StringTok{ }\KeywordTok{aggregate}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ res_acum[, }\DecValTok{5}\OperatorTok{:}\DecValTok{8}\NormalTok{], }\DataTypeTok{by =} \KeywordTok{list}\NormalTok{((res_acum[, }\DecValTok{1}\NormalTok{])), }\DataTypeTok{FUN =}\NormalTok{ mean)}
+\NormalTok{Confusion_sum_}\DecValTok{02}\NormalTok{ <-}\StringTok{ }\KeywordTok{aggregate}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ res_acum[, }\DecValTok{9}\OperatorTok{:}\DecValTok{12}\NormalTok{], }\DataTypeTok{by =} \KeywordTok{list}\NormalTok{((res_acum[, }\DecValTok{1}\NormalTok{])), }\DataTypeTok{FUN =}\NormalTok{ mean)}
+\NormalTok{Confusion_sum_}\DecValTok{03}\NormalTok{ <-}\StringTok{ }\KeywordTok{aggregate}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ res_acum[, }\DecValTok{13}\OperatorTok{:}\DecValTok{16}\NormalTok{], }\DataTypeTok{by =} \KeywordTok{list}\NormalTok{((res_acum[, }\DecValTok{1}\NormalTok{])), }\DataTypeTok{FUN =}\NormalTok{ mean)}
+\NormalTok{Confusion_sum_}\DecValTok{04}\NormalTok{ <-}\StringTok{ }\KeywordTok{aggregate}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ res_acum[, }\DecValTok{17}\OperatorTok{:}\DecValTok{20}\NormalTok{], }\DataTypeTok{by =} \KeywordTok{list}\NormalTok{((res_acum[, }\DecValTok{1}\NormalTok{])), }\DataTypeTok{FUN =}\NormalTok{ mean)}
+
+\NormalTok{percent_one <-}\StringTok{ }\NormalTok{(Confusion_sum_}\DecValTok{01}\NormalTok{[,}\DecValTok{2}\OperatorTok{:}\DecValTok{5}\NormalTok{]}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(Confusion_sum_}\DecValTok{01}\NormalTok{[,}\DecValTok{2}\OperatorTok{:}\DecValTok{5}\NormalTok{])) }\OperatorTok{*}\StringTok{ }\DecValTok{100}
+\NormalTok{percent_two <-}\StringTok{ }\NormalTok{(Confusion_sum_}\DecValTok{02}\NormalTok{[,}\DecValTok{2}\OperatorTok{:}\DecValTok{5}\NormalTok{]}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(Confusion_sum_}\DecValTok{02}\NormalTok{[,}\DecValTok{2}\OperatorTok{:}\DecValTok{5}\NormalTok{])) }\OperatorTok{*}\StringTok{ }\DecValTok{100}
+\NormalTok{percent_three <-}\StringTok{ }\NormalTok{(Confusion_sum_}\DecValTok{03}\NormalTok{[,}\DecValTok{2}\OperatorTok{:}\DecValTok{5}\NormalTok{]}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(Confusion_sum_}\DecValTok{03}\NormalTok{[,}\DecValTok{2}\OperatorTok{:}\DecValTok{5}\NormalTok{])) }\OperatorTok{*}\StringTok{ }\DecValTok{100}
+\NormalTok{percent_four <-}\StringTok{ }\NormalTok{(Confusion_sum_}\DecValTok{04}\NormalTok{[,}\DecValTok{2}\OperatorTok{:}\DecValTok{5}\NormalTok{]}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(Confusion_sum_}\DecValTok{04}\NormalTok{[,}\DecValTok{2}\OperatorTok{:}\DecValTok{5}\NormalTok{])) }\OperatorTok{*}\StringTok{ }\DecValTok{100}
+
+
+\NormalTok{confusion <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\KeywordTok{c}\NormalTok{(percent_one, percent_two, percent_three, percent_four), }\DecValTok{4}\NormalTok{,}\DecValTok{4}\NormalTok{)}
+
+\NormalTok{labs <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Basic"}\NormalTok{, }\StringTok{"+Diffusion"}\NormalTok{, }\StringTok{"+Takeover"}\NormalTok{, }\StringTok{"+Diffusion"}\NormalTok{,  }\StringTok{"+Takeover"}\NormalTok{)}
+\NormalTok{colors1 <-}\StringTok{ }\KeywordTok{colorRampPalette}\NormalTok{(}\DataTypeTok{colors =} \KeywordTok{c}\NormalTok{(}\StringTok{"grey95"}\NormalTok{, }\StringTok{"grey40"}\NormalTok{))}
+
+
+\KeywordTok{png}\NormalTok{(}\StringTok{"confusion_matrix.png"}\NormalTok{, }\DataTypeTok{width =} \FloatTok{8.5}\NormalTok{, }\DataTypeTok{height =} \FloatTok{8.5}\NormalTok{, }\DataTypeTok{res =} \DecValTok{600}\NormalTok{, }\DataTypeTok{units =} \StringTok{"in"}\NormalTok{)}
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mar=}\KeywordTok{c}\NormalTok{(}\DecValTok{8}\NormalTok{,}\DecValTok{8}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+\KeywordTok{plot}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DataTypeTok{xlim=}\KeywordTok{c}\NormalTok{(}\OperatorTok{-}\FloatTok{0.2}\NormalTok{,}\FloatTok{1.4}\NormalTok{), }\DataTypeTok{ylim=}\KeywordTok{c}\NormalTok{(}\OperatorTok{-}\FloatTok{0.2}\NormalTok{,}\FloatTok{1.4}\NormalTok{), }\DataTypeTok{xaxt=}\StringTok{"n"}\NormalTok{, }\DataTypeTok{xlab=}\StringTok{""}\NormalTok{, }\DataTypeTok{yaxt=}\StringTok{"n"}\NormalTok{, }\DataTypeTok{ylab=}\StringTok{""}\NormalTok{ , }\DataTypeTok{bty=}\StringTok{"n"}\NormalTok{)}
+\CommentTok{#image(prop, col = colors1(20), axes=FALSE)}
+\KeywordTok{axis}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DataTypeTok{at=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, .}\DecValTok{4}\NormalTok{, .}\DecValTok{8}\NormalTok{, }\FloatTok{1.2}\NormalTok{, }\FloatTok{1.3}\NormalTok{), }\DataTypeTok{labels=}\NormalTok{labs, }\DataTypeTok{tick =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{line =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{cex.axis =} \DecValTok{1}\NormalTok{, }\DataTypeTok{pos =} \OperatorTok{-}\NormalTok{.}\DecValTok{19}\NormalTok{, }\DataTypeTok{las=}\DecValTok{2}\NormalTok{)}
+\KeywordTok{axis}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DataTypeTok{at=}\KeywordTok{rev}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\OperatorTok{-}\FloatTok{0.05}\NormalTok{, }\FloatTok{0.05}\NormalTok{, .}\DecValTok{4}\NormalTok{, .}\DecValTok{8}\NormalTok{, }\FloatTok{1.2}\NormalTok{)), }\DataTypeTok{labels=}\NormalTok{labs, }\DataTypeTok{tick =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{line =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{cex.axis =} \DecValTok{1}\NormalTok{, }\DataTypeTok{las=}\DecValTok{2}\NormalTok{)}
+\KeywordTok{mtext}\NormalTok{(}\StringTok{"percent of time that RF identifies input model as each model type"}\NormalTok{, }\DataTypeTok{side =} \DecValTok{1}\NormalTok{, }\DataTypeTok{padj =} \DecValTok{10}\NormalTok{, }\DataTypeTok{cex =} \DecValTok{1}\NormalTok{)}
+\KeywordTok{mtext}\NormalTok{(}\StringTok{"known model type given to random forest"}\NormalTok{, }\DataTypeTok{side =} \DecValTok{2}\NormalTok{, }\DataTypeTok{padj =} \OperatorTok{-}\DecValTok{10}\NormalTok{, }\DataTypeTok{cex =} \DecValTok{1}\NormalTok{)}
+
+
 
 \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\DecValTok{4}\NormalTok{) \{}
-  \ControlFlowTok{for}\NormalTok{(j }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\DecValTok{4}\NormalTok{) \{}
-    \KeywordTok{text}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, .}\DecValTok{33}\NormalTok{, .}\DecValTok{66}\NormalTok{, }\DecValTok{1}\NormalTok{)[i], }\DataTypeTok{y =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, .}\DecValTok{33}\NormalTok{, .}\DecValTok{66}\NormalTok{, }\DecValTok{1}\NormalTok{)[j], }\KeywordTok{paste0}\NormalTok{(}\KeywordTok{round}\NormalTok{(prop[i, j], }\DecValTok{2}\NormalTok{), }\StringTok{"%"}\NormalTok{),}
-         \DataTypeTok{cex =} \DecValTok{5}\NormalTok{)}
+  \ControlFlowTok{for}\NormalTok{(j }\ControlFlowTok{in} \DecValTok{4}\OperatorTok{:}\DecValTok{1}\NormalTok{) \{}
+\NormalTok{    xs <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, .}\DecValTok{4}\NormalTok{, .}\DecValTok{8}\NormalTok{, }\FloatTok{1.2}\NormalTok{)[i]}
+\NormalTok{    ys <-}\StringTok{ }\KeywordTok{rev}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, .}\DecValTok{4}\NormalTok{, .}\DecValTok{8}\NormalTok{, }\FloatTok{1.2}\NormalTok{))[j]}
+    \KeywordTok{polygon}\NormalTok{(}\DataTypeTok{x=}\KeywordTok{c}\NormalTok{(xs}\OperatorTok{-}\FloatTok{0.2}\NormalTok{, xs}\OperatorTok{-}\FloatTok{0.2}\NormalTok{, xs}\OperatorTok{+}\FloatTok{0.2}\NormalTok{, xs}\OperatorTok{+}\FloatTok{0.2}\NormalTok{), }\DataTypeTok{y=}\KeywordTok{c}\NormalTok{(ys}\OperatorTok{-}\FloatTok{0.2}\NormalTok{, ys}\OperatorTok{+}\FloatTok{0.2}\NormalTok{, ys}\OperatorTok{+}\FloatTok{0.2}\NormalTok{, ys}\OperatorTok{-}\FloatTok{0.2}\NormalTok{), }\DataTypeTok{col=}\KeywordTok{colors1}\NormalTok{(}\DecValTok{100}\NormalTok{)[}\KeywordTok{round}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(confusion[i, j]), }\DecValTok{1}\NormalTok{)}\OperatorTok{+}\DecValTok{1}\NormalTok{])}
+    \ControlFlowTok{if}\NormalTok{(i }\OperatorTok{==}\StringTok{ }\NormalTok{j)\{}\KeywordTok{text}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ xs, }\DataTypeTok{y =}\NormalTok{ ys, }\KeywordTok{paste0}\NormalTok{(}\KeywordTok{round}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(confusion[i, j]), }\DecValTok{2}\NormalTok{), }\StringTok{"%"}\NormalTok{), }\DataTypeTok{cex =} \FloatTok{2.2}\NormalTok{, }\DataTypeTok{col=}\StringTok{"limegreen"}\NormalTok{)\}}\ControlFlowTok{else}\NormalTok{\{(}\KeywordTok{text}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ xs, }\DataTypeTok{y =}\NormalTok{ ys, }\KeywordTok{paste0}\NormalTok{(}\KeywordTok{round}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(confusion[i, j]), }\DecValTok{2}\NormalTok{), }\StringTok{"%"}\NormalTok{), }\DataTypeTok{cex =} \FloatTok{2.2}\NormalTok{, }\DataTypeTok{col=}\StringTok{"black"}\NormalTok{))\}}
 \NormalTok{  \}}
 \NormalTok{\}}
-\KeywordTok{dev.off}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{figure}
 \centering
-\includegraphics{Conffusion_matrix_all.png}
+\includegraphics{confusion_matrix.png}
 \caption{}
 \end{figure}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Variables importance}
+
+\NormalTok{imp <-}\StringTok{ }\KeywordTok{importance}\NormalTok{(fit)}
+\NormalTok{imp <-}\StringTok{ }\KeywordTok{apply}\NormalTok{(imp, }\DecValTok{2}\NormalTok{, }\ControlFlowTok{function}\NormalTok{(x) (x }\OperatorTok{-}\StringTok{ }\KeywordTok{min}\NormalTok{(x))}\OperatorTok{/}\NormalTok{(}\KeywordTok{max}\NormalTok{(x) }\OperatorTok{-}\StringTok{ }\KeywordTok{min}\NormalTok{(x)))}
+\NormalTok{imp <-}\StringTok{ }\NormalTok{imp[}\KeywordTok{sort}\NormalTok{(imp[, }\DecValTok{5}\NormalTok{], }\DataTypeTok{index.return =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{decreasing =} \OtherTok{TRUE}\NormalTok{)}\OperatorTok{$}\NormalTok{ix, ]}
+
+\KeywordTok{as.character}\NormalTok{(replace[, }\DecValTok{6}\NormalTok{])}
+\KeywordTok{load}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(replace[}\DecValTok{90}\NormalTok{, }\DecValTok{6}\NormalTok{]))}
+\NormalTok{imp <-}\StringTok{ }\KeywordTok{importance}\NormalTok{(fit)}
+
+\NormalTok{names <-}\StringTok{ }\KeywordTok{rownames}\NormalTok{(imp)}
+\NormalTok{names[names }\OperatorTok{==}\StringTok{ "spatial.tests.fora"}\NormalTok{] <-}\StringTok{ "Space F"}
+\NormalTok{names[names }\OperatorTok{==}\StringTok{ "spatial.tests.dom"}\NormalTok{] <-}\StringTok{ "Space D"}
+\NormalTok{names[names }\OperatorTok{==}\StringTok{ "sprate"}\NormalTok{] <-}\StringTok{ "Sp(ratio)"}
+\NormalTok{names[names }\OperatorTok{==}\StringTok{ "transition_from_trait_1_to_2"}\NormalTok{] <-}\StringTok{ "TR(1-2)"}
+\NormalTok{names[names }\OperatorTok{==}\StringTok{ "transition_from_trait_2_to_1"}\NormalTok{] <-}\StringTok{ "TR(2-1)"}
+\NormalTok{names[names }\OperatorTok{==}\StringTok{ "Phylogenetic_signal"}\NormalTok{] <-}\StringTok{ "PhySig(D)"}
+\NormalTok{names[names }\OperatorTok{==}\StringTok{ "Evolutionary_distinctiveness_sum"}\NormalTok{] <-}\StringTok{ "EDsum"}
+\NormalTok{names[names }\OperatorTok{==}\StringTok{ "Pylo_diversity_is_sum_of_BL"}\NormalTok{] <-}\StringTok{ "PDsum"}
+\NormalTok{names[names }\OperatorTok{==}\StringTok{ "transition_rate_ratio_1to2_over_2to1"}\NormalTok{] <-}\StringTok{ "TR(ratio)"}
+\NormalTok{names[names }\OperatorTok{==}\StringTok{ "gamma"}\NormalTok{] <-}\StringTok{ "Gamma"}
+\NormalTok{names[names }\OperatorTok{==}\StringTok{ "mean_Phylogenetic_isolation"}\NormalTok{] <-}\StringTok{ "MPI"}
+\NormalTok{names[names }\OperatorTok{==}\StringTok{ "extrate"}\NormalTok{] <-}\StringTok{ "Ext(ratio)"}
+\NormalTok{names[names }\OperatorTok{==}\StringTok{ "average_phylogenetic_diversity_is_mean_of_BL"}\NormalTok{] <-}\StringTok{ "PDmean"}
+\NormalTok{names[names }\OperatorTok{==}\StringTok{ "extinction_per_speciation"}\NormalTok{] <-}\StringTok{ "DR"}
+\NormalTok{names[names }\OperatorTok{==}\StringTok{ "variance_Phylogenetic_isolation"}\NormalTok{] <-}\StringTok{ "VPI"}
+\NormalTok{names[names }\OperatorTok{==}\StringTok{ "F_quadratic_entropy_is_sum_of_PD"}\NormalTok{] <-}\StringTok{ "F"}
+\NormalTok{names[names }\OperatorTok{==}\StringTok{ "Mean_pairwise_distance"}\NormalTok{] <-}\StringTok{ "MPD"}
+\NormalTok{names[names }\OperatorTok{==}\StringTok{ "variance_Pylo_diversity_is_variance_of_BL"}\NormalTok{] <-}\StringTok{ "PDvar"}
+\NormalTok{names[names }\OperatorTok{==}\StringTok{ "variance_pairwise_distance"}\NormalTok{] <-}\StringTok{ "VPD"}
+
+
+\NormalTok{x_length <-}\StringTok{ }\KeywordTok{length}\NormalTok{(}\KeywordTok{levels}\NormalTok{(replace[,}\DecValTok{1}\NormalTok{]))}
+
+\NormalTok{######}
+\CommentTok{# make matrix}
+
+
+
+
+
+
+
+
+\NormalTok{#####}
+\CommentTok{#plot from matrix}
+
+
+
+
+
+
+
+
+
+
+\KeywordTok{pdf}\NormalTok{(}\DataTypeTok{file=}\StringTok{"heat map of variable importance.pdf"}\NormalTok{, }\DataTypeTok{width=}\DecValTok{11}\NormalTok{, }\DataTypeTok{height=}\FloatTok{8.5}\NormalTok{)}
+
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mar=}\KeywordTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{10}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+\KeywordTok{plot}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{seq}\NormalTok{(}\DecValTok{1}\NormalTok{, x_length, }\DataTypeTok{by=}\DecValTok{1}\NormalTok{), }\DataTypeTok{y =} \KeywordTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, x_length), }\DataTypeTok{type=}\StringTok{"n"}\NormalTok{, }\DataTypeTok{ylim=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{20}\NormalTok{), }\DataTypeTok{ylab=}\StringTok{""}\NormalTok{, }\DataTypeTok{yaxt=}\StringTok{"n"}\NormalTok{, }\DataTypeTok{xaxt=}\StringTok{"n"}\NormalTok{, }\DataTypeTok{xlab=}\StringTok{""}\NormalTok{, }\DataTypeTok{xlim=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, x_length}\OperatorTok{*}\DecValTok{100}\NormalTok{))}
+
+\KeywordTok{axis}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DataTypeTok{label=}\NormalTok{names, }\DataTypeTok{at=}\KeywordTok{seq}\NormalTok{(}\FloatTok{0.5}\NormalTok{,}\KeywordTok{length}\NormalTok{(names)}\OperatorTok{-}\NormalTok{.}\DecValTok{5}\NormalTok{), }\DataTypeTok{las=}\DecValTok{2}\NormalTok{)}
+
+
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\KeywordTok{length}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(replace[, }\DecValTok{6}\NormalTok{])))\{}
+    
+    \KeywordTok{load}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(replace[i, }\DecValTok{6}\NormalTok{]))}
+\NormalTok{    imp <-}\StringTok{ }\KeywordTok{importance}\NormalTok{(fit)}
+\CommentTok{#imp <- apply(imp, 2, function(x) (x - min(x))/(max(x) - min(x)))}
+    \CommentTok{#i <- 10}
+    
+\NormalTok{x_range <-}\StringTok{ }\KeywordTok{c}\NormalTok{(i, i, i}\OperatorTok{+}\DecValTok{1}\NormalTok{, i}\OperatorTok{+}\DecValTok{1}\NormalTok{)    }
+\NormalTok{percent <-}\StringTok{ }\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{ceiling}\NormalTok{(imp[,}\DecValTok{5}\NormalTok{] ))}
+\NormalTok{percent[}\KeywordTok{which}\NormalTok{(percent }\OperatorTok{==}\StringTok{ }\DecValTok{0}\NormalTok{)] <-}\StringTok{ }\OtherTok{NA}
+\NormalTok{colors <-}\StringTok{ }\KeywordTok{cm.colors}\NormalTok{(}\DecValTok{100}\NormalTok{)[percent]}
+
+\ControlFlowTok{for}\NormalTok{(j }\ControlFlowTok{in} \DecValTok{0}\OperatorTok{:}\DecValTok{19}\NormalTok{)\{}
+\NormalTok{    y_range <-}\StringTok{ }\KeywordTok{c}\NormalTok{(j, j}\OperatorTok{+}\DecValTok{1}\NormalTok{, j}\OperatorTok{+}\DecValTok{1}\NormalTok{, j)}
+\KeywordTok{polygon}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x_range, }\DataTypeTok{y =}\NormalTok{ y_range, }\DataTypeTok{col=}\NormalTok{ colors[j}\OperatorTok{+}\DecValTok{1}\NormalTok{], }\DataTypeTok{border=}\OtherTok{NA}\NormalTok{)}
+\NormalTok{\}}
+
+\NormalTok{\}}
+
+\KeywordTok{abline}\NormalTok{(}\DataTypeTok{v=}\KeywordTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1000}\NormalTok{, }\DataTypeTok{by=}\DecValTok{100}\NormalTok{))}
+
+\KeywordTok{axis}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DataTypeTok{label=}\KeywordTok{format}\NormalTok{(}\KeywordTok{unique}\NormalTok{(replace[,}\DecValTok{7}\NormalTok{]), }\DataTypeTok{format=}\StringTok{"%d %b %Y"}\NormalTok{), }\DataTypeTok{at=}\KeywordTok{seq}\NormalTok{(}\DecValTok{50}\NormalTok{,}\DecValTok{950}\NormalTok{, }\DataTypeTok{by=}\DecValTok{100}\NormalTok{)[}\DecValTok{1}\OperatorTok{:}\KeywordTok{length}\NormalTok{(}\KeywordTok{unique}\NormalTok{(replace[,}\DecValTok{7}\NormalTok{]))])}
+\KeywordTok{dev.off}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
 
 \begin{Shaded}
 \begin{Highlighting}[]

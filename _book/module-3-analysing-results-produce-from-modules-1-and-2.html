@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>FARM: simulating the spread of agriculture through cultural phylogenies</title>
+  <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook.">
+  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+
+  <meta property="og:title" content="FARM: simulating the spread of agriculture through cultural phylogenies" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:image" content="Conffusion_matrix_all.png" />
+  <meta property="og:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="FARM: simulating the spread of agriculture through cultural phylogenies" />
+  
+  <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <meta name="twitter:image" content="Conffusion_matrix_all.png" />
+
+<meta name="author" content="Ty Tuff, Bruno Vilela, and Carlos Botero">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="running-module-1-and-module-2-on-the-cluster.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="spatial-scaffolding-for-the-simulations.html"><a href="spatial-scaffolding-for-the-simulations.html"><i class="fa fa-check"></i><b>2</b> Spatial scaffolding for the simulations</a></li>
+<li class="chapter" data-level="3" data-path="rule-sets.html"><a href="rule-sets.html"><i class="fa fa-check"></i><b>3</b> Rule sets</a><ul>
+<li class="chapter" data-level="3.1" data-path="rule-sets.html"><a href="rule-sets.html#simulation"><i class="fa fa-check"></i><b>3.1</b> Simulation:</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="module-1-simulation-to-produce-a-world-and-a-tree.html"><a href="module-1-simulation-to-produce-a-world-and-a-tree.html"><i class="fa fa-check"></i><b>4</b> Module 1: Simulation to produce a world and a tree</a><ul>
+<li class="chapter" data-level="4.1" data-path="module-1-simulation-to-produce-a-world-and-a-tree.html"><a href="module-1-simulation-to-produce-a-world-and-a-tree.html#inputs"><i class="fa fa-check"></i><b>4.1</b> Inputs</a></li>
+<li class="chapter" data-level="4.2" data-path="module-1-simulation-to-produce-a-world-and-a-tree.html"><a href="module-1-simulation-to-produce-a-world-and-a-tree.html#module-1-functions"><i class="fa fa-check"></i><b>4.2</b> Module 1 functions</a></li>
+<li class="chapter" data-level="4.3" data-path="module-1-simulation-to-produce-a-world-and-a-tree.html"><a href="module-1-simulation-to-produce-a-world-and-a-tree.html#push-versions"><i class="fa fa-check"></i><b>4.3</b> Push versions</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html"><i class="fa fa-check"></i><b>5</b> Module 2: Space and phylogeny summary statistics</a><ul>
+<li class="chapter" data-level="5.1" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#phylogenetic-summary-statistics"><i class="fa fa-check"></i><b>5.1</b> Phylogenetic summary statistics</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#introduction-and-framework"><i class="fa fa-check"></i><b>5.1.1</b> Introduction and framework</a></li>
+<li class="chapter" data-level="5.1.2" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#alpha-diversity-metrics"><i class="fa fa-check"></i><b>5.1.2</b> Alpha diversity metrics</a></li>
+<li class="chapter" data-level="5.1.3" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#pairwise-distance-between-tips"><i class="fa fa-check"></i><b>5.1.3</b> Pairwise distance between tips</a></li>
+<li class="chapter" data-level="5.1.4" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#nearest-phylogenetic-neighbor"><i class="fa fa-check"></i><b>5.1.4</b> Nearest phylogenetic neighbor</a></li>
+<li class="chapter" data-level="5.1.5" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#phylogenetic-isolation"><i class="fa fa-check"></i><b>5.1.5</b> Phylogenetic isolation</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#beta-diversity"><i class="fa fa-check"></i><b>5.2</b> Beta diversity</a></li>
+<li class="chapter" data-level="5.3" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#tree-topology"><i class="fa fa-check"></i><b>5.3</b> Tree topology</a></li>
+<li class="chapter" data-level="5.4" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#macroevolutionary-rates"><i class="fa fa-check"></i><b>5.4</b> Macroevolutionary rates</a></li>
+<li class="chapter" data-level="5.5" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#spatial-locations"><i class="fa fa-check"></i><b>5.5</b> Spatial Locations</a></li>
+<li class="chapter" data-level="5.6" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#module2-returns-these-two-matrices-as-a-list"><i class="fa fa-check"></i><b>5.6</b> Module2() returns these two matrices as a list</a><ul>
+<li class="chapter" data-level="5.6.1" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#here-is-the-exact-version-in-r"><i class="fa fa-check"></i><b>5.6.1</b> Here is the exact version in R</a></li>
+</ul></li>
+<li class="chapter" data-level="5.7" data-path="module-2-space-and-phylogeny-summary-statistics.html"><a href="module-2-space-and-phylogeny-summary-statistics.html#references"><i class="fa fa-check"></i><b>5.7</b> References</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="calling-module-1-and-module-2.html"><a href="calling-module-1-and-module-2.html"><i class="fa fa-check"></i><b>6</b> Calling Module 1 and Module 2</a><ul>
+<li class="chapter" data-level="6.1" data-path="calling-module-1-and-module-2.html"><a href="calling-module-1-and-module-2.html#run-the-simulation-to-a-specified-timestep-and-then-save-one-output"><i class="fa fa-check"></i><b>6.1</b> Run the simulation to a specified timestep and then save one output</a></li>
+<li class="chapter" data-level="6.2" data-path="calling-module-1-and-module-2.html"><a href="calling-module-1-and-module-2.html#run-simulations-for-a-specified-time-but-run-stats-and-save-timesteps-along-the-way"><i class="fa fa-check"></i><b>6.2</b> Run simulations for a specified time but run stats and save timesteps along the way</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="running-module-1-and-module-2-on-the-cluster.html"><a href="running-module-1-and-module-2-on-the-cluster.html"><i class="fa fa-check"></i><b>7</b> Running Module 1 and Module 2 on the cluster</a><ul>
+<li class="chapter" data-level="7.1" data-path="running-module-1-and-module-2-on-the-cluster.html"><a href="running-module-1-and-module-2-on-the-cluster.html#not-for-the-faint-of-hart"><i class="fa fa-check"></i><b>7.1</b> Not for the faint of hart</a></li>
+<li class="chapter" data-level="7.2" data-path="running-module-1-and-module-2-on-the-cluster.html"><a href="running-module-1-and-module-2-on-the-cluster.html#bash-scripts"><i class="fa fa-check"></i><b>7.2</b> Bash scripts</a></li>
+<li class="chapter" data-level="7.3" data-path="running-module-1-and-module-2-on-the-cluster.html"><a href="running-module-1-and-module-2-on-the-cluster.html#passing-arguements-to-r-script"><i class="fa fa-check"></i><b>7.3</b> Passing arguements to R-script</a></li>
+<li class="chapter" data-level="7.4" data-path="running-module-1-and-module-2-on-the-cluster.html"><a href="running-module-1-and-module-2-on-the-cluster.html#accessing-and-working-with-the-cluster"><i class="fa fa-check"></i><b>7.4</b> Accessing and working with the cluster</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html"><i class="fa fa-check"></i><b>8</b> Module 3: Analysing results produce from Modules 1 and 2</a><ul>
+<li class="chapter" data-level="8.1" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#organize-data"><i class="fa fa-check"></i><b>8.1</b> Organize data</a></li>
+<li class="chapter" data-level="8.2" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#diagnostics"><i class="fa fa-check"></i><b>8.2</b> Diagnostics</a></li>
+<li class="chapter" data-level="8.3" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#random-forest-analysis"><i class="fa fa-check"></i><b>8.3</b> Random Forest Analysis</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#trainingbuilding"><i class="fa fa-check"></i><b>8.3.1</b> Training/Building</a></li>
+<li class="chapter" data-level="8.3.2" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#testing"><i class="fa fa-check"></i><b>8.3.2</b> Testing</a></li>
+<li class="chapter" data-level="8.3.3" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#matching"><i class="fa fa-check"></i><b>8.3.3</b> Matching</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#run-a-single-random-forest-on-available-outputs"><i class="fa fa-check"></i><b>8.4</b> Run a single random forest on available outputs</a></li>
+<li class="chapter" data-level="8.5" data-path="module-3-analysing-results-produce-from-modules-1-and-2.html"><a href="module-3-analysing-results-produce-from-modules-1-and-2.html#visualize-outputs-from-random-forest-analysis"><i class="fa fa-check"></i><b>8.5</b> Visualize outputs from Random Forest analysis</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">FARM: simulating the spread of agriculture through cultural phylogenies</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="module-3-analysing-results-produce-from-modules-1-and-2" class="section level1">
+<h1><span class="header-section-number">Chapter 8</span> Module 3: Analysing results produce from Modules 1 and 2</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(png)</code></pre></div>
+<div id="organize-data" class="section level2">
+<h2><span class="header-section-number">8.1</span> Organize data</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># A frequent scenario in our analysis code is that we need to read thousands of </span>
+<span class="co"># output files into a single table. </span>
+<span class="co"># There are a couple flavors of file name that need to be dealt with and the </span>
+<span class="co"># output file needs to include a column with the full file name for reference </span>
+<span class="co"># later. We want to save the final table as it&#39;s own file to a folder outside of </span>
+<span class="co"># the one we just read. </span>
+
+## Here is one flaver where the input is two folders, one with extant 
+<span class="co"># simulations and one with extinct simulations. Need to read the files and </span>
+<span class="co"># produce two tables, one for extinct and one for extant. </span>
+
+## First consolidate the available files into a single table
+concatenate &lt;-<span class="st"> </span><span class="cf">function</span>(path) {
+ available &lt;-<span class="st"> </span><span class="kw">list.files</span>(path, <span class="dt">full.names =</span> <span class="ot">TRUE</span>)
+ name &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">strsplit</span>(available[<span class="dv">1</span>], <span class="dt">split=</span><span class="st">&quot;_&quot;</span>))
+ n &lt;-<span class="st"> </span><span class="kw">length</span>(available)
+ n_name &lt;-<span class="st"> </span><span class="kw">length</span>(name) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>
+ <span class="kw">load</span>(available[<span class="dv">1</span>])
+ ncol_files &lt;-<span class="st"> </span><span class="kw">length</span>(Sim_statistics[[<span class="dv">1</span>]]) <span class="op">+</span><span class="st"> </span>n_name
+ files &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dt">nrow =</span> n,
+                 <span class="dt">ncol =</span> ncol_files)
+ split_names &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw">unlist</span>(<span class="kw">strsplit</span>(x, <span class="dt">split =</span> <span class="st">&quot;_&quot;</span>))}
+ name_available &lt;-<span class="st"> </span><span class="kw">do.call</span>(rbind, <span class="kw">lapply</span>(<span class="kw">as.list</span>(available), split_names))
+ files[, <span class="dv">1</span><span class="op">:</span>n_name] &lt;-<span class="st"> </span>name_available[, <span class="op">-</span><span class="kw">ncol</span>(name_available)]
+
+ <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {
+   error &lt;-<span class="st"> </span><span class="kw">try</span>(<span class="kw">load</span>(available[i]), <span class="dt">silent =</span> <span class="ot">TRUE</span>)
+   <span class="cf">if</span> (<span class="kw">class</span>(error) <span class="op">!=</span><span class="st"> &quot;try-error&quot;</span>) {
+     files[i, (n_name <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)<span class="op">:</span>ncol_files] &lt;-<span class="st"> </span>Sim_statistics[[<span class="dv">1</span>]]
+   }
+ }
+
+
+ files &lt;-<span class="st"> </span>files[, <span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">13</span>, <span class="dv">18</span>, <span class="dv">23</span>, <span class="dv">28</span>, <span class="dv">33</span>, <span class="dv">35</span>)]
+ last_name &lt;-<span class="st"> </span><span class="kw">colnames</span>(Sim_statistics[[<span class="dv">1</span>]])
+ <span class="cf">if</span> (<span class="kw">is.null</span>(last_name)) {
+
+   files &lt;-<span class="st"> </span>files[, <span class="op">-</span><span class="kw">ncol</span>(files)]
+ }
+ <span class="kw">colnames</span>(files) &lt;-<span class="st">  </span><span class="kw">c</span>(<span class="st">&quot;Sim_stats_rep&quot;</span>, <span class="st">&quot;combo&quot;</span>, <span class="kw">paste0</span>(<span class="st">&quot;P.speciation&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>),
+                       <span class="kw">paste0</span>(<span class="st">&quot;P.extinct&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>),  <span class="kw">paste0</span>(<span class="st">&quot;P.diffus&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>),
+                       <span class="kw">paste0</span>(<span class="st">&quot;P.TO&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>),  <span class="kw">paste0</span>(<span class="st">&quot;P.Arisal&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>), 
+                       <span class="st">&quot;timesteps&quot;</span>, <span class="st">&quot;NBS&quot;</span>, last_name)
+
+ Concatenated_data &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(files)
+
+ begin &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">colnames</span>(Concatenated_data) <span class="op">==</span><span class="st">  &quot;number_of_branches&quot;</span>)
+ Concatenated_data_stat &lt;-<span class="st"> </span>Concatenated_data[, begin<span class="op">:</span><span class="kw">ncol</span>(Concatenated_data)]
+ Concatenated_data_stat &lt;-<span class="st"> </span><span class="kw">apply</span>(Concatenated_data_stat, <span class="dv">2</span>, as.numeric)
+ remove &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">is.na</span>(<span class="kw">rowSums</span>(Concatenated_data_stat)))
+ Concatenated_data &lt;-<span class="st"> </span>Concatenated_data[<span class="op">-</span>remove, ]
+
+ one &lt;-<span class="st"> </span><span class="kw">subset</span>(Concatenated_data, combo <span class="op">==</span><span class="st">&quot;01&quot;</span>)
+ two &lt;-<span class="st"> </span><span class="kw">subset</span>(Concatenated_data, combo <span class="op">==</span><span class="st">&quot;02&quot;</span>)
+ five &lt;-<span class="st"> </span><span class="kw">subset</span>(Concatenated_data, combo <span class="op">==</span><span class="st">&quot;05&quot;</span>)
+ six &lt;-<span class="st"> </span><span class="kw">subset</span>(Concatenated_data, combo <span class="op">==</span><span class="st">&quot;06&quot;</span>)
+
+ crop &lt;-<span class="st"> </span><span class="kw">min</span>(<span class="kw">sapply</span>(<span class="kw">list</span>(one, two, five, six), nrow))
+
+ one &lt;-<span class="st"> </span>one[<span class="dv">1</span><span class="op">:</span>crop, ]
+ two &lt;-<span class="st"> </span>two[<span class="dv">1</span><span class="op">:</span>crop, ]
+ five &lt;-<span class="st"> </span>five[<span class="dv">1</span><span class="op">:</span>crop, ]
+ six &lt;-<span class="st"> </span>six[<span class="dv">1</span><span class="op">:</span>crop, ]
+
+ Concatenated_data2 &lt;-<span class="st"> </span><span class="kw">rbind</span>(one, two, five, six)
+ res &lt;-<span class="st"> </span><span class="kw">list</span>(Concatenated_data, Concatenated_data2, crop)
+ <span class="kw">names</span>(res) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Concatenated_data&quot;</span>, <span class="st">&quot;Concatenated_data_crop&quot;</span>, <span class="st">&quot;crop&quot;</span>)
+ <span class="kw">return</span>(res)
+ 
+}
+
+path &lt;-<span class="st"> &quot;~/Box Sync/Four model compare third run/Module 2&quot;</span>
+Concatenated_data0 &lt;-<span class="st"> </span><span class="kw">concatenate</span>(path)
+<span class="kw">print</span>(Concatenated_data0[[<span class="dv">3</span>]])
+path_save &lt;-<span class="st"> &quot;~/Box Sync/Four model compare third run&quot;</span>
+Concatenated_data &lt;-<span class="st"> </span>Concatenated_data0[[<span class="dv">1</span>]]
+<span class="kw">save</span>(Concatenated_data, <span class="dt">file =</span> <span class="kw">paste0</span>(path_save,
+                                     <span class="st">&quot;/Four_model_compare_results_not_cropped.Rdata&quot;</span>))
+Concatenated_data &lt;-<span class="st"> </span>Concatenated_data0[[<span class="dv">2</span>]]
+<span class="kw">save</span>(Concatenated_data, <span class="dt">file=</span><span class="kw">paste0</span>(path_save,
+                                   <span class="st">&quot;/Four_model_compare_results_&quot;</span>, 
+                                   <span class="kw">format</span>(<span class="kw">Sys.time</span>(), <span class="dt">format=</span><span class="st">&quot;%d_%b_%Y&quot;</span>),
+                                   <span class="st">&quot;_crop_to_&quot;</span>, Concatenated_data0[[<span class="dv">3</span>]],<span class="st">&quot;.Rdata&quot;</span>))
+
+### Repeated for extinct
+path &lt;-<span class="st"> &quot;~/Box Sync/Four model compare third run/Module 2 extinct&quot;</span>
+Concatenated_data &lt;-<span class="st"> </span><span class="kw">concatenate</span>(path)[[<span class="dv">1</span>]]
+path_save &lt;-<span class="st"> &quot;~/Box Sync/Four model compare third run&quot;</span>
+
+<span class="kw">save</span>(Concatenated_data, <span class="dt">file=</span><span class="kw">paste0</span>(path_save,
+                                   <span class="st">&quot;/Four_model_compare_results_extinct_&quot;</span>, 
+                                   <span class="kw">format</span>(<span class="kw">Sys.time</span>(), <span class="dt">format=</span><span class="st">&quot;%d_%b_%Y&quot;</span>),<span class="st">&quot;.Rdata&quot;</span>))</code></pre></div>
+</div>
+<div id="diagnostics" class="section level2">
+<h2><span class="header-section-number">8.2</span> Diagnostics</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">load</span>(<span class="st">&quot;Four_model_compare_results_02_Aug_2017_crop_to_6128.Rdata&quot;</span>)
+extant &lt;-<span class="st"> </span>Concatenated_data
+extant
+
+ <span class="kw">load</span>(<span class="st">&quot;Four_model_compare_results_extinct_02_Aug_2017.Rdata&quot;</span>)
+extinct &lt;-<span class="st"> </span>Concatenated_data
+extinct
+
+<span class="kw">head</span>(extant)
+<span class="kw">head</span>(extinct)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">for</span>(i <span class="cf">in</span> <span class="kw">c</span>(<span class="dv">3</span><span class="op">:</span><span class="dv">22</span>)){
+    extinct[<span class="kw">which</span>(<span class="kw">is.nan</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extinct[, i]))) <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>), i] &lt;-<span class="st"> </span><span class="ot">NA</span>
+}
+
+<span class="cf">for</span>(i <span class="cf">in</span> <span class="kw">c</span>(<span class="dv">3</span><span class="op">:</span><span class="dv">22</span>)){
+    extant[<span class="kw">which</span>(<span class="kw">is.nan</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extant[, i]))) <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>), i] &lt;-<span class="st"> </span><span class="ot">NA</span>
+}
+
+
+
+
+xlimit &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)
+ylimit &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">3000</span>)
+maincex &lt;-<span class="st"> </span><span class="fl">0.9</span>
+
+<span class="kw">png</span>(<span class="dt">file=</span><span class="st">&quot;Global_success_rate_per_parameter.png&quot;</span>, <span class="dt">width=</span><span class="fl">8.5</span>, <span class="dt">height=</span><span class="dv">11</span>, <span class="dt">units=</span><span class="st">&quot;in&quot;</span>, <span class="dt">res=</span><span class="dv">300</span>)
+
+<span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">4</span>), <span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">0</span>))
+
+
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extinct[,<span class="dv">3</span>])), <span class="dt">main=</span><span class="st">&quot;speciation of F in F env&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;firebrick&quot;</span>, <span class="dt">alpha=</span><span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex)
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extant[,<span class="dv">3</span>])), <span class="dt">main=</span><span class="st">&quot;speciation of F in F env&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">alpha=</span><span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex, <span class="dt">add=</span><span class="ot">TRUE</span>)
+
+
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extinct[,<span class="dv">4</span>])), <span class="dt">main=</span><span class="st">&quot;speciation of D in F env&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;firebrick&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex)
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extant[,<span class="dv">4</span>])), <span class="dt">main=</span><span class="st">&quot;speciation of D in F env&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex, <span class="dt">add=</span><span class="ot">TRUE</span>)
+
+
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extinct[,<span class="dv">5</span>])), <span class="dt">main=</span><span class="st">&quot;speciation of F in D env&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;firebrick&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex)
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extant[,<span class="dv">5</span>])), <span class="dt">main=</span><span class="st">&quot;speciation of F in D env&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex, <span class="dt">add=</span><span class="ot">TRUE</span>)
+
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extinct[,<span class="dv">6</span>])), <span class="dt">main=</span><span class="st">&quot;speciation of D in D env&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;firebrick&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex)
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extant[,<span class="dv">6</span>])), <span class="dt">main=</span><span class="st">&quot;speciation of D in D env&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex, <span class="dt">add=</span><span class="ot">TRUE</span>)
+
+#######
+
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extinct[, <span class="dv">7</span>])), <span class="dt">main=</span><span class="st">&quot;extinction of F in F env&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;firebrick&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex)
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extant[, <span class="dv">7</span>])), <span class="dt">main=</span><span class="st">&quot;extinction of F in F env&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex, <span class="dt">add=</span><span class="ot">TRUE</span>)
+
+
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extinct[, <span class="dv">8</span>])), <span class="dt">main=</span><span class="st">&quot;extinction of D in F env&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;firebrick&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex)
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extant[, <span class="dv">8</span>])), <span class="dt">main=</span><span class="st">&quot;extinction of D in F env&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex, <span class="dt">add=</span><span class="ot">TRUE</span>)
+
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extinct[, <span class="dv">9</span>])), <span class="dt">main=</span><span class="st">&quot;extinction of F in D env&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;firebrick&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex)
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extant[, <span class="dv">9</span>])), <span class="dt">main=</span><span class="st">&quot;extinction of F in D env&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex, <span class="dt">add=</span><span class="ot">TRUE</span>)
+
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extinct[, <span class="dv">10</span>])), <span class="dt">main=</span><span class="st">&quot;extinction of D in D env&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;firebrick&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex)
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extant[, <span class="dv">10</span>])), <span class="dt">main=</span><span class="st">&quot;extinction of D in D env&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex, <span class="dt">add=</span><span class="ot">TRUE</span>)
+
+######
+
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extinct[, <span class="dv">11</span>])), <span class="dt">main=</span><span class="st">&quot;arisal of F in F env&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;firebrick&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex)
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extant[, <span class="dv">11</span>])), <span class="dt">main=</span><span class="st">&quot;arisal of F in F env&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex, <span class="dt">add=</span><span class="ot">TRUE</span>)
+
+
+
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extinct[, <span class="dv">12</span>])), <span class="dt">main=</span><span class="st">&quot;arisal of D in F env&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;firebrick&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex)
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extant[, <span class="dv">12</span>])), <span class="dt">main=</span><span class="st">&quot;arisal of D in F env&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex, <span class="dt">add=</span><span class="ot">TRUE</span>)
+
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extinct[, <span class="dv">13</span>])), <span class="dt">main=</span><span class="st">&quot;arisal of F in D env&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;firebrick&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex)
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extant[, <span class="dv">13</span>])), <span class="dt">main=</span><span class="st">&quot;arisal of F in D env&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex, <span class="dt">add=</span><span class="ot">TRUE</span>)
+
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extinct[, <span class="dv">14</span>])), <span class="dt">main=</span><span class="st">&quot;arisal of D in D env&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;firebrick&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex)
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extant[, <span class="dv">14</span>])), <span class="dt">main=</span><span class="st">&quot;arisal of D in D env&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex, <span class="dt">add=</span><span class="ot">TRUE</span>)
+
+######
+
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extinct[, <span class="dv">15</span>])), <span class="dt">main=</span><span class="st">&quot;NOPE -- Diffusion: source F, target F&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;firebrick&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">18000</span>), <span class="dt">cex.main=</span> maincex)
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extant[, <span class="dv">15</span>])), <span class="dt">main=</span><span class="st">&quot;NOPE -- Diffusion: source F, target F&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">18000</span>), <span class="dt">cex.main=</span> maincex, <span class="dt">add=</span><span class="ot">TRUE</span>)
+
+
+
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extinct[, <span class="dv">16</span>])), <span class="dt">main=</span><span class="st">&quot;Diffusion: source D, target F&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;firebrick&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex)
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extant[, <span class="dv">16</span>])), <span class="dt">main=</span><span class="st">&quot;Diffusion: source D, target F&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex, <span class="dt">add=</span><span class="ot">TRUE</span>)
+
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extinct[, <span class="dv">17</span>])), <span class="dt">main=</span><span class="st">&quot;Diffusion: source F, target D&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;firebrick&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex)
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extant[, <span class="dv">17</span>])), <span class="dt">main=</span><span class="st">&quot;Diffusion: source F, target D&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex, <span class="dt">add=</span><span class="ot">TRUE</span>)
+
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extinct[, <span class="dv">18</span>])), <span class="dt">main=</span><span class="st">&quot;NOPE -- Diffusion: source D, target D&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;firebrick&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">18000</span>), <span class="dt">cex.main=</span> maincex)
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extant[, <span class="dv">18</span>])), <span class="dt">main=</span><span class="st">&quot;NOPE -- Diffusion: source D, target D&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">18000</span>), <span class="dt">cex.main=</span> maincex, <span class="dt">add=</span><span class="ot">TRUE</span>)
+
+####
+
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extinct[, <span class="dv">19</span>])), <span class="dt">main=</span><span class="st">&quot;Takeover: source F, target F&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;firebrick&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex)
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extant[, <span class="dv">19</span>])), <span class="dt">main=</span><span class="st">&quot;Takeover: source F, target F&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex, <span class="dt">add=</span><span class="ot">TRUE</span>)
+
+
+
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extinct[, <span class="dv">20</span>])), <span class="dt">main=</span><span class="st">&quot;Takeover: source D, target F&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;firebrick&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex)
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extant[, <span class="dv">20</span>])), <span class="dt">main=</span><span class="st">&quot;Takeover: source D, target F&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex, <span class="dt">add=</span><span class="ot">TRUE</span>)
+
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extinct[, <span class="dv">21</span>])), <span class="dt">main=</span><span class="st">&quot;Takeover: source F, target D&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;firebrick&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex)
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extant[, <span class="dv">21</span>])), <span class="dt">main=</span><span class="st">&quot;Takeover: source F, target D&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex, <span class="dt">add=</span><span class="ot">TRUE</span>)
+
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extinct[, <span class="dv">22</span>])), <span class="dt">main=</span><span class="st">&quot;Takeover: source D, target D&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;firebrick&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex)
+<span class="kw">hist</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(extant[, <span class="dv">22</span>])), <span class="dt">main=</span><span class="st">&quot;Takeover: source D, target D&quot;</span>, <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.7</span>), <span class="dt">breaks=</span><span class="dv">100</span>, <span class="dt">border=</span><span class="ot">NA</span>, <span class="dt">xlim=</span> xlimit, <span class="dt">ylim=</span> ylimit, <span class="dt">cex.main=</span> maincex, <span class="dt">add=</span><span class="ot">TRUE</span>)
+
+
+<span class="kw">dev.off</span>()</code></pre></div>
+<div class="figure">
+<img src="Global_success_rate_per_parameter.png" />
+
+</div>
+</div>
+<div id="random-forest-analysis" class="section level2">
+<h2><span class="header-section-number">8.3</span> Random Forest Analysis</h2>
+<div id="trainingbuilding" class="section level3">
+<h3><span class="header-section-number">8.3.1</span> Training/Building</h3>
+<p>The procedures described so far have outlined the creation of a dataset that includes the input and output variables for each replicate simulation. When taken as a whole, that dataset describes a distribution of possible numerical outcomes that are possible given the 4 available input types. The purpose of the random forest machine learning algorithm (Breiman 2001, Liaw and Wiener 2015) was to correlate input and output variables as a means of categorizing simulation outputs according to the type of input that had created them. We used 70% of our available simulation data to build the random forest, the remaining 30% to test the forest’s accuracy and precision at inferring input categories, and then used that trained and vetted algorithm to infer the most likely input category for real world human output data.</p>
+<p>This random forest model was trained by building a forest of decision trees. Each decision tree describes a series of ordered dichotomous decisions that categorize the 12 output statistics into one of 4 input types. Individual trees were built by first taking a randomly sized and randomly selected sample of rows (replicate simulations) and columns (output variables) from the full simulation dataset to create a unique subset dataset. That unique dataset was then subjected to a bagging model to rank the variables in order of importance and build a decision tree off of that rank. We repeated this process, with replacement, to build 3000 individual decision trees sampled from 70% (n = 40000 x 0.7 = 28000) of the total simulation data.</p>
+</div>
+<div id="testing" class="section level3">
+<h3><span class="header-section-number">8.3.2</span> Testing</h3>
+<p>The random forest was vetted using the remaining 30% of the simulation data reserved for model testing. Rather than building decision trees with these data, we fed each replicate through the recently built forest so it could classify outputs and then compare those inferred input types to the known input types to the to see how frequently the forest returned the correct classification. The accuracy and precision of these tests are reported in a confusion matrix showing the number of matches that were correctly or incorrectly made between inputs and outputs for each model . Our trained random forest algorithm could correctly match output statistics with input mechanisms with very good accuracy . It is noteworthy that there was very little confusion between the two competing hypothesized mechanisms, diffusion and diffusion by takeover. If the trained random forest algorithm is presented with a simulation created by diffusion, if is very unlikely to be classify it as coming from diffusion by takeover.</p>
+</div>
+<div id="matching" class="section level3">
+<h3><span class="header-section-number">8.3.3</span> Matching</h3>
+<p>The structure of our simulation outputs where designed to mimic the structure of our real cultural data so that the two could be compared directly. In the same way the output for replicate simulations where processed, the phylogeny and spatial pattern of extant human cultures were summarized using 12 summary statistics passed to the trained random forest algorithm. The random forest assigned the most likely mechanism to have caused that human’s known historical trajectory. It does this by asking every dichotomous decision tree in the random forest to vote on which hypothesized mechanism created the output provided by the data and then tallying those votes into a consensus vote. Our consensus vote showed that over 50% of the trees believe that the current configuration of agriculture across the globe is the result of demic diffusion augmented by cultural diffusion. About 35% of the trees assigned known global trend to the basic model that includes only demic diffusion, while the other two models received almost no votes. This suggest that if we are wrong that demic and cultural diffusion contributed to current distributions of agriculturist cultures, the next most likely answer is that it diffusion created these patterns with no help from cultural diffusion.</p>
+</div>
+</div>
+<div id="run-a-single-random-forest-on-available-outputs" class="section level2">
+<h2><span class="header-section-number">8.4</span> Run a single random forest on available outputs</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Packages</span>
+<span class="kw">library</span>(randomForest)
+
+<span class="co"># Radom Forest Function</span>
+RF &lt;-<span class="st"> </span><span class="cf">function</span>(table_sim, table_real, <span class="dt">ntree =</span> <span class="dv">2000</span>, <span class="dt">stats_remove =</span> <span class="ot">NULL</span>,
+              <span class="dt">repetitions =</span> <span class="dv">100</span>) {
+ <span class="co"># table_sim = table croped </span>
+
+ begin &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">colnames</span>(table_sim) <span class="op">==</span><span class="st">  &quot;number_of_branches&quot;</span>)
+ table_sim_data &lt;-<span class="st"> </span>table_sim[, begin<span class="op">:</span><span class="kw">ncol</span>(table_sim)]
+ table_sim_data &lt;-<span class="st"> </span><span class="kw">apply</span>(table_sim_data, <span class="dv">2</span>, as.numeric)
+ <span class="cf">if</span> (<span class="kw">any</span>(<span class="kw">is.infinite</span>(table_sim_data))) {
+   <span class="kw">stop</span>(<span class="st">&quot;There is infinite values in the simulation statistics&quot;</span>)
+ }
+ rf_data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="st">&quot;Model&quot;</span> =<span class="st"> </span>table_sim<span class="op">$</span>combo, table_sim_data)
+ rf_data_real &lt;-<span class="st"> </span><span class="kw">data.frame</span>(table_real)
+
+ <span class="cf">if</span> (<span class="op">!</span><span class="kw">is.null</span>(stats_remove)) {
+   rf_data &lt;-<span class="st"> </span>rf_data[, <span class="op">-</span>stats_remove]
+   rf_data_real &lt;-<span class="st"> </span>rf_data_real[, <span class="op">-</span>stats_remove]
+ }
+
+ fun &lt;-<span class="st"> </span><span class="cf">function</span>(x, y, <span class="dt">per =</span> .<span class="dv">33</span>) {
+   <span class="kw">sample</span>(<span class="kw">which</span>(y<span class="op">$</span>Model <span class="op">==</span><span class="st"> </span>x), <span class="kw">round</span>(<span class="kw">table</span>(y<span class="op">$</span>Model)[<span class="dv">1</span>]<span class="op">*</span>per))
+ }
+
+ results &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dt">nrow =</span> repetitions, <span class="dt">ncol =</span> <span class="kw">length</span>(table_real) <span class="op">*</span><span class="st"> </span><span class="dv">6</span> <span class="op">+</span><span class="st"> </span><span class="dv">21</span>)
+ <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>repetitions) {
+   sub.test &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">lapply</span>(<span class="kw">as.list</span>(<span class="kw">paste0</span>(<span class="dv">0</span>, <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">6</span>))), fun,
+                             <span class="dt">y =</span> rf_data))
+   test2 &lt;-<span class="st"> </span>rf_data[sub.test, <span class="dv">2</span><span class="op">:</span><span class="kw">ncol</span>(rf_data)]
+   test1 &lt;-<span class="st"> </span>rf_data[sub.test, <span class="dv">1</span>]
+   train &lt;-<span class="st"> </span>rf_data[<span class="op">-</span>sub.test, ]
+
+   fit &lt;-<span class="st"> </span><span class="kw">randomForest</span>(Model <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> train, <span class="dt">xtest =</span> test2, 
+                       <span class="dt">ytest =</span> test1, <span class="dt">importance =</span> <span class="ot">TRUE</span>, 
+                       <span class="dt">ntree =</span> ntree, <span class="dt">keep.forest =</span> <span class="ot">TRUE</span>,
+                       <span class="dt">replace =</span> <span class="ot">TRUE</span>)
+  <span class="co">#dev.new()</span>
+  <span class="co">#plot(fit)</span>
+   predictions &lt;-<span class="st"> </span><span class="kw">predict</span>(fit, rf_data_real, <span class="dt">type =</span> <span class="st">&quot;prob&quot;</span>)
+   var_import &lt;-<span class="st"> </span><span class="kw">importance</span>(fit)
+
+   error &lt;-<span class="st"> </span><span class="kw">mean</span>(fit<span class="op">$</span>test<span class="op">$</span>confusion[, <span class="dv">5</span>])
+   confusion &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(fit<span class="op">$</span>test<span class="op">$</span>confusion[, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>])
+   <span class="kw">names</span>(confusion) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;Confusion_&quot;</span>, 
+                              <span class="kw">rep</span>(<span class="kw">colnames</span>(fit<span class="op">$</span>test<span class="op">$</span>confusion[, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>]),
+                                  <span class="dt">each =</span> <span class="dv">4</span>),
+                              <span class="kw">rownames</span>(fit<span class="op">$</span>test<span class="op">$</span>confusion[, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>]))
+   predictions_prob &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(predictions)
+   <span class="kw">names</span>(predictions_prob) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;Prediction_prob&quot;</span>, <span class="kw">colnames</span>(predictions))
+   var_import_vec &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(var_import)
+   <span class="kw">names</span>(var_import_vec) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;var_imp_&quot;</span>, 
+                                   <span class="kw">rep</span>(<span class="kw">colnames</span>(var_import), 
+                                       <span class="dt">each =</span> <span class="kw">nrow</span>(var_import)),
+                                   <span class="st">&quot;_&quot;</span>,
+                                   <span class="kw">rownames</span>(var_import))
+   vec &lt;-<span class="st"> </span><span class="kw">c</span>(error, confusion, predictions_prob, var_import_vec)
+   results[i, ] &lt;-<span class="st"> </span>vec
+ }
+ <span class="kw">colnames</span>(results) &lt;-<span class="st"> </span><span class="kw">names</span>(vec)
+ <span class="kw">colnames</span>(results)[<span class="dv">1</span>] &lt;-<span class="st"> &quot;Error_test&quot;</span>
+ results &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(results), results)
+ <span class="kw">colnames</span>(results)[<span class="dv">1</span>] &lt;-<span class="st"> &quot;Replicate&quot;</span>
+ <span class="kw">return</span>(results)
+}
+
+<span class="co"># Multiple Random Forest</span>
+RF_mult &lt;-<span class="st"> </span><span class="cf">function</span>(table_sim, table_real_mult, <span class="dt">ntree =</span> <span class="dv">2000</span>, 
+                   <span class="dt">stats_remove =</span> <span class="ot">NULL</span>, <span class="dt">repetitions =</span> <span class="dv">100</span>) {
+ n_r &lt;-<span class="st"> </span><span class="kw">nrow</span>(table_real_mult)
+ n &lt;-<span class="st"> </span>repetitions <span class="op">*</span><span class="st"> </span>n_r
+ n_col &lt;-<span class="st"> </span><span class="kw">ncol</span>(table_real_mult) <span class="op">*</span><span class="st"> </span><span class="dv">6</span> <span class="op">+</span><span class="st"> </span><span class="dv">22</span>
+ results &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dt">nrow =</span> n, <span class="dt">ncol =</span> n_col)
+ x &lt;-<span class="st"> </span><span class="dv">0</span>
+ <span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq</span>(<span class="dv">1</span>, n, repetitions)) {
+   x &lt;-<span class="st"> </span>x <span class="op">+</span><span class="st"> </span><span class="dv">1</span>
+   temp &lt;-<span class="st"> </span><span class="kw">RF</span>(table_sim, 
+              table_real_mult[x, , <span class="dt">drop =</span> <span class="ot">FALSE</span>],
+              <span class="dt">ntree =</span> ntree, 
+              <span class="dt">repetitions =</span> repetitions, 
+              <span class="dt">stats_remove =</span> stats_remove)
+   results[i<span class="op">:</span>(i <span class="op">+</span><span class="st"> </span>repetitions <span class="op">-</span><span class="st"> </span><span class="dv">1</span>), ] &lt;-<span class="st"> </span>temp
+ }
+ tree &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span>n_r, <span class="dt">each =</span> repetitions)
+ results &lt;-<span class="st"> </span><span class="kw">cbind</span>(tree, results)
+ <span class="kw">colnames</span>(results) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Tree&quot;</span>, <span class="kw">colnames</span>(temp))
+ <span class="kw">return</span>(results)
+}
+
+<span class="co"># Accumulation function</span>
+RF_acum &lt;-<span class="st"> </span><span class="cf">function</span>(table_sim, table_real_mult, <span class="dt">ntree =</span> <span class="dv">2000</span>, 
+                   <span class="dt">stats_remove =</span> <span class="ot">NULL</span>, <span class="dt">repetitions =</span> <span class="dv">100</span>,
+                   <span class="dt">resolution =</span> <span class="dv">100</span>, <span class="dt">minimun =</span> <span class="dv">100</span>) {
+ sequence &lt;-<span class="st"> </span><span class="kw">seq</span>(minimun, <span class="kw">nrow</span>(table_sim), resolution)
+ n_col &lt;-<span class="st"> </span><span class="kw">ncol</span>(table_real_mult) <span class="op">*</span><span class="st"> </span><span class="dv">6</span> <span class="op">+</span><span class="st"> </span><span class="dv">24</span> 
+ n_r &lt;-<span class="st"> </span><span class="kw">nrow</span>(table_real_mult)
+ n_seq &lt;-<span class="st"> </span><span class="kw">length</span>(sequence)
+ n &lt;-<span class="st"> </span>repetitions <span class="op">*</span><span class="st"> </span>n_r <span class="op">*</span><span class="st"> </span>n_seq
+ results &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dt">nrow =</span> n, <span class="dt">ncol =</span> n_col)
+ lottery1 &lt;-<span class="st"> </span><span class="kw">which</span>(table_sim<span class="op">$</span>combo <span class="op">==</span><span class="st"> &quot;01&quot;</span>)
+ lottery2 &lt;-<span class="st"> </span><span class="kw">which</span>(table_sim<span class="op">$</span>combo <span class="op">==</span><span class="st"> &quot;02&quot;</span>)
+ lottery5 &lt;-<span class="st"> </span><span class="kw">which</span>(table_sim<span class="op">$</span>combo <span class="op">==</span><span class="st"> &quot;05&quot;</span>)
+ lottery6 &lt;-<span class="st"> </span><span class="kw">which</span>(table_sim<span class="op">$</span>combo <span class="op">==</span><span class="st"> &quot;06&quot;</span>)
+ sub1 &lt;-<span class="st"> </span><span class="kw">sample</span>(lottery1, sequence[<span class="dv">1</span>]<span class="op">/</span><span class="dv">4</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>)
+ sub2 &lt;-<span class="st"> </span><span class="kw">sample</span>(lottery2, sequence[<span class="dv">1</span>]<span class="op">/</span><span class="dv">4</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>)
+ sub5 &lt;-<span class="st"> </span><span class="kw">sample</span>(lottery5, sequence[<span class="dv">1</span>]<span class="op">/</span><span class="dv">4</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>)
+ sub6 &lt;-<span class="st"> </span><span class="kw">sample</span>(lottery6, sequence[<span class="dv">1</span>]<span class="op">/</span><span class="dv">4</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>)
+ <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n_seq) {
+   <span class="cf">if</span> (i <span class="op">!=</span><span class="st"> </span><span class="dv">1</span>) {
+     sub1 &lt;-<span class="st"> </span><span class="kw">c</span>(sub1, <span class="kw">sample</span>(lottery1[<span class="op">-</span>sub1], sequence[<span class="dv">1</span>]<span class="op">/</span><span class="dv">4</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>))
+     sub2 &lt;-<span class="st"> </span><span class="kw">c</span>(sub2, <span class="kw">sample</span>(lottery2[<span class="op">-</span>sub2], sequence[<span class="dv">1</span>]<span class="op">/</span><span class="dv">4</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>))
+     sub5 &lt;-<span class="st"> </span><span class="kw">c</span>(sub5, <span class="kw">sample</span>(lottery5[<span class="op">-</span>sub5], sequence[<span class="dv">1</span>]<span class="op">/</span><span class="dv">4</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>))
+     sub6 &lt;-<span class="st"> </span><span class="kw">c</span>(sub6, <span class="kw">sample</span>(lottery6[<span class="op">-</span>sub6], sequence[<span class="dv">1</span>]<span class="op">/</span><span class="dv">4</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>))
+   }
+   temp &lt;-<span class="st"> </span><span class="kw">RF_mult</span>(table_sim[<span class="kw">c</span>(sub1, sub2, sub5, sub6), ], table_real_mult,
+                   <span class="dt">ntree =</span> ntree, <span class="dt">repetitions =</span> repetitions,
+                   <span class="dt">stats_remove =</span> stats_remove)
+   n_temp &lt;-<span class="st"> </span><span class="kw">nrow</span>(temp)
+   results[<span class="dv">1</span><span class="op">:</span>n_temp <span class="op">+</span><span class="st"> </span>(n_temp <span class="op">*</span><span class="st"> </span>(i <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)), ] &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="kw">rep</span>(sequence[i],
+                                                         n_temp), temp)
+ }
+ <span class="kw">colnames</span>(results) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Subsample_size&quot;</span>, <span class="kw">colnames</span>(temp))
+ <span class="kw">return</span>(results)
+}
+
+<span class="co"># </span><span class="al">TEST</span><span class="co"> FINAL (RUN ONLY THIS)</span>
+<span class="co"># Load data</span>
+<span class="kw">setwd</span>(<span class="st">&quot;~/Desktop/RF after bruno&quot;</span>)
+<span class="kw">load</span>(<span class="st">&quot;Four model compare third runFour_model_compare_results_28_Jul_2017_crop_to_5767.Rdata&quot;</span>)
+<span class="kw">load</span>(<span class="st">&quot;real.analysis_mult.RData&quot;</span>)
+
+table_sim =<span class="st"> </span>Concatenated_data
+table_real =<span class="st"> </span>real.analysis.mult[[<span class="dv">1</span>]][[<span class="dv">1</span>]]
+table_real_mult =<span class="st"> </span><span class="kw">do.call</span>(rbind, <span class="kw">lapply</span>(real.analysis.mult, 
+                                       <span class="cf">function</span>(x){x[[<span class="dv">1</span>]]}))
+
+<span class="co">#start time</span>
+time_start &lt;-<span class="st"> </span><span class="kw">Sys.time</span>()
+
+<span class="co"># Change the parameters as you wish</span>
+res_acum &lt;-<span class="st"> </span><span class="kw">RF_acum</span>(table_sim, table_real_mult[<span class="dv">100</span><span class="op">:</span><span class="dv">110</span>,,<span class="dt">drop=</span><span class="ot">FALSE</span>], <span class="dt">ntree =</span> <span class="dv">2000</span>, 
+                   <span class="dt">stats_remove =</span> <span class="ot">NULL</span>, <span class="dt">repetitions =</span> <span class="dv">1</span>,
+                   <span class="dt">resolution =</span> <span class="dv">5000</span>, <span class="dt">minimun =</span> <span class="dv">1000</span>)
+                   
+<span class="co">#stop time</span>
+time_stop &lt;-<span class="st"> </span><span class="kw">Sys.time</span>()
+<span class="kw">difftime</span>(time_stop, time_start)                   
+
+<span class="kw">save</span>(res_acum, <span class="dt">file=</span><span class="st">&quot;~/Desktop/10_more_tree_out.Rdata&quot;</span>)
+
+<span class="co"># Change argument FUN to sd to obtain the standard deviation</span>
+<span class="kw">plot</span>(<span class="kw">aggregate</span>(<span class="dt">x =</span> res_acum[, <span class="dv">4</span>], <span class="dt">by =</span> <span class="kw">list</span>((res_acum[, <span class="dv">1</span>])), <span class="dt">FUN =</span> mean), <span class="dt">type =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))
+
+<span class="kw">lines</span>(<span class="kw">aggregate</span>(<span class="dt">x =</span> res_acum[, <span class="dv">21</span>], <span class="dt">by =</span> <span class="kw">list</span>((res_acum[, <span class="dv">1</span>])), <span class="dt">FUN =</span> mean), <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">col=</span><span class="st">&quot;orange&quot;</span>)
+<span class="kw">lines</span>(<span class="kw">aggregate</span>(<span class="dt">x =</span> res_acum[, <span class="dv">22</span>], <span class="dt">by =</span> <span class="kw">list</span>((res_acum[, <span class="dv">1</span>])), <span class="dt">FUN =</span> mean), <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>)
+<span class="kw">lines</span>(<span class="kw">aggregate</span>(<span class="dt">x =</span> res_acum[, <span class="dv">23</span>], <span class="dt">by =</span> <span class="kw">list</span>((res_acum[, <span class="dv">1</span>])), <span class="dt">FUN =</span> mean), <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">col=</span><span class="st">&quot;pink&quot;</span>)
+<span class="kw">lines</span>(<span class="kw">aggregate</span>(<span class="dt">x =</span> res_acum[, <span class="dv">24</span>], <span class="dt">by =</span> <span class="kw">list</span>((res_acum[, <span class="dv">1</span>])), <span class="dt">FUN =</span> mean), <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">col=</span><span class="st">&quot;darkgreen&quot;</span>)</code></pre></div>
+</div>
+<div id="visualize-outputs-from-random-forest-analysis" class="section level2">
+<h2><span class="header-section-number">8.5</span> Visualize outputs from Random Forest analysis</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load outputs from RF runs</span>
+<span class="kw">load</span>(<span class="st">&quot;/Users/Ty/Desktop/small_RF_out.Rdata&quot;</span>)
+a &lt;-<span class="st"> </span>res_acum
+
+<span class="kw">load</span>(<span class="st">&quot;/Users/Ty/Desktop/10_more_tree_out.Rdata&quot;</span>)
+b &lt;-<span class="st"> </span>res_acum
+
+<span class="kw">load</span>(<span class="st">&quot;/Users/Ty/Desktop/10_tree_out.Rdata&quot;</span>)
+c &lt;-<span class="st"> </span>res_acum
+
+<span class="co">#object called res_acum</span>
+res_acum &lt;-<span class="st"> </span><span class="kw">rbind</span>(b,c)
+
+<span class="kw">load</span>(<span class="st">&quot;Random_Forest_output_data_for_publication_2_February_2018.Rdata&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">png</span>(<span class="st">&quot;overall_error_per_sample_size.png&quot;</span>, <span class="dt">width =</span> <span class="dv">11</span>, <span class="dt">height =</span> <span class="fl">8.5</span>, <span class="dt">res =</span> <span class="dv">300</span>, <span class="dt">units =</span> <span class="st">&quot;in&quot;</span>)
+<span class="kw">plot</span>(<span class="kw">aggregate</span>(<span class="dt">x =</span> res_acum[, <span class="dv">4</span>], <span class="dt">by =</span> <span class="kw">list</span>((res_acum[, <span class="dv">1</span>])), <span class="dt">FUN =</span> mean), <span class="dt">type=</span><span class="st">&quot;l&quot;</span>, <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="fl">0.5</span>), <span class="dt">ylab=</span><span class="st">&quot;overall confusion error&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;sample size&quot;</span>)
+<span class="kw">dev.off</span>()</code></pre></div>
+<div class="figure">
+<img src="overall_error_per_sample_size.png" />
+
+</div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">png</span>(<span class="st">&quot;predictions.png&quot;</span>, <span class="dt">width =</span> <span class="dv">11</span>, <span class="dt">height =</span> <span class="fl">8.5</span>, <span class="dt">res =</span> <span class="dv">300</span>, <span class="dt">units =</span> <span class="st">&quot;in&quot;</span>)
+<span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">2</span>,<span class="dv">1</span>))
+
+<span class="co"># Change argument FUN to sd to obtain the standard deviation</span>
+<span class="kw">plot</span>(<span class="kw">aggregate</span>(<span class="dt">x =</span> res_acum[, <span class="dv">4</span>], <span class="dt">by =</span> <span class="kw">list</span>((res_acum[, <span class="dv">1</span>])), <span class="dt">FUN =</span> mean), <span class="dt">type =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="dt">ylab=</span><span class="st">&quot;probability that our known cultural phylogeny came </span><span class="ch">\n</span><span class="st"> from each type of simulated mechanism&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;number of simulation replicates&quot;</span>, <span class="dt">cex.axis=</span><span class="fl">1.5</span>, <span class="dt">cex.lab=</span><span class="fl">1.5</span>)
+
+
+basic_mean &lt;-<span class="st"> </span><span class="kw">aggregate</span>(<span class="dt">x =</span> res_acum[, <span class="dv">21</span>], <span class="dt">by =</span> <span class="kw">list</span>((res_acum[, <span class="dv">1</span>])), <span class="dt">FUN =</span> mean)
+diffusion_mean &lt;-<span class="st"> </span><span class="kw">aggregate</span>(<span class="dt">x =</span> res_acum[, <span class="dv">22</span>], <span class="dt">by =</span> <span class="kw">list</span>((res_acum[, <span class="dv">1</span>])), <span class="dt">FUN =</span> mean)
+TO_mean &lt;-<span class="st"> </span><span class="kw">aggregate</span>(<span class="dt">x =</span> res_acum[, <span class="dv">23</span>], <span class="dt">by =</span> <span class="kw">list</span>((res_acum[, <span class="dv">1</span>])), <span class="dt">FUN =</span> mean)
+both_mean &lt;-<span class="st"> </span><span class="kw">aggregate</span>(<span class="dt">x =</span> res_acum[, <span class="dv">24</span>], <span class="dt">by =</span> <span class="kw">list</span>((res_acum[, <span class="dv">1</span>])), <span class="dt">FUN =</span> mean)
+                   
+basic_sd &lt;-<span class="st"> </span><span class="kw">aggregate</span>(<span class="dt">x =</span> res_acum[, <span class="dv">21</span>], <span class="dt">by =</span> <span class="kw">list</span>((res_acum[, <span class="dv">1</span>])), <span class="dt">FUN =</span> sd)
+diffusion_sd &lt;-<span class="st"> </span><span class="kw">aggregate</span>(<span class="dt">x =</span> res_acum[, <span class="dv">22</span>], <span class="dt">by =</span> <span class="kw">list</span>((res_acum[, <span class="dv">1</span>])), <span class="dt">FUN =</span> sd)
+TO_sd &lt;-<span class="st"> </span><span class="kw">aggregate</span>(<span class="dt">x =</span> res_acum[, <span class="dv">23</span>], <span class="dt">by =</span> <span class="kw">list</span>((res_acum[, <span class="dv">1</span>])), <span class="dt">FUN =</span> sd)
+both_sd &lt;-<span class="st"> </span><span class="kw">aggregate</span>(<span class="dt">x =</span> res_acum[, <span class="dv">24</span>], <span class="dt">by =</span> <span class="kw">list</span>((res_acum[, <span class="dv">1</span>])), <span class="dt">FUN =</span> sd)
+
+
+<span class="kw">polygon</span>(<span class="dt">x=</span><span class="kw">c</span>(basic_mean[,<span class="dv">1</span>], <span class="kw">rev</span>(basic_mean[,<span class="dv">1</span>])), <span class="dt">y=</span><span class="kw">c</span>(basic_mean[,<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>basic_sd[,<span class="dv">2</span>], <span class="kw">rev</span>(basic_mean[,<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>basic_sd[,<span class="dv">2</span>])), <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;orange&quot;</span>, <span class="dt">alpha=</span><span class="fl">0.5</span>), <span class="dt">border=</span><span class="ot">NA</span>)
+<span class="kw">polygon</span>(<span class="dt">x=</span><span class="kw">c</span>(diffusion_mean[,<span class="dv">1</span>], <span class="kw">rev</span>(diffusion_mean[,<span class="dv">1</span>])), <span class="dt">y=</span><span class="kw">c</span>(diffusion_mean[,<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>diffusion_sd[,<span class="dv">2</span>], <span class="kw">rev</span>(diffusion_mean[,<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>diffusion_sd[,<span class="dv">2</span>])), <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">alpha=</span><span class="fl">0.5</span>), <span class="dt">border=</span><span class="ot">NA</span>)
+<span class="kw">polygon</span>(<span class="dt">x=</span><span class="kw">c</span>(TO_mean[,<span class="dv">1</span>], <span class="kw">rev</span>(TO_mean[,<span class="dv">1</span>])), <span class="dt">y=</span><span class="kw">c</span>(TO_mean[,<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>TO_sd[,<span class="dv">2</span>], <span class="kw">rev</span>(TO_mean[,<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>TO_sd[,<span class="dv">2</span>])), <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;pink&quot;</span>, <span class="dt">alpha=</span><span class="fl">0.5</span>), <span class="dt">border=</span><span class="ot">NA</span>)
+<span class="kw">polygon</span>(<span class="dt">x=</span><span class="kw">c</span>(both_mean[,<span class="dv">1</span>], <span class="kw">rev</span>(both_mean[,<span class="dv">1</span>])), <span class="dt">y=</span><span class="kw">c</span>(both_mean[,<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>both_sd[,<span class="dv">2</span>], <span class="kw">rev</span>(both_mean[,<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>both_sd[,<span class="dv">2</span>])), <span class="dt">col=</span><span class="kw">adjustcolor</span>(<span class="st">&quot;darkgreen&quot;</span>, <span class="dt">alpha=</span><span class="fl">0.5</span>), <span class="dt">border=</span><span class="ot">NA</span>)
+
+
+
+<span class="kw">lines</span>(basic_mean,  <span class="dt">col=</span><span class="st">&quot;orange&quot;</span>)
+<span class="kw">lines</span>(diffusion_mean,  <span class="dt">col=</span><span class="st">&quot;cornflowerblue&quot;</span>)
+<span class="kw">lines</span>(TO_mean,  <span class="dt">col=</span><span class="st">&quot;pink&quot;</span>)
+<span class="kw">lines</span>(both_mean,  <span class="dt">col=</span><span class="st">&quot;darkgreen&quot;</span>)
+
+labs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Basic&quot;</span>, <span class="st">&quot;+Diffusion&quot;</span>, <span class="st">&quot;+Takeover&quot;</span>, <span class="st">&quot;+Diffusion +Takeover&quot;</span>)
+<span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="dt">legend=</span>labs, <span class="dt">col=</span><span class="kw">c</span>(<span class="st">&quot;orange&quot;</span>, <span class="st">&quot;cornflowerblue&quot;</span>, <span class="st">&quot;pink&quot;</span>, <span class="st">&quot;darkgreen&quot;</span>), <span class="dt">lty=</span><span class="dv">1</span>, <span class="dt">cex=</span><span class="fl">1.5</span>, <span class="dt">lwd=</span><span class="dv">10</span>)
+
+<span class="kw">dev.off</span>()</code></pre></div>
+<div class="figure">
+<img src="predictions.png" />
+
+</div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">png</span>(<span class="st">&quot;last_step_predictions.png&quot;</span>, <span class="dt">width =</span> <span class="dv">11</span>, <span class="dt">height =</span> <span class="fl">8.5</span>, <span class="dt">res =</span> <span class="dv">300</span>, <span class="dt">units =</span> <span class="st">&quot;in&quot;</span>)
+<span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">2</span>,<span class="dv">1</span>))
+this &lt;-<span class="st"> </span><span class="kw">length</span>(basic_mean[,<span class="dv">1</span>])
+
+<span class="kw">plot</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">5</span>), <span class="dt">y=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="dt">type=</span><span class="st">&quot;n&quot;</span>,  <span class="dt">xaxt=</span><span class="st">&quot;n&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;probability that our known cultural phylogeny came </span><span class="ch">\n</span><span class="st"> from each type of simulated mechanism&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;&quot;</span>, <span class="dt">xlim=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">4.5</span>))
+<span class="kw">polygon</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="fl">0.75</span>,<span class="fl">0.75</span>,<span class="fl">1.25</span>,<span class="fl">1.25</span>), <span class="dt">y=</span><span class="kw">c</span>(basic_mean[this,<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>basic_sd[this,<span class="dv">2</span>], basic_mean[this,<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>basic_sd[this,<span class="dv">2</span>], basic_mean[this,<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>basic_sd[this,<span class="dv">2</span>], basic_mean[this,<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>basic_sd[this,<span class="dv">2</span>]), <span class="dt">col =</span> <span class="kw">adjustcolor</span>(<span class="st">&quot;orange&quot;</span>, <span class="dt">alpha=</span><span class="fl">0.5</span>), <span class="dt">border=</span><span class="ot">NA</span> )
+<span class="kw">polygon</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="fl">1.75</span>,<span class="fl">1.75</span>,<span class="fl">2.25</span>,<span class="fl">2.25</span>), <span class="dt">y=</span><span class="kw">c</span>(diffusion_mean[this,<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>diffusion_sd[this,<span class="dv">2</span>], diffusion_mean[this,<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>diffusion_sd[this,<span class="dv">2</span>], diffusion_mean[this,<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>diffusion_sd[this,<span class="dv">2</span>], diffusion_mean[this,<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>diffusion_sd[this,<span class="dv">2</span>]), <span class="dt">col =</span> <span class="kw">adjustcolor</span>(<span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">alpha=</span><span class="fl">0.5</span>), <span class="dt">border=</span><span class="ot">NA</span>)
+<span class="kw">polygon</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="fl">2.75</span>,<span class="fl">2.75</span>,<span class="fl">3.25</span>,<span class="fl">3.25</span>), <span class="dt">y=</span><span class="kw">c</span>(TO_mean[this,<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>TO_sd[this,<span class="dv">2</span>], TO_mean[this,<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>TO_sd[this,<span class="dv">2</span>], TO_mean[this,<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>TO_sd[this,<span class="dv">2</span>], TO_mean[this,<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>TO_sd[this,<span class="dv">2</span>]), <span class="dt">col =</span> <span class="kw">adjustcolor</span>(<span class="st">&quot;pink&quot;</span>, <span class="dt">alpha=</span><span class="fl">0.5</span>), <span class="dt">border=</span><span class="ot">NA</span>)
+<span class="kw">polygon</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="fl">3.75</span>,<span class="fl">3.75</span>,<span class="fl">4.25</span>,<span class="fl">4.25</span>), <span class="dt">y=</span><span class="kw">c</span>(both_mean[this,<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>both_sd[this,<span class="dv">2</span>], both_mean[this,<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>both_sd[this,<span class="dv">2</span>], both_mean[this,<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>both_sd[this,<span class="dv">2</span>], both_mean[this,<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>both_sd[this,<span class="dv">2</span>]), <span class="dt">col =</span> <span class="kw">adjustcolor</span>(<span class="st">&quot;darkgreen&quot;</span>, <span class="dt">alpha=</span><span class="fl">0.5</span>), <span class="dt">border=</span><span class="ot">NA</span>)
+
+
+<span class="kw">lines</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="fl">0.5</span>, <span class="fl">1.5</span>), <span class="kw">c</span>(basic_mean[this,<span class="dv">2</span>], basic_mean[this,<span class="dv">2</span>]),  <span class="dt">col=</span><span class="st">&quot;orange&quot;</span>)
+<span class="kw">lines</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="fl">1.5</span>, <span class="fl">2.5</span>), <span class="kw">c</span>(diffusion_mean[this,<span class="dv">2</span>], diffusion_mean[this,<span class="dv">2</span>]),  <span class="dt">col=</span><span class="st">&quot;cornflowerblue&quot;</span>)
+<span class="kw">lines</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="fl">2.5</span>, <span class="fl">3.5</span>), <span class="kw">c</span>(TO_mean[this,<span class="dv">2</span>], TO_mean[this,<span class="dv">2</span>]),  <span class="dt">col=</span><span class="st">&quot;pink&quot;</span>)
+<span class="kw">lines</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="fl">3.5</span>, <span class="fl">4.5</span>), <span class="kw">c</span>(both_mean[this,<span class="dv">2</span>], both_mean[this,<span class="dv">2</span>]),  <span class="dt">col=</span><span class="st">&quot;darkgreen&quot;</span>)
+
+<span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="dt">legend=</span>labs, <span class="dt">col=</span><span class="kw">c</span>(<span class="st">&quot;orange&quot;</span>, <span class="st">&quot;cornflowerblue&quot;</span>, <span class="st">&quot;pink&quot;</span>, <span class="st">&quot;darkgreen&quot;</span>), <span class="dt">lty=</span><span class="dv">1</span>, <span class="dt">cex=</span><span class="fl">1.5</span>, <span class="dt">lwd=</span><span class="dv">10</span>)
+
+<span class="kw">dev.off</span>()</code></pre></div>
+<div class="figure">
+<img src="last_step_predictions.png" />
+
+</div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#colnames(res_acum)</span>
+
+long &lt;-<span class="st"> </span><span class="kw">length</span>(Confusion_0101_mean[,<span class="dv">1</span>])
+Confusion_sum_<span class="dv">01</span> &lt;-<span class="st"> </span><span class="kw">aggregate</span>(<span class="dt">x =</span> res_acum[, <span class="dv">5</span><span class="op">:</span><span class="dv">8</span>], <span class="dt">by =</span> <span class="kw">list</span>((res_acum[, <span class="dv">1</span>])), <span class="dt">FUN =</span> mean)
+Confusion_sum_<span class="dv">02</span> &lt;-<span class="st"> </span><span class="kw">aggregate</span>(<span class="dt">x =</span> res_acum[, <span class="dv">9</span><span class="op">:</span><span class="dv">12</span>], <span class="dt">by =</span> <span class="kw">list</span>((res_acum[, <span class="dv">1</span>])), <span class="dt">FUN =</span> mean)
+Confusion_sum_<span class="dv">03</span> &lt;-<span class="st"> </span><span class="kw">aggregate</span>(<span class="dt">x =</span> res_acum[, <span class="dv">13</span><span class="op">:</span><span class="dv">16</span>], <span class="dt">by =</span> <span class="kw">list</span>((res_acum[, <span class="dv">1</span>])), <span class="dt">FUN =</span> mean)
+Confusion_sum_<span class="dv">04</span> &lt;-<span class="st"> </span><span class="kw">aggregate</span>(<span class="dt">x =</span> res_acum[, <span class="dv">17</span><span class="op">:</span><span class="dv">20</span>], <span class="dt">by =</span> <span class="kw">list</span>((res_acum[, <span class="dv">1</span>])), <span class="dt">FUN =</span> mean)
+
+percent_one &lt;-<span class="st"> </span>(Confusion_sum_<span class="dv">01</span>[,<span class="dv">2</span><span class="op">:</span><span class="dv">5</span>]<span class="op">/</span><span class="kw">sum</span>(Confusion_sum_<span class="dv">01</span>[,<span class="dv">2</span><span class="op">:</span><span class="dv">5</span>])) <span class="op">*</span><span class="st"> </span><span class="dv">100</span>
+percent_two &lt;-<span class="st"> </span>(Confusion_sum_<span class="dv">02</span>[,<span class="dv">2</span><span class="op">:</span><span class="dv">5</span>]<span class="op">/</span><span class="kw">sum</span>(Confusion_sum_<span class="dv">02</span>[,<span class="dv">2</span><span class="op">:</span><span class="dv">5</span>])) <span class="op">*</span><span class="st"> </span><span class="dv">100</span>
+percent_three &lt;-<span class="st"> </span>(Confusion_sum_<span class="dv">03</span>[,<span class="dv">2</span><span class="op">:</span><span class="dv">5</span>]<span class="op">/</span><span class="kw">sum</span>(Confusion_sum_<span class="dv">03</span>[,<span class="dv">2</span><span class="op">:</span><span class="dv">5</span>])) <span class="op">*</span><span class="st"> </span><span class="dv">100</span>
+percent_four &lt;-<span class="st"> </span>(Confusion_sum_<span class="dv">04</span>[,<span class="dv">2</span><span class="op">:</span><span class="dv">5</span>]<span class="op">/</span><span class="kw">sum</span>(Confusion_sum_<span class="dv">04</span>[,<span class="dv">2</span><span class="op">:</span><span class="dv">5</span>])) <span class="op">*</span><span class="st"> </span><span class="dv">100</span>
+
+
+confusion &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(percent_one, percent_two, percent_three, percent_four), <span class="dv">4</span>,<span class="dv">4</span>)
+
+labs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Basic&quot;</span>, <span class="st">&quot;+Diffusion&quot;</span>, <span class="st">&quot;+Takeover&quot;</span>, <span class="st">&quot;+Diffusion&quot;</span>,  <span class="st">&quot;+Takeover&quot;</span>)
+colors1 &lt;-<span class="st"> </span><span class="kw">colorRampPalette</span>(<span class="dt">colors =</span> <span class="kw">c</span>(<span class="st">&quot;grey95&quot;</span>, <span class="st">&quot;grey40&quot;</span>))
+
+
+<span class="kw">png</span>(<span class="st">&quot;confusion_matrix.png&quot;</span>, <span class="dt">width =</span> <span class="fl">8.5</span>, <span class="dt">height =</span> <span class="fl">8.5</span>, <span class="dt">res =</span> <span class="dv">600</span>, <span class="dt">units =</span> <span class="st">&quot;in&quot;</span>)
+<span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">8</span>,<span class="dv">8</span>,<span class="dv">1</span>,<span class="dv">1</span>))
+<span class="kw">plot</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dt">xlim=</span><span class="kw">c</span>(<span class="op">-</span><span class="fl">0.2</span>,<span class="fl">1.4</span>), <span class="dt">ylim=</span><span class="kw">c</span>(<span class="op">-</span><span class="fl">0.2</span>,<span class="fl">1.4</span>), <span class="dt">xaxt=</span><span class="st">&quot;n&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;&quot;</span>, <span class="dt">yaxt=</span><span class="st">&quot;n&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;&quot;</span> , <span class="dt">bty=</span><span class="st">&quot;n&quot;</span>)
+<span class="co">#image(prop, col = colors1(20), axes=FALSE)</span>
+<span class="kw">axis</span>(<span class="dv">1</span>, <span class="dt">at=</span><span class="kw">c</span>(<span class="dv">0</span>, .<span class="dv">4</span>, .<span class="dv">8</span>, <span class="fl">1.2</span>, <span class="fl">1.3</span>), <span class="dt">labels=</span>labs, <span class="dt">tick =</span> <span class="ot">FALSE</span>, <span class="dt">line =</span> <span class="ot">FALSE</span>, <span class="dt">cex.axis =</span> <span class="dv">1</span>, <span class="dt">pos =</span> <span class="op">-</span>.<span class="dv">19</span>, <span class="dt">las=</span><span class="dv">2</span>)
+<span class="kw">axis</span>(<span class="dv">2</span>, <span class="dt">at=</span><span class="kw">rev</span>(<span class="kw">c</span>(<span class="op">-</span><span class="fl">0.05</span>, <span class="fl">0.05</span>, .<span class="dv">4</span>, .<span class="dv">8</span>, <span class="fl">1.2</span>)), <span class="dt">labels=</span>labs, <span class="dt">tick =</span> <span class="ot">FALSE</span>, <span class="dt">line =</span> <span class="ot">FALSE</span>, <span class="dt">cex.axis =</span> <span class="dv">1</span>, <span class="dt">las=</span><span class="dv">2</span>)
+<span class="kw">mtext</span>(<span class="st">&quot;percent of time that RF identifies input model as each model type&quot;</span>, <span class="dt">side =</span> <span class="dv">1</span>, <span class="dt">padj =</span> <span class="dv">10</span>, <span class="dt">cex =</span> <span class="dv">1</span>)
+<span class="kw">mtext</span>(<span class="st">&quot;known model type given to random forest&quot;</span>, <span class="dt">side =</span> <span class="dv">2</span>, <span class="dt">padj =</span> <span class="op">-</span><span class="dv">10</span>, <span class="dt">cex =</span> <span class="dv">1</span>)
+
+
+
+<span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>) {
+  <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">4</span><span class="op">:</span><span class="dv">1</span>) {
+    xs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, .<span class="dv">4</span>, .<span class="dv">8</span>, <span class="fl">1.2</span>)[i]
+    ys &lt;-<span class="st"> </span><span class="kw">rev</span>(<span class="kw">c</span>(<span class="dv">0</span>, .<span class="dv">4</span>, .<span class="dv">8</span>, <span class="fl">1.2</span>))[j]
+    <span class="kw">polygon</span>(<span class="dt">x=</span><span class="kw">c</span>(xs<span class="op">-</span><span class="fl">0.2</span>, xs<span class="op">-</span><span class="fl">0.2</span>, xs<span class="op">+</span><span class="fl">0.2</span>, xs<span class="op">+</span><span class="fl">0.2</span>), <span class="dt">y=</span><span class="kw">c</span>(ys<span class="op">-</span><span class="fl">0.2</span>, ys<span class="op">+</span><span class="fl">0.2</span>, ys<span class="op">+</span><span class="fl">0.2</span>, ys<span class="op">-</span><span class="fl">0.2</span>), <span class="dt">col=</span><span class="kw">colors1</span>(<span class="dv">100</span>)[<span class="kw">round</span>(<span class="kw">as.numeric</span>(confusion[i, j]), <span class="dv">1</span>)<span class="op">+</span><span class="dv">1</span>])
+    <span class="cf">if</span>(i <span class="op">==</span><span class="st"> </span>j){<span class="kw">text</span>(<span class="dt">x =</span> xs, <span class="dt">y =</span> ys, <span class="kw">paste0</span>(<span class="kw">round</span>(<span class="kw">as.numeric</span>(confusion[i, j]), <span class="dv">2</span>), <span class="st">&quot;%&quot;</span>), <span class="dt">cex =</span> <span class="fl">2.2</span>, <span class="dt">col=</span><span class="st">&quot;limegreen&quot;</span>)}<span class="cf">else</span>{(<span class="kw">text</span>(<span class="dt">x =</span> xs, <span class="dt">y =</span> ys, <span class="kw">paste0</span>(<span class="kw">round</span>(<span class="kw">as.numeric</span>(confusion[i, j]), <span class="dv">2</span>), <span class="st">&quot;%&quot;</span>), <span class="dt">cex =</span> <span class="fl">2.2</span>, <span class="dt">col=</span><span class="st">&quot;black&quot;</span>))}
+  }
+}</code></pre></div>
+<div class="figure">
+<img src="confusion_matrix.png" />
+
+</div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Variables importance</span>
+
+imp &lt;-<span class="st"> </span><span class="kw">importance</span>(fit)
+imp &lt;-<span class="st"> </span><span class="kw">apply</span>(imp, <span class="dv">2</span>, <span class="cf">function</span>(x) (x <span class="op">-</span><span class="st"> </span><span class="kw">min</span>(x))<span class="op">/</span>(<span class="kw">max</span>(x) <span class="op">-</span><span class="st"> </span><span class="kw">min</span>(x)))
+imp &lt;-<span class="st"> </span>imp[<span class="kw">sort</span>(imp[, <span class="dv">5</span>], <span class="dt">index.return =</span> <span class="ot">TRUE</span>, <span class="dt">decreasing =</span> <span class="ot">TRUE</span>)<span class="op">$</span>ix, ]
+
+<span class="kw">as.character</span>(replace[, <span class="dv">6</span>])
+<span class="kw">load</span>(<span class="kw">as.character</span>(replace[<span class="dv">90</span>, <span class="dv">6</span>]))
+imp &lt;-<span class="st"> </span><span class="kw">importance</span>(fit)
+
+names &lt;-<span class="st"> </span><span class="kw">rownames</span>(imp)
+names[names <span class="op">==</span><span class="st"> &quot;spatial.tests.fora&quot;</span>] &lt;-<span class="st"> &quot;Space F&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;spatial.tests.dom&quot;</span>] &lt;-<span class="st"> &quot;Space D&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;sprate&quot;</span>] &lt;-<span class="st"> &quot;Sp(ratio)&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;transition_from_trait_1_to_2&quot;</span>] &lt;-<span class="st"> &quot;TR(1-2)&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;transition_from_trait_2_to_1&quot;</span>] &lt;-<span class="st"> &quot;TR(2-1)&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;Phylogenetic_signal&quot;</span>] &lt;-<span class="st"> &quot;PhySig(D)&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;Evolutionary_distinctiveness_sum&quot;</span>] &lt;-<span class="st"> &quot;EDsum&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;Pylo_diversity_is_sum_of_BL&quot;</span>] &lt;-<span class="st"> &quot;PDsum&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;transition_rate_ratio_1to2_over_2to1&quot;</span>] &lt;-<span class="st"> &quot;TR(ratio)&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;gamma&quot;</span>] &lt;-<span class="st"> &quot;Gamma&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;mean_Phylogenetic_isolation&quot;</span>] &lt;-<span class="st"> &quot;MPI&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;extrate&quot;</span>] &lt;-<span class="st"> &quot;Ext(ratio)&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;average_phylogenetic_diversity_is_mean_of_BL&quot;</span>] &lt;-<span class="st"> &quot;PDmean&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;extinction_per_speciation&quot;</span>] &lt;-<span class="st"> &quot;DR&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;variance_Phylogenetic_isolation&quot;</span>] &lt;-<span class="st"> &quot;VPI&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;F_quadratic_entropy_is_sum_of_PD&quot;</span>] &lt;-<span class="st"> &quot;F&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;Mean_pairwise_distance&quot;</span>] &lt;-<span class="st"> &quot;MPD&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;variance_Pylo_diversity_is_variance_of_BL&quot;</span>] &lt;-<span class="st"> &quot;PDvar&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;variance_pairwise_distance&quot;</span>] &lt;-<span class="st"> &quot;VPD&quot;</span>
+
+
+x_length &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">levels</span>(replace[,<span class="dv">1</span>]))
+
+######
+<span class="co"># make matrix</span>
+
+
+
+
+
+
+
+
+#####
+<span class="co">#plot from matrix</span>
+
+
+
+
+
+
+
+
+
+
+<span class="kw">pdf</span>(<span class="dt">file=</span><span class="st">&quot;heat map of variable importance.pdf&quot;</span>, <span class="dt">width=</span><span class="dv">11</span>, <span class="dt">height=</span><span class="fl">8.5</span>)
+
+<span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">10</span>,<span class="dv">4</span>,<span class="dv">1</span>))
+<span class="kw">plot</span>(<span class="dt">x =</span> <span class="kw">seq</span>(<span class="dv">1</span>, x_length, <span class="dt">by=</span><span class="dv">1</span>), <span class="dt">y =</span> <span class="kw">rep</span>(<span class="dv">0</span>, x_length), <span class="dt">type=</span><span class="st">&quot;n&quot;</span>, <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">20</span>), <span class="dt">ylab=</span><span class="st">&quot;&quot;</span>, <span class="dt">yaxt=</span><span class="st">&quot;n&quot;</span>, <span class="dt">xaxt=</span><span class="st">&quot;n&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;&quot;</span>, <span class="dt">xlim=</span><span class="kw">c</span>(<span class="dv">1</span>, x_length<span class="op">*</span><span class="dv">100</span>))
+
+<span class="kw">axis</span>(<span class="dv">2</span>, <span class="dt">label=</span>names, <span class="dt">at=</span><span class="kw">seq</span>(<span class="fl">0.5</span>,<span class="kw">length</span>(names)<span class="op">-</span>.<span class="dv">5</span>), <span class="dt">las=</span><span class="dv">2</span>)
+
+
+<span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(<span class="kw">as.character</span>(replace[, <span class="dv">6</span>]))){
+    
+    <span class="kw">load</span>(<span class="kw">as.character</span>(replace[i, <span class="dv">6</span>]))
+    imp &lt;-<span class="st"> </span><span class="kw">importance</span>(fit)
+<span class="co">#imp &lt;- apply(imp, 2, function(x) (x - min(x))/(max(x) - min(x)))</span>
+    <span class="co">#i &lt;- 10</span>
+    
+x_range &lt;-<span class="st"> </span><span class="kw">c</span>(i, i, i<span class="op">+</span><span class="dv">1</span>, i<span class="op">+</span><span class="dv">1</span>)    
+percent &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">ceiling</span>(imp[,<span class="dv">5</span>] ))
+percent[<span class="kw">which</span>(percent <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)] &lt;-<span class="st"> </span><span class="ot">NA</span>
+colors &lt;-<span class="st"> </span><span class="kw">cm.colors</span>(<span class="dv">100</span>)[percent]
+
+<span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">0</span><span class="op">:</span><span class="dv">19</span>){
+    y_range &lt;-<span class="st"> </span><span class="kw">c</span>(j, j<span class="op">+</span><span class="dv">1</span>, j<span class="op">+</span><span class="dv">1</span>, j)
+<span class="kw">polygon</span>(<span class="dt">x =</span> x_range, <span class="dt">y =</span> y_range, <span class="dt">col=</span> colors[j<span class="op">+</span><span class="dv">1</span>], <span class="dt">border=</span><span class="ot">NA</span>)
+}
+
+}
+
+<span class="kw">abline</span>(<span class="dt">v=</span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1000</span>, <span class="dt">by=</span><span class="dv">100</span>))
+
+<span class="kw">axis</span>(<span class="dv">1</span>, <span class="dt">label=</span><span class="kw">format</span>(<span class="kw">unique</span>(replace[,<span class="dv">7</span>]), <span class="dt">format=</span><span class="st">&quot;%d %b %Y&quot;</span>), <span class="dt">at=</span><span class="kw">seq</span>(<span class="dv">50</span>,<span class="dv">950</span>, <span class="dt">by=</span><span class="dv">100</span>)[<span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(<span class="kw">unique</span>(replace[,<span class="dv">7</span>]))])
+<span class="kw">dev.off</span>()</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">importance</span>(fit)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Variables importance</span>
+
+imp &lt;-<span class="st"> </span><span class="kw">importance</span>(fit)
+imp &lt;-<span class="st"> </span><span class="kw">apply</span>(imp, <span class="dv">2</span>, <span class="cf">function</span>(x) (x <span class="op">-</span><span class="st"> </span><span class="kw">min</span>(x))<span class="op">/</span>(<span class="kw">max</span>(x) <span class="op">-</span><span class="st"> </span><span class="kw">min</span>(x)))
+imp &lt;-<span class="st"> </span>imp[<span class="kw">sort</span>(imp[, <span class="dv">5</span>], <span class="dt">index.return =</span> <span class="ot">TRUE</span>, <span class="dt">decreasing =</span> <span class="ot">TRUE</span>)<span class="op">$</span>ix, ]
+
+
+names &lt;-<span class="st"> </span><span class="kw">rownames</span>(imp)
+names[names <span class="op">==</span><span class="st"> &quot;spatial.tests.fora&quot;</span>] &lt;-<span class="st"> &quot;Space F&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;spatial.tests.dom&quot;</span>] &lt;-<span class="st"> &quot;Space D&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;sprate&quot;</span>] &lt;-<span class="st"> &quot;Sp(ratio)&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;transition_from_trait_1_to_2&quot;</span>] &lt;-<span class="st"> &quot;TR(1-2)&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;transition_from_trait_2_to_1&quot;</span>] &lt;-<span class="st"> &quot;TR(2-1)&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;Phylogenetic_signal&quot;</span>] &lt;-<span class="st"> &quot;PhySig(D)&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;Evolutionary_distinctiveness_sum&quot;</span>] &lt;-<span class="st"> &quot;EDsum&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;Pylo_diversity_is_sum_of_BL&quot;</span>] &lt;-<span class="st"> &quot;PDsum&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;transition_rate_ratio_1to2_over_2to1&quot;</span>] &lt;-<span class="st"> &quot;TR(ratio)&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;gamma&quot;</span>] &lt;-<span class="st"> &quot;Gamma&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;mean_Phylogenetic_isolation&quot;</span>] &lt;-<span class="st"> &quot;MPI&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;extrate&quot;</span>] &lt;-<span class="st"> &quot;Ext(ratio)&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;average_phylogenetic_diversity_is_mean_of_BL&quot;</span>] &lt;-<span class="st"> &quot;PDmean&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;extinction_per_speciation&quot;</span>] &lt;-<span class="st"> &quot;DR&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;variance_Phylogenetic_isolation&quot;</span>] &lt;-<span class="st"> &quot;VPI&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;F_quadratic_entropy_is_sum_of_PD&quot;</span>] &lt;-<span class="st"> &quot;F&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;Mean_pairwise_distance&quot;</span>] &lt;-<span class="st"> &quot;MPD&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;variance_Pylo_diversity_is_variance_of_BL&quot;</span>] &lt;-<span class="st"> &quot;PDvar&quot;</span>
+names[names <span class="op">==</span><span class="st"> &quot;variance_pairwise_distance&quot;</span>] &lt;-<span class="st"> &quot;VPD&quot;</span>
+
+
+<span class="kw">png</span>(<span class="st">&quot;var_import_all.png&quot;</span>, <span class="dt">width =</span> <span class="dv">25</span>, <span class="dt">height =</span> <span class="dv">25</span>, <span class="dt">unit=</span><span class="st">&quot;in&quot;</span>, <span class="dt">res=</span><span class="dv">300</span>)
+<span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">18</span>, <span class="dv">1</span>, <span class="dv">1</span>))
+<span class="kw">plot</span>(<span class="dt">x =</span> <span class="kw">rev</span>(imp[, <span class="dv">5</span>]), <span class="dt">y =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(imp), <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">yaxt =</span> <span class="st">&quot;n&quot;</span>, 
+     <span class="dt">ylab =</span> <span class="st">&quot;&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;Variable Importance&quot;</span>,
+     <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">cex.lab =</span> <span class="dv">4</span>)
+<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(imp)) {
+  <span class="kw">abline</span>(<span class="dt">h =</span> i, <span class="dt">lty =</span> <span class="dv">3</span>, <span class="dt">col =</span> <span class="st">&quot;gray80&quot;</span>)
+}
+<span class="kw">abline</span>(<span class="dt">v =</span> <span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span><span class="op">/</span><span class="dv">19</span>), <span class="dt">lty =</span> <span class="dv">3</span>, <span class="dt">col =</span> <span class="st">&quot;gray80&quot;</span>)
+
+<span class="kw">lines</span>(<span class="dt">x =</span> <span class="kw">rev</span>(imp[, <span class="dv">4</span>]), <span class="dt">y =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(imp), <span class="dt">col =</span> <span class="st">&quot;darkgreen&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)
+<span class="kw">lines</span>(<span class="dt">x =</span> <span class="kw">rev</span>(imp[, <span class="dv">3</span>]), <span class="dt">y =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(imp), <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)
+<span class="kw">lines</span>(<span class="dt">x =</span> <span class="kw">rev</span>(imp[, <span class="dv">2</span>]), <span class="dt">y =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(imp), <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)
+<span class="kw">lines</span>(<span class="dt">x =</span> <span class="kw">rev</span>(imp[, <span class="dv">1</span>]), <span class="dt">y =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(imp), <span class="dt">col =</span> <span class="st">&quot;darkorange1&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)
+<span class="kw">lines</span>(<span class="dt">x =</span> <span class="kw">rev</span>(imp[, <span class="dv">5</span>]), <span class="dt">y =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(imp), <span class="dt">lwd =</span> <span class="dv">3</span>)
+
+<span class="kw">points</span>(<span class="dt">x =</span> <span class="kw">rev</span>(imp[, <span class="dv">4</span>]), <span class="dt">y =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(imp), <span class="dt">col =</span> <span class="st">&quot;darkgreen&quot;</span>, <span class="dt">cex =</span> <span class="dv">2</span>)
+<span class="kw">points</span>(<span class="dt">x =</span> <span class="kw">rev</span>(imp[, <span class="dv">3</span>]), <span class="dt">y =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(imp), <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">cex =</span> <span class="dv">2</span>)
+<span class="kw">points</span>(<span class="dt">x =</span> <span class="kw">rev</span>(imp[, <span class="dv">2</span>]), <span class="dt">y =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(imp), <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">cex =</span> <span class="dv">2</span>)
+<span class="kw">points</span>(<span class="dt">x =</span> <span class="kw">rev</span>(imp[, <span class="dv">1</span>]), <span class="dt">y =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(imp), <span class="dt">col =</span> <span class="st">&quot;darkorange1&quot;</span>, <span class="dt">cex =</span> <span class="dv">2</span>)
+<span class="kw">points</span>(<span class="dt">x =</span> <span class="kw">rev</span>(imp[, <span class="dv">5</span>]), <span class="dt">y =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(imp), <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">cex =</span> <span class="dv">3</span>)
+
+
+<span class="kw">text</span>(<span class="dt">y =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(imp), <span class="dt">x =</span> <span class="kw">par</span>(<span class="st">&quot;usr&quot;</span>)[<span class="dv">1</span>] <span class="op">-</span><span class="st"> </span>.<span class="dv">17</span>, <span class="dt">labels =</span> <span class="kw">rev</span>(names),
+     <span class="dt">srt =</span> <span class="dv">0</span>, <span class="dt">pos =</span> <span class="dv">4</span>, <span class="dt">xpd =</span> T, <span class="dt">cex =</span> <span class="dv">4</span>)
+<span class="kw">dev.off</span>()</code></pre></div>
+<div class="figure">
+<img src="var_import_all.png" />
+
+</div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">3</span>))
+
+<span class="co"># Box plots</span>
+<span class="kw">boxplot</span>(spatial.tests.fora <span class="op">~</span><span class="st"> </span>Model, <span class="dt">data =</span> data.analysis.comp3)
+<span class="kw">abline</span>(<span class="dt">h =</span> a<span class="op">$</span>spatial.tests.fora, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)
+
+<span class="kw">boxplot</span>(spatial.tests.dom <span class="op">~</span><span class="st"> </span>Model, <span class="dt">data =</span> data.analysis.comp3)
+<span class="kw">abline</span>(<span class="dt">h =</span> a<span class="op">$</span>spatial.tests.fora, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)
+
+<span class="kw">boxplot</span>(<span class="kw">log</span>(sprate) <span class="op">~</span><span class="st"> </span>Model, <span class="dt">data =</span> data.analysis.comp3, <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">10</span>, <span class="dv">10</span>))
+<span class="kw">abline</span>(<span class="dt">h =</span> <span class="kw">log</span>(a<span class="op">$</span>sprate), <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)
+
+<span class="kw">boxplot</span>(<span class="kw">log</span>(extrate) <span class="op">~</span><span class="st"> </span>Model, <span class="dt">data =</span> data.analysis.comp3, <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">10</span>, <span class="dv">10</span>))
+<span class="kw">abline</span>(<span class="dt">h =</span> <span class="kw">log</span>(a<span class="op">$</span>extrate), <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)
+
+<span class="kw">boxplot</span>(<span class="kw">log</span>(transition_rate_ratio_1to2_over_2to1) <span class="op">~</span><span class="st"> </span>Model, <span class="dt">data =</span> data.analysis.comp3)
+<span class="kw">abline</span>(<span class="dt">h =</span> <span class="kw">log</span>(a<span class="op">$</span>sprate), <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)
+
+<span class="kw">boxplot</span>(Phylogenetic_signal <span class="op">~</span><span class="st"> </span>Model, <span class="dt">data =</span> data.analysis.comp3, <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))
+<span class="kw">abline</span>(<span class="dt">h =</span> a<span class="op">$</span>Phylogenetic_signal, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#build a data tracking table to track parameter changes through time</span>
+
+<span class="kw">str</span>(fit)
+
+y</code></pre></div>
+
+<div id="refs" class="references">
+<div>
+<p>Barker, Gary M. 2002. “Phylogenetic diversity : a quantitative framework for measurement of priority and achievement in biodiversity conservation.” <em>Biological Journal of the Linnean Society</em> 76: 165–94. <a href="http://www.jstor.org/stable/3070944?seq=1{\#}page{\_}scan{\_}tab{\_}contents" class="uri">http://www.jstor.org/stable/3070944?seq=1{\#}page{\_}scan{\_}tab{\_}contents</a>.</p>
+</div>
+<div>
+<p>Cadotte, Marc W., T. Jonathan Davies, James Regetz, Steven W Kembel, Elsa Cleland, and Todd H. Oakley. 2010. “Phylogenetic diversity metrics for ecological communities : integrating species richness, abundance and evolutionary history.” <em>Ecology Letters</em> 13: 96–105. doi:<a href="https://doi.org/10.1111/j.1461-0248.2009.01405.x">10.1111/j.1461-0248.2009.01405.x</a>.</p>
+</div>
+<div>
+<p>Clarke, KR, and RM Warwick. 1998. “Quantifying structural redundancy in ecological communities.” <em>Oecologia</em> 113: 278–89. <a href="http://link.springer.com/article/10.1007/s004420050379" class="uri">http://link.springer.com/article/10.1007/s004420050379</a>.</p>
+</div>
+<div>
+<p>———. 2001. “A further biodiversity index applicable to species lists: variation in taxonomic distinctness.” <em>Marine Ecology Progress Series</em> 216: 265–78. <a href="http://researchrepository.murdoch.edu.au/id/eprint/23107/" class="uri">http://researchrepository.murdoch.edu.au/id/eprint/23107/</a>.</p>
+</div>
+<div>
+<p>Colless, Donald H. 1982. “Review of phylogenetics: the theory and practice of phylogenetic systematics.” <em>Systematic Zoology</em> 31 (1): 100–104. <a href="http://www.jstor.org/stable/2413420" class="uri">http://www.jstor.org/stable/2413420</a>.</p>
+</div>
+<div>
+<p>Dehling, D Matthias, Susanne A Fritz, Till Töpfer, Martin Päckert, Patrizia Estler, Katrin Böhning-gaese, and Matthias Schleuning. 2014. “Functional and phylogenetic diversity and assemblage structure of frugivorous birds along an elevational gradient in the tropical Andes IBS special issue.” <em>Ecography</em> 37: 1047–55. doi:<a href="https://doi.org/10.1111/ecog.00623">10.1111/ecog.00623</a>.</p>
+</div>
+<div>
+<p>Faith, Daniel P. 1992. “Conservation evaluation and phylogenetic diversity.” <em>Biological Conservation</em> 61: 1–10. <a href="http://www.sciencedirect.com/science/article/pii/0006320792912013" class="uri">http://www.sciencedirect.com/science/article/pii/0006320792912013</a>.</p>
+</div>
+<div>
+<p>Hardy, Olivier J, and Bruno Senterre. 2007. “Characterizing the phylogenetic structure of communities by an additive partitioning of phylogenetic diversity.” <em>Journal of Ecology</em> 95: 493–506. doi:<a href="https://doi.org/10.1111/j.1365-2745.2007.01222.x">10.1111/j.1365-2745.2007.01222.x</a>.</p>
+</div>
+<div>
+<p>Helmus, Matthew R, Wendel (Bill) Keller, Michael J Paterson, Norman D Yan, Charles H Cannon, and James A Rusak. 2010. “Communities contain closely related species during ecosystem disturbance.” <em>Ecology Letters</em> 13: 162–74. doi:<a href="https://doi.org/10.1111/j.1461-0248.2009.01411.x">10.1111/j.1461-0248.2009.01411.x</a>.</p>
+</div>
+<div>
+<p>Isaac, Nick J B, Samuel T Turvey, Ben Collen, Carly Waterman, and Jonathan E M Baillie. 2007. “Mammals on the EDGE : Conservation Priorities Based on Threat and Phylogeny.” <em>PLoS ONE</em> 2 (3): e296. doi:<a href="https://doi.org/10.1371/journal.pone.0000296">10.1371/journal.pone.0000296</a>.</p>
+</div>
+<div>
+<p>Izsak, Janos, and Laszio Papp. 2000. “A link between ecological diversity indices and measure of biodiversity.” <em>Ecological Modelling</em> 130 (1-3): 151–56. <a href="http://www.sciencedirect.com/science/article/pii/S0304380000002039" class="uri">http://www.sciencedirect.com/science/article/pii/S0304380000002039</a>.</p>
+</div>
+<div>
+<p>Kembel, Steven W, Peter D Cowan, Matthew R Helmus, William K Cornwell, Helene Morlon, David D Ackerly, Simon P Blomberg, and Campbell O Webb. 2010. “Picante : R tools for integrating phylogenies and ecology.” <em>Bioinformatics</em> 26 (11): 1463–4. doi:<a href="https://doi.org/10.1093/bioinformatics/btq166">10.1093/bioinformatics/btq166</a>.</p>
+</div>
+<div>
+<p>Pavoine, S Ã, S Ollier, and D Pontier. 2005. “Measuring diversity from dissimilarities with Rao’s quadratic entropy: Are any dissimilarities suitable?” <em>Theoretical Population Biology</em> 67 (4): 231–39. doi:<a href="https://doi.org/10.1016/j.tpb.2005.01.004">10.1016/j.tpb.2005.01.004</a>.</p>
+</div>
+<div>
+<p>Pybus, Oliver G, and Paul H Harvey. 2000. “Testing macro-evolutionary models using incomplete molecular phylogenies.” <em>Proceedings of the Royal Society B</em> 267 (1459): 2267–72. doi:<a href="https://doi.org/10.1098/rspb.2000.1278">10.1098/rspb.2000.1278</a>.</p>
+</div>
+<div>
+<p>Rao, Radhakrishna C. 1982. “Diversity and Dissimilarity coefficients: a unified approach.” <em>Theoretical Population Biology</em> 21: 24–43. <a href="http://www.sciencedirect.com/science/article/pii/0040580982900041" class="uri">http://www.sciencedirect.com/science/article/pii/0040580982900041</a>.</p>
+</div>
+<div>
+<p>Redding, David W. 2003. “Incorporating genetic distinctness and reserve occupancy into a conservation priorisation approach.” Master’s thesis, University of East Anglia, Norwich.</p>
+</div>
+<div>
+<p>Rosauer, Dan F, Shawn W Laffan, Michael D Crisp, and Stephen C Donnellan. 2009. “Phylogenetic endemism : a new approach for identifying geographical concentrations of evolutionary history.” <em>Molecular Ecology</em> 18: 4061–72. doi:<a href="https://doi.org/10.1111/j.1365-294X.2009.04311.x">10.1111/j.1365-294X.2009.04311.x</a>.</p>
+</div>
+<div>
+<p>Safi, Kamran, Katrina Armour-marshall, Jonathan E M Baillie, and Nick J B Isaac. 2013. “Global Patterns of Evolutionary Distinct and Globally Endangered Amphibians and Mammals.” <em>PLoS ONE</em> 8 (5): e63582–e63582. doi:<a href="https://doi.org/10.1371/journal.pone.0063582">10.1371/journal.pone.0063582</a>.</p>
+</div>
+<div>
+<p>Tucker, Caroline M., Marc W. Cadotte, Silvia B. Carvalho, T. Jonathan Davies, Simon Ferrier, Susanne A. Fritz, Rich Grenyer, et al. 2016. “A guide to phylogenetic metrics for conservation, community ecology and macroecology.” <em>Biological Reviews</em>. doi:<a href="https://doi.org/10.1111/brv.12252">10.1111/brv.12252</a>.</p>
+</div>
+<div>
+<p>Vellend, Mark, William K Cornwell, Karen Magnuson-ford, and Arne Ø Mooers. 2011. “Measuring phylogenetic biodiversity.” In <em>Biological Diversity: Frontiers in Measurement and Assessment</em>, 194–207. Oxford, UK: Oxford University Press. <a href="http://phylodiversity.net/wcornwell/Vellend{\_}etal{\_}2011{\_}bookchap.pdf" class="uri">http://phylodiversity.net/wcornwell/Vellend{\_}etal{\_}2011{\_}bookchap.pdf</a>.</p>
+</div>
+<div>
+<p>Villeger, Sebastien, Norman WH Mason, and David Mouillot. 2008. “New multidimensional functional diversity indices for a multifaceted framework in functional ecology.” <em>Ecology</em> 89 (8): 2290–2301. <a href="http://onlinelibrary.wiley.com/doi/10.1890/07-1206.1/full" class="uri">http://onlinelibrary.wiley.com/doi/10.1890/07-1206.1/full</a>.</p>
+</div>
+<div>
+<p>Webb, Campbell O, David D Ackerly, and Steven W Kembel. 2008. “Phylocom: software for the analysis of phylogenetic community structure and trait evolution.” <em>Bioinformatics</em> 24 (18): 2098–2100. doi:<a href="https://doi.org/10.1093/bioinformatics/btn358">10.1093/bioinformatics/btn358</a>.</p>
+</div>
+<div>
+<p>Webb, Campbell O, David D Ackerly, Mark A Mcpeek, and Michael J Donoghue. 2002. “Phylogenies and Community Ecology.” <em>Annual Review of Ecology and Systematics</em> 33: 475–505. doi:<a href="https://doi.org/10.1146/annurev.ecolsys.33.010802.150448">10.1146/annurev.ecolsys.33.010802.150448</a>.</p>
+</div>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="running-module-1-and-module-2-on-the-cluster.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/07_Module_3.Rmd",
+"text": "Edit"
+},
+"download": ["bookdown-demo.pdf", "bookdown-demo.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
